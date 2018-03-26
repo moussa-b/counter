@@ -1,4 +1,4 @@
-package com.mbo.counter.addeditcounter;
+package com.mbo.counter.settings;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -7,30 +7,28 @@ import android.support.v7.app.AppCompatActivity;
 import com.mbo.counter.R;
 import com.mbo.counter.utils.Utils;
 
-public class AddEditCounterActivity extends AppCompatActivity {
-
-    public static final int REQUEST_ADD_COUNTER = 1;
+public class SettingsActivity extends AppCompatActivity {
 
     private ActionBar mActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_edit_counter_activity);
+        setContentView(R.layout.counter_activity);
 
         // Set up the toolbar
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setDisplayShowHomeEnabled(true);
-            mActionBar.setTitle("Add / Edit counter");
+            mActionBar.setTitle("Settings");
         }
 
-        AddEditCounterFragment addEditFragment = (AddEditCounterFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (addEditFragment == null) {
+        SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (settingsFragment == null) {
             // Create the fragment
-            addEditFragment = AddEditCounterFragment.newInstance();
-            Utils.addFragmentToActivity(getSupportFragmentManager(), addEditFragment, R.id.contentFrame);
+            settingsFragment = SettingsFragment.newInstance();
+            Utils.addFragmentToActivity(getSupportFragmentManager(), settingsFragment, R.id.contentFrame);
         }
     }
 

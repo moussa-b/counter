@@ -20,6 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".addeditcounter.AddEditCounterActivity"/>
+        <activity android:name=".counter.CounterActivity"/>
+        <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name=".statistics.StatisticsActivity"/>
     </application>
 
 </manifest>
