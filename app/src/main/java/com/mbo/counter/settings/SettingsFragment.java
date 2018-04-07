@@ -18,7 +18,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.settings_activity, container, false);
+        View root = inflater.inflate(R.layout.settings_fragment, container, false);
         return root;
     }
 
