@@ -11,24 +11,29 @@ import com.mbo.counter.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StatisticsFragment extends Fragment implements StatisticsContract.View {
+public class StatisticsFragment extends Fragment implements StatisticsContract.View
+{
 
-    public StatisticsFragment() {
+    public StatisticsFragment()
+    {
+    }
+
+    public static StatisticsFragment newInstance()
+    {
+        return new StatisticsFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View root = inflater.inflate(R.layout.statistics_fragment, container, false);
         return root;
     }
 
     @Override
-    public void setPresenter(StatisticsContract.Presenter presenter) {
+    public void setPresenter(StatisticsContract.Presenter presenter)
+    {
 
-    }
-
-    public static StatisticsFragment newInstance() {
-        return new StatisticsFragment();
     }
 
 }

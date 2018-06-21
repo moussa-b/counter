@@ -1,6 +1,7 @@
 package com.mbo.counter;
 
-public interface BasePresenter {
+public interface BasePresenter
+{
 
     void start();
 

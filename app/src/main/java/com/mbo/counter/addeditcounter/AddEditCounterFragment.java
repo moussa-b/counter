@@ -13,19 +13,29 @@ import com.mbo.counter.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AddEditCounterFragment extends Fragment implements AddEditCounterContract.View {
+public class AddEditCounterFragment extends Fragment implements AddEditCounterContract.View
+{
 
-    public AddEditCounterFragment() {
+    public AddEditCounterFragment()
+    {
+    }
+
+    public static AddEditCounterFragment newInstance()
+    {
+        return new AddEditCounterFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View root = inflater.inflate(R.layout.add_edit_counter_fragment, container, false);
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_counter_done);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -34,12 +44,9 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
-    public void setPresenter(AddEditCounterContract.Presenter presenter) {
+    public void setPresenter(AddEditCounterContract.Presenter presenter)
+    {
 
-    }
-
-    public static AddEditCounterFragment newInstance() {
-        return new AddEditCounterFragment();
     }
 
 }

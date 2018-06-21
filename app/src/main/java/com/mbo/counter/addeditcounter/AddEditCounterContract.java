@@ -6,13 +6,16 @@ import com.mbo.counter.BaseView;
 /**
  * This specifies the contract between the view and the presenter.
  */
-public interface AddEditCounterContract {
+public interface AddEditCounterContract
+{
 
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView<Presenter>
+    {
 
     }
 
-    interface Presenter extends BasePresenter {
-
+    interface Presenter extends BasePresenter
+    {
+        void saveCounter(String title, int count, String direction, String note, String color);
     }
 }
