@@ -1,10 +1,16 @@
 package com.mbo.counter.data.model;
 
-public class Counter
-{
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
+public class Counter extends RealmObject
+{
+    @Required
+    @PrimaryKey
     private String id;
 
+    @Required
     private String name;
 
     private int count;
@@ -18,6 +24,10 @@ public class Counter
     private String direction;
 
     private int type;
+
+    public Counter()
+    {
+    }
 
     public Counter(String name)
     {

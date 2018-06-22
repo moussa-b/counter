@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mbo.counter.R;
+import com.mbo.counter.data.source.CounterRepository;
 import com.mbo.counter.utils.Utils;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
@@ -43,7 +44,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         // Create the presenter
-        mHomePresenter = new HomePresenter(homeFragment);
+        mHomePresenter = new HomePresenter(CounterRepository.getInstance(), homeFragment);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

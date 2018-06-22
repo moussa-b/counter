@@ -1,5 +1,7 @@
 package com.mbo.counter.home;
 
+import android.support.annotation.NonNull;
+
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;
 import com.mbo.counter.data.model.Counter;
@@ -20,10 +22,14 @@ public interface HomeContract
         void showAddCounter();
 
         void showNoCounters();
+
+        void showCounterDetailsUi(String taskId);
     }
 
     interface Presenter extends BasePresenter
     {
         void loadCounters();
+
+        void openCounterDetails(@NonNull Counter clickedCounter);
     }
 }

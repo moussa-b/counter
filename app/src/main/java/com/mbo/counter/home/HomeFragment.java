@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
+import com.mbo.counter.counterdetail.CounterDetailActivity;
 import com.mbo.counter.data.model.Counter;
 
 import java.util.ArrayList;
@@ -33,6 +34,15 @@ public class HomeFragment extends Fragment implements HomeContract.View
 
     private ListView mCountListView;
 
+    private CounterItemListener mCounterListener = new CounterItemListener()
+    {
+        @Override
+        public void onCounterClick(Counter clickedCounter)
+        {
+            mPresenter.openCounterDetails(clickedCounter);
+        }
+    };
+
     public HomeFragment()
     {
     }
@@ -46,7 +56,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
     public void onCreate(@Nullable Bundle savedInstanceState)
     { // Lifecycle : called first, for doing any non-graphical initialisations
         super.onCreate(savedInstanceState);
-        mListAdapter = new CountersAdapter(new ArrayList<Counter>(0));
+        mListAdapter = new CountersAdapter(new ArrayList<Counter>(0), mCounterListener);
     }
 
     @Override
@@ -113,20 +123,36 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
+    public void showCounterDetailsUi(String taskId)
+    {
+        Intent intent = new Intent(getContext(), CounterDetailActivity.class);
+        intent.putExtra(CounterDetailActivity.EXTRA_COUNTER_ID, taskId);
+        startActivity(intent);
+    }
+
+    @Override
     public void showNoCounters()
     {
         mCountListView.setVisibility(View.GONE);
         mNoCounterTextView.setVisibility(View.VISIBLE);
     }
 
-    private static class CountersAdapter extends BaseAdapter
+    public interface CounterItemListener
     {
 
+        void onCounterClick(Counter clickedCounter);
+    }
+
+    private static class CountersAdapter extends BaseAdapter
+    {
         private List<Counter> mCounters;
 
-        public CountersAdapter(List<Counter> mCounters)
+        private CounterItemListener mCounterListener;
+
+        public CountersAdapter(List<Counter> counters, CounterItemListener itemListener)
         {
-            this.mCounters = mCounters;
+            this.mCounters = counters;
+            this.mCounterListener = itemListener;
         }
 
         @Override
@@ -162,6 +188,15 @@ public class HomeFragment extends Fragment implements HomeContract.View
 
             TextView title = (TextView) rowView.findViewById(R.id.title);
             title.setText(counter.getName());
+
+            rowView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mCounterListener.onCounterClick(counter);
+                }
+            });
 
             return rowView;
         }

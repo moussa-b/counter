@@ -3,18 +3,21 @@ package com.mbo.counter.home;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.source.CounterDataSource;
+import com.mbo.counter.data.source.CounterRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePresenter implements HomeContract.Presenter
 {
-
     private final HomeContract.View mHomeView;
 
-    public HomePresenter(@NonNull HomeContract.View mHomeView)
+    private final CounterRepository mCounterRepository;
+
+    public HomePresenter(@NonNull CounterRepository counterRepository, @NonNull HomeContract.View homeView)
     {
-        this.mHomeView = mHomeView;
+        this.mCounterRepository = counterRepository;
+        this.mHomeView = homeView;
         mHomeView.setPresenter(this);
     }
 
@@ -27,18 +30,26 @@ public class HomePresenter implements HomeContract.Presenter
     @Override
     public void loadCounters()
     {
-        // TODO : Replace by real data source
-        List<Counter> countersToShow = new ArrayList<>();
-        countersToShow.add(new Counter("My first counter"));
-        countersToShow.add(new Counter("My first counter"));
-        countersToShow.add(new Counter("My first counter"));
-        countersToShow.add(new Counter("My first counter"));
-        countersToShow.add(new Counter("My first counter"));
-        countersToShow.add(new Counter("My first counter"));
-        countersToShow.add(new Counter("My first counter"));
-        countersToShow.add(new Counter("My first counter"));
-        countersToShow.add(new Counter("My first counter"));
-        processCounters(countersToShow);
+        mCounterRepository.getCounters(new CounterDataSource.LoadCountersCallback()
+        {
+            @Override
+            public void onCountersLoaded(List<Counter> counters)
+            {
+                processCounters(counters);
+            }
+
+            @Override
+            public void onDataNotAvailable()
+            {
+
+            }
+        });
+    }
+
+    @Override
+    public void openCounterDetails(@NonNull Counter clickedCounter)
+    {
+        mHomeView.showCounterDetailsUi(clickedCounter.getId());
     }
 
     private void processCounters(List<Counter> counters)
