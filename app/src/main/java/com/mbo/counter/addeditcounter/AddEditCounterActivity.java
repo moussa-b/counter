@@ -5,14 +5,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mbo.counter.R;
+import com.mbo.counter.data.source.CounterRepository;
 import com.mbo.counter.utils.Utils;
 
 public class AddEditCounterActivity extends AppCompatActivity
 {
 
-    public static final int REQUEST_ADD_COUNTER = 1;
+    public static final int REQUEST_ADD_COUNTER = 100;
 
     private ActionBar mActionBar;
+
+    private AddEditCounterPresenter mAddEditCounterPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,7 +37,17 @@ public class AddEditCounterActivity extends AppCompatActivity
         {
             // Create the fragment
             addEditFragment = AddEditCounterFragment.newInstance();
+
+            String counterId = null;
+
+            if (getIntent().hasExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID))
+            {
+                counterId = getIntent().getStringExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID);
+            }
+
             Utils.addFragmentToActivity(getSupportFragmentManager(), addEditFragment, R.id.contentFrame);
+
+            mAddEditCounterPresenter = new AddEditCounterPresenter(counterId, CounterRepository.getInstance(), addEditFragment);
         }
     }
 

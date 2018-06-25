@@ -49,7 +49,7 @@ public class HomePresenter implements HomeContract.Presenter
     @Override
     public void openCounterDetails(@NonNull Counter clickedCounter)
     {
-        mHomeView.showCounterDetailsUi(clickedCounter.getId());
+        mHomeView.showCounterEditUi(clickedCounter.getId());
     }
 
     private void processCounters(List<Counter> counters)

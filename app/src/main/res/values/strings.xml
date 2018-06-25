@@ -11,5 +11,5 @@
     <string name="no_counters">You have no counters!</string>
     <string name="no_counters_add">Add a counter item +</string>
     <string name="notes">Notes</string>
-    <string name="title">Title</string>
+    <string name="name">Name</string>
 </resources>

@@ -23,7 +23,7 @@ public interface HomeContract
 
         void showNoCounters();
 
-        void showCounterDetailsUi(String taskId);
+        void showCounterEditUi(String counterId);
     }
 
     interface Presenter extends BasePresenter

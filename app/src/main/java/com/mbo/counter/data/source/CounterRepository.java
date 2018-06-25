@@ -37,7 +37,7 @@ public class CounterRepository implements CounterDataSource
     @Override
     public void getCounter(@NonNull String counterId, @NonNull GetCounterCallback callback)
     {
-
+        callback.onCounterLoaded(mRealm.where(Counter.class).equalTo("id", counterId).findFirst());
     }
 
     @Override

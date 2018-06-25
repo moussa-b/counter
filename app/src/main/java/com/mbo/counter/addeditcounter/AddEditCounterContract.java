@@ -11,11 +11,21 @@ public interface AddEditCounterContract
 
     interface View extends BaseView<Presenter>
     {
+        void setCount(int count);
 
+        void setColor(String color);
+
+        void setDirection(String direction);
+
+        void setNote(String note);
+
+        void setName(String name);
     }
 
     interface Presenter extends BasePresenter
     {
-        void saveCounter(String title, int count, String direction, String note, String color);
+        void saveCounter(String name, int count, String direction, String note, String color);
+
+        void populateCounter();
     }
 }
