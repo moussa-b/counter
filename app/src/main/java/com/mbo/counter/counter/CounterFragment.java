@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.mbo.counter.R;
 
@@ -13,6 +15,13 @@ import com.mbo.counter.R;
  */
 public class CounterFragment extends Fragment implements CounterContract.View
 {
+    public static final String ARGUMENT_COUNTER_ID = "COUNTER_ID";
+
+    private TextView mName, mCurrentCount;
+
+    private ProgressBar mProgressBar;
+
+    private CounterContract.Presenter mPresenter;
 
     public CounterFragment()
     {
@@ -27,13 +36,53 @@ public class CounterFragment extends Fragment implements CounterContract.View
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.counter_fragment, container, false);
+
+        mName = (TextView) root.findViewById(R.id.counter_name_text_view);
+        mCurrentCount = (TextView) root.findViewById(R.id.counter_count_text_view);
+        mProgressBar = (ProgressBar) root.findViewById(R.id.counter_progress_bar);
+
+        mCurrentCount.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                int currentCount = mPresenter.incrementCounter();
+                setCurrentCount(currentCount);
+                setProgression(mPresenter.getCount(), currentCount);
+            }
+        });
         return root;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mPresenter.start();
     }
 
     @Override
     public void setPresenter(CounterContract.Presenter presenter)
     {
-
+        mPresenter = presenter;
     }
 
+    @Override
+    public void setName(String name)
+    {
+        mName.setText(name);
+    }
+
+    @Override
+    public void setCurrentCount(int currentCount)
+    {
+        mCurrentCount.setText(String.valueOf(currentCount));
+    }
+
+    @Override
+    public void setProgression(int count, int currentCount)
+    {
+        float progession = 100 * (float) currentCount / (float) count;
+        mProgressBar.setProgress((int)progession);
+    }
 }

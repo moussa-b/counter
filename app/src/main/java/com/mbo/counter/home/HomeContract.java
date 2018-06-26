@@ -23,13 +23,13 @@ public interface HomeContract
 
         void showNoCounters();
 
-        void showCounterEditUi(long counterId);
+        void showCounterUi(long counterId);
     }
 
     interface Presenter extends BasePresenter
     {
         void loadCounters();
 
-        void openCounterDetails(@NonNull Counter clickedCounter);
+        void openCounter(@NonNull Counter clickedCounter);
     }
 }

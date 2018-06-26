@@ -14,19 +14,20 @@ import android.widget.TextView;
 
 import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
+import com.mbo.counter.counter.CounterActivity;
 import com.mbo.counter.data.model.Counter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
+import static com.mbo.counter.counter.CounterFragment.ARGUMENT_COUNTER_ID;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class HomeFragment extends Fragment implements HomeContract.View
 {
-    private static final int REQUEST_EDIT_COUNTER = 100;
+    private static final int REQUEST_COUNTER = 100;
 
     private HomeContract.Presenter mPresenter;
 
@@ -41,7 +42,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
         @Override
         public void onCounterClick(Counter clickedCounter)
         {
-            mPresenter.openCounterDetails(clickedCounter);
+            mPresenter.openCounter(clickedCounter);
         }
     };
 
@@ -125,11 +126,11 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
-    public void showCounterEditUi(long counterId)
+    public void showCounterUi(long counterId)
     {
-        Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
-        intent.putExtra(ARGUMENT_EDIT_COUNTER_ID, counterId);
-        startActivityForResult(intent, REQUEST_EDIT_COUNTER);
+        Intent intent = new Intent(getContext(), CounterActivity.class);
+        intent.putExtra(ARGUMENT_COUNTER_ID, counterId);
+        startActivityForResult(intent, REQUEST_COUNTER);
     }
 
     @Override

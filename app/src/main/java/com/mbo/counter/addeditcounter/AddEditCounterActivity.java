@@ -10,7 +10,6 @@ import com.mbo.counter.utils.Utils;
 
 public class AddEditCounterActivity extends AppCompatActivity
 {
-
     public static final int REQUEST_ADD_COUNTER = 100;
 
     private ActionBar mActionBar;
@@ -39,11 +38,8 @@ public class AddEditCounterActivity extends AppCompatActivity
             addEditFragment = AddEditCounterFragment.newInstance();
 
             long counterId = 0;
-
             if (getIntent().hasExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID))
-            {
                 counterId = getIntent().getLongExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID, 0);
-            }
 
             Utils.addFragmentToActivity(getSupportFragmentManager(), addEditFragment, R.id.contentFrame);
 
