@@ -20,11 +20,13 @@ public interface AddEditCounterContract
         void setNote(String note);
 
         void setName(String name);
+
+        void showCountersList();
     }
 
     interface Presenter extends BasePresenter
     {
-        void saveCounter(String name, int count, String direction, String note, String color);
+        void saveCounter(String name, int count, String note, String direction, String color);
 
         void populateCounter();
     }

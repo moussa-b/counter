@@ -4,19 +4,20 @@ import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.source.CounterDataSource;
-import com.mbo.counter.data.source.CounterRepository;
 
 import java.util.List;
 
 public class HomePresenter implements HomeContract.Presenter
 {
+    @NonNull
     private final HomeContract.View mHomeView;
 
-    private final CounterRepository mCounterRepository;
+    @NonNull
+    private final CounterDataSource mCounterDataSource;
 
-    public HomePresenter(@NonNull CounterRepository counterRepository, @NonNull HomeContract.View homeView)
+    public HomePresenter(@NonNull CounterDataSource counterDataSource, @NonNull HomeContract.View homeView)
     {
-        this.mCounterRepository = counterRepository;
+        this.mCounterDataSource = counterDataSource;
         this.mHomeView = homeView;
         mHomeView.setPresenter(this);
     }
@@ -30,7 +31,7 @@ public class HomePresenter implements HomeContract.Presenter
     @Override
     public void loadCounters()
     {
-        mCounterRepository.getCounters(new CounterDataSource.LoadCountersCallback()
+        mCounterDataSource.getCounters(new CounterDataSource.LoadCountersCallback()
         {
             @Override
             public void onCountersLoaded(List<Counter> counters)

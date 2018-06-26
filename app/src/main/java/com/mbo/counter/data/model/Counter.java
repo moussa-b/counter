@@ -1,29 +1,29 @@
 package com.mbo.counter.data.model;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.Required;
+import com.j256.ormlite.field.DatabaseField;
 
-public class Counter extends RealmObject
+public class Counter
 {
-    @Required
-    @PrimaryKey
-    private String id;
+    @DatabaseField(generatedId = true)
+    private long id;
 
-    @Required
+    @DatabaseField(canBeNull = false)
     private String name;
 
+    @DatabaseField(canBeNull = false)
     private int count;
 
+    @DatabaseField
     private int currentCount;
 
+    @DatabaseField
     private String note;
 
+    @DatabaseField
     private String color;
 
+    @DatabaseField
     private String direction;
-
-    private int type;
 
     public Counter()
     {
@@ -34,12 +34,22 @@ public class Counter extends RealmObject
         this.name = name;
     }
 
-    public String getId()
+    public Counter(long id, String name, int count, String note, String direction, String color)
+    {
+        this.id = id;
+        this.name = name;
+        this.count = count;
+        this.note = note;
+        this.direction = direction;
+        this.color = color;
+    }
+
+    public long getId()
     {
         return id;
     }
 
-    public void setId(String id)
+    public void setId(long id)
     {
         this.id = id;
     }
@@ -102,15 +112,5 @@ public class Counter extends RealmObject
     public void setDirection(String direction)
     {
         this.direction = direction;
-    }
-
-    public int getType()
-    {
-        return type;
-    }
-
-    public void setType(int type)
-    {
-        this.type = type;
     }
 }

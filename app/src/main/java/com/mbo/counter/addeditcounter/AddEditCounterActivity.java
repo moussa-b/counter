@@ -5,7 +5,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mbo.counter.R;
-import com.mbo.counter.data.source.CounterRepository;
+import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 import com.mbo.counter.utils.Utils;
 
 public class AddEditCounterActivity extends AppCompatActivity
@@ -38,16 +38,16 @@ public class AddEditCounterActivity extends AppCompatActivity
             // Create the fragment
             addEditFragment = AddEditCounterFragment.newInstance();
 
-            String counterId = null;
+            long counterId = 0;
 
             if (getIntent().hasExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID))
             {
-                counterId = getIntent().getStringExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID);
+                counterId = getIntent().getLongExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID, 0);
             }
 
             Utils.addFragmentToActivity(getSupportFragmentManager(), addEditFragment, R.id.contentFrame);
 
-            mAddEditCounterPresenter = new AddEditCounterPresenter(counterId, CounterRepository.getInstance(), addEditFragment);
+            mAddEditCounterPresenter = new AddEditCounterPresenter(counterId, OrmLiteDataSource.getInstance(), addEditFragment);
         }
     }
 

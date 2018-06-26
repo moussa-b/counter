@@ -1,31 +1,25 @@
 package com.mbo.counter.addeditcounter;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.source.CounterDataSource;
 
-import io.realm.Realm;
-
 public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
 {
     @NonNull
-    private final CounterDataSource mCounterRepository;
+    private final CounterDataSource mCounterDataSource;
 
     @NonNull
     private final AddEditCounterContract.View mAddCounterView;
 
-    @Nullable
-    private String mCounterId;
+    private long mCounterId;
 
-    private Counter mCounter;
-
-    public AddEditCounterPresenter(@Nullable String counterId, @NonNull CounterDataSource counterRepository,
+    public AddEditCounterPresenter(long counterId, @NonNull CounterDataSource counterDataSource,
                                    @NonNull AddEditCounterContract.View addCounterView)
     {
         this.mCounterId = counterId;
-        this.mCounterRepository = counterRepository;
+        this.mCounterDataSource = counterDataSource;
         this.mAddCounterView = addCounterView;
 
         mAddCounterView.setPresenter(this);
@@ -34,38 +28,28 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     @Override
     public void start()
     {
-        if (mCounterId != null)
+        if (mCounterId != 0)
             populateCounter();
-        else
-            mCounter = new Counter();
     }
 
     @Override
-    public void saveCounter(final String name, int count, String direction, String note, String color)
+    public void saveCounter(final String name, int count, String note, String direction, String color)
     {
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction()
-        {
-            @Override
-            public void execute(Realm realm)
-            {
-                mCounter.setName(name);
-            }
-        });
-
-        realm.close();
-        realm = null;
+        if (mCounterId != 0)
+            mCounterDataSource.deleteCounter(mCounterId);
+        else
+            mCounterDataSource.saveCounter(new Counter(mCounterId, name, count, note, direction, color));
+        mAddCounterView.showCountersList();
     }
 
     @Override
     public void populateCounter()
     {
-        mCounterRepository.getCounter(mCounterId, new CounterDataSource.GetCounterCallback()
+        mCounterDataSource.getCounter(mCounterId, new CounterDataSource.GetCounterCallback()
         {
             @Override
             public void onCounterLoaded(Counter counter)
             {
-                mCounter = counter;
                 mAddCounterView.setName(counter.getName());
                 mAddCounterView.setCount(counter.getCount());
                 mAddCounterView.setNote(counter.getNote());
@@ -74,7 +58,6 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
             @Override
             public void onDataNotAvailable()
             {
-                mCounter = new Counter();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.mbo.counter.addeditcounter;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -36,14 +37,17 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
 
         FloatingActionButton fab =
                 (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_counter_done);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 mPresenter.saveCounter(mName.getText().toString(), Integer.parseInt(mCount.getText().toString()), null, null, null);
             }
         });
@@ -73,7 +77,8 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         mPresenter.start();
     }
@@ -112,5 +117,12 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     public void setName(String name)
     {
         mName.setText(name);
+    }
+
+    @Override
+    public void showCountersList()
+    {
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 }

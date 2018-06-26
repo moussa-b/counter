@@ -2,8 +2,8 @@ package com.mbo.counter;
 
 import android.app.Application;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
+import com.mbo.counter.data.source.ormlite.OrmLiteHelper;
 
 public class CounterApplication extends Application
 {
@@ -11,11 +11,6 @@ public class CounterApplication extends Application
     public void onCreate()
     {
         super.onCreate();
-        Realm.init(this);
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
-                .name("counter.realm")
-                .schemaVersion(0)
-                .build();
-        Realm.setDefaultConfiguration(realmConfig);
+        OrmLiteDataSource.initialize(new OrmLiteHelper(getApplicationContext()));
     }
 }

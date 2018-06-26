@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
-    public void showCounterEditUi(String counterId)
+    public void showCounterEditUi(long counterId)
     {
         Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
         intent.putExtra(ARGUMENT_EDIT_COUNTER_ID, counterId);
