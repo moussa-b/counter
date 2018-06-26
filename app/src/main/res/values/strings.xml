@@ -6,10 +6,14 @@
     <string name="count">Count</string>
     <string name="decreasing">Decreasing</string>
     <string name="increasing">Increasing</string>
+    <string name="name">Name</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Android Studio</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="no_counters">You have no counters!</string>
     <string name="no_counters_add">Add a counter item +</string>
     <string name="notes">Notes</string>
-    <string name="name">Name</string>
+    <string name="objective">Objective</string>
 </resources>

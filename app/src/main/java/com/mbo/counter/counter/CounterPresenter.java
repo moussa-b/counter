@@ -70,6 +70,7 @@ public class CounterPresenter implements CounterContract.Presenter
                 mCounterView.setName(counter.getName());
                 mCounterView.setCurrentCount(counter.getCurrentCount());
                 mCounterView.setProgression(counter.getCount(), counter.getCurrentCount());
+                mCounterView.setCount(counter.getCount());
             }
 
             @Override

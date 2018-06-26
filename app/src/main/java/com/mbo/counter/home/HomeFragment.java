@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mbo.counter.R;
@@ -189,8 +190,21 @@ public class HomeFragment extends Fragment implements HomeContract.View
 
             final Counter counter = getItem(i);
 
-            TextView title = (TextView) rowView.findViewById(R.id.title);
-            title.setText(counter.getName());
+            TextView currentCountTextView = (TextView) rowView.findViewById(R.id.current_count_text_view);
+            currentCountTextView.setText(String.valueOf(counter.getCurrentCount()));
+
+            TextView nameTextView = (TextView) rowView.findViewById(R.id.name_text_view);
+            nameTextView.setText(counter.getName());
+
+            TextView countTextView = (TextView) rowView.findViewById(R.id.count_text_view);
+            countTextView.setText("(" + counter.getCount() + ")");
+
+            TextView progressionTextView = (TextView) rowView.findViewById(R.id.progression_text_view);
+            int progression = (int) (100 * (float) counter.getCurrentCount() / ((float) counter.getCount()));
+            progressionTextView.setText(String.valueOf(progression) + "%");
+
+            ProgressBar counterItemProgressBar = (ProgressBar) rowView.findViewById(R.id.counter_item_progress_bar);
+            counterItemProgressBar.setProgress(progression);
 
             rowView.setOnClickListener(new View.OnClickListener()
             {

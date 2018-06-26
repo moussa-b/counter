@@ -12,9 +12,11 @@ public interface CounterContract
 
     interface View extends BaseView<Presenter>
     {
-        void setName(String name);
+        void setCount(int count);
 
         void setCurrentCount(int currentCount);
+
+        void setName(String name);
 
         void setProgression(int count, int currentCount);
     }

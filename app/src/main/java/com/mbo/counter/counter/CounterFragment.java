@@ -17,7 +17,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
 {
     public static final String ARGUMENT_COUNTER_ID = "COUNTER_ID";
 
-    private TextView mName, mCurrentCount;
+    private TextView mName, mCurrentCount, mCount;
 
     private ProgressBar mProgressBar;
 
@@ -39,6 +39,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
 
         mName = (TextView) root.findViewById(R.id.counter_name_text_view);
         mCurrentCount = (TextView) root.findViewById(R.id.counter_count_text_view);
+        mCount = (TextView) root.findViewById(R.id.count_text_view);
         mProgressBar = (ProgressBar) root.findViewById(R.id.counter_progress_bar);
 
         mCurrentCount.setOnClickListener(new View.OnClickListener()
@@ -71,6 +72,12 @@ public class CounterFragment extends Fragment implements CounterContract.View
     public void setName(String name)
     {
         mName.setText(name);
+    }
+
+    @Override
+    public void setCount(int count)
+    {
+        mCount.setText(getString(R.string.objective) + " : " + String.valueOf(count));
     }
 
     @Override
