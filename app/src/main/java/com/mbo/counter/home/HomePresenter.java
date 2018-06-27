@@ -29,6 +29,12 @@ public class HomePresenter implements HomeContract.Presenter
     }
 
     @Override
+    public void deleteCounter(int counterId)
+    {
+        mCounterDataSource.deleteCounter(counterId);
+    }
+
+    @Override
     public void loadCounters()
     {
         mCounterDataSource.getCounters(new CounterDataSource.LoadCountersCallback()

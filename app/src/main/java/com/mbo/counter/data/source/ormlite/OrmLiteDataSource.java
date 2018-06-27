@@ -66,11 +66,11 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void getCounter(long counterId, @NonNull GetCounterCallback callback)
+    public void getCounter(int counterId, @NonNull GetCounterCallback callback)
     {
         try
         {
-            final Counter counter = mCounterDao.queryForId(counterId);
+            final Counter counter = mCounterDao.queryForId((long) counterId);
             if (counter != null)
             {
                 callback.onCounterLoaded(counter);
@@ -117,13 +117,12 @@ public class OrmLiteDataSource implements CounterDataSource
             e.printStackTrace();
         }
     }
-
     @Override
-    public void deleteCounter(long counterId)
+    public void deleteCounter(int counterId)
     {
         try
         {
-            mCounterDao.deleteById(counterId);
+            mCounterDao.deleteById((long) counterId);
         }
         catch (SQLException e)
         {

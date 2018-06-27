@@ -47,7 +47,7 @@ public class Counter
         this.color = color;
     }
 
-    public long getId()
+    public int getId()
     {
         return id;
     }

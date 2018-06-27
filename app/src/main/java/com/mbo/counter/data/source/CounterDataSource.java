@@ -10,7 +10,7 @@ public interface CounterDataSource
 {
     void getCounters(@NonNull LoadCountersCallback callback);
 
-    void getCounter(long id, @NonNull GetCounterCallback callback);
+    void getCounter(int counterId, @NonNull GetCounterCallback callback);
 
     void saveCounter(@NonNull Counter counter);
 
@@ -18,7 +18,7 @@ public interface CounterDataSource
 
     void deleteAllCounters();
 
-    void deleteCounter(long counterId);
+    void deleteCounter(int counterId);
 
     interface LoadCountersCallback
     {

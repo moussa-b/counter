@@ -37,9 +37,9 @@ public class CounterActivity extends AppCompatActivity
             // Create the fragment
             counterFragment = CounterFragment.newInstance();
 
-            long counterId = 0;
+            int counterId = 0;
             if (getIntent().hasExtra(ARGUMENT_COUNTER_ID))
-                counterId = getIntent().getLongExtra(ARGUMENT_COUNTER_ID, 0);
+                counterId = getIntent().getIntExtra(ARGUMENT_COUNTER_ID, 0);
 
             Utils.addFragmentToActivity(getSupportFragmentManager(), counterFragment, R.id.contentFrame);
 

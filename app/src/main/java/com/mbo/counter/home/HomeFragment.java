@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,15 +47,16 @@ public class HomeFragment extends Fragment implements HomeContract.View
         {
             mPresenter.openCounter(clickedCounter);
         }
+
+        @Override
+        public void delete(Counter clickedCounter)
+        {
+            mPresenter.deleteCounter(clickedCounter.getId());
+        }
     };
 
     public HomeFragment()
     {
-    }
-
-    public static HomeFragment newInstance()
-    {
-        return new HomeFragment();
     }
 
     @Override
@@ -94,6 +97,8 @@ public class HomeFragment extends Fragment implements HomeContract.View
             }
         });
 
+        setHasOptionsMenu(true);
+
         return root;
     }
 
@@ -102,6 +107,18 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
         super.onResume();
         mPresenter.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_settings:
+                editCounters(true);
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -127,11 +144,18 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
-    public void showCounterUi(long counterId)
+    public void showCounterUi(int counterId)
     {
         Intent intent = new Intent(getContext(), CounterActivity.class);
         intent.putExtra(ARGUMENT_COUNTER_ID, counterId);
         startActivityForResult(intent, REQUEST_COUNTER);
+    }
+
+    @Override
+    public void editCounters(boolean activeEdition)
+    {
+        mListAdapter.toggleEditMode();
+        mListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -141,10 +165,16 @@ public class HomeFragment extends Fragment implements HomeContract.View
         mNoCounterTextView.setVisibility(View.VISIBLE);
     }
 
+    public static HomeFragment newInstance()
+    {
+        return new HomeFragment();
+    }
+
     public interface CounterItemListener
     {
-
         void onCounterClick(Counter clickedCounter);
+
+        void delete(Counter clickedCounter);
     }
 
     private static class CountersAdapter extends BaseAdapter
@@ -152,6 +182,8 @@ public class HomeFragment extends Fragment implements HomeContract.View
         private List<Counter> mCounters;
 
         private CounterItemListener mCounterListener;
+
+        private boolean activeEditMode = false;
 
         public CountersAdapter(List<Counter> counters, CounterItemListener itemListener)
         {
@@ -178,7 +210,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup)
+        public View getView(final int i, View view, ViewGroup viewGroup)
         {
             View rowView = view;
 
@@ -190,6 +222,16 @@ public class HomeFragment extends Fragment implements HomeContract.View
 
             final Counter counter = getItem(i);
 
+            rowView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (!activeEditMode)
+                        mCounterListener.onCounterClick(counter);
+                }
+            });
+
             TextView countTextView = (TextView) rowView.findViewById(R.id.count_text_view);
             countTextView.setText(String.valueOf(counter.getCount()));
 
@@ -200,18 +242,38 @@ public class HomeFragment extends Fragment implements HomeContract.View
             totalTextView.setText("(" + counter.getTotal() + ")");
 
             TextView progressionTextView = (TextView) rowView.findViewById(R.id.progression_text_view);
-            int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getTotal()));
-            progressionTextView.setText(String.valueOf(progression) + "%");
-
             ProgressBar counterItemProgressBar = (ProgressBar) rowView.findViewById(R.id.counter_item_progress_bar);
-            counterItemProgressBar.setProgress(progression);
+            ImageButton deleteImageButton = (ImageButton) rowView.findViewById(R.id.delete_image_button);
 
-            rowView.setOnClickListener(new View.OnClickListener()
+            if (!activeEditMode)
+            {
+                progressionTextView.setVisibility(View.VISIBLE);
+                counterItemProgressBar.setVisibility(View.VISIBLE);
+                deleteImageButton.setVisibility(View.GONE);
+
+                int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getTotal()));
+                progressionTextView.setText(String.valueOf(progression) + "%");
+
+                counterItemProgressBar.setProgress(progression);
+            }
+            else
+            {
+                progressionTextView.setVisibility(View.GONE);
+                counterItemProgressBar.setVisibility(View.GONE);
+                deleteImageButton.setVisibility(View.VISIBLE);
+            }
+
+            deleteImageButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    mCounterListener.onCounterClick(counter);
+                    if (activeEditMode)
+                    {
+                        mCounterListener.delete(counter);
+                        mCounters.remove(i);
+                        notifyDataSetChanged();
+                    }
                 }
             });
 
@@ -222,6 +284,11 @@ public class HomeFragment extends Fragment implements HomeContract.View
         {
             this.mCounters = counters;
             notifyDataSetChanged();
+        }
+
+        private void toggleEditMode()
+        {
+            activeEditMode = !activeEditMode;
         }
     }
 }

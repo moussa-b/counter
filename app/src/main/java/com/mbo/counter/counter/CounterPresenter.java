@@ -13,11 +13,11 @@ public class CounterPresenter implements CounterContract.Presenter
     @NonNull
     private final CounterContract.View mCounterView;
 
-    private long mCounterId;
+    private int mCounterId;
 
     private Counter mCounter;
 
-    public CounterPresenter(long counterId, @NonNull CounterDataSource counterDataSource,
+    public CounterPresenter(int counterId, @NonNull CounterDataSource counterDataSource,
                             @NonNull CounterContract.View counterView)
     {
         this.mCounterId = counterId;
