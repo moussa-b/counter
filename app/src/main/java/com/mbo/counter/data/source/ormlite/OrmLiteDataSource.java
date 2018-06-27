@@ -117,6 +117,7 @@ public class OrmLiteDataSource implements CounterDataSource
             e.printStackTrace();
         }
     }
+
     @Override
     public void deleteCounter(int counterId)
     {

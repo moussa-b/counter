@@ -3,6 +3,7 @@ package com.mbo.counter.counter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 
 import com.mbo.counter.R;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
@@ -45,6 +46,14 @@ public class CounterActivity extends AppCompatActivity
 
             mCounterPresenter = new CounterPresenter(counterId, OrmLiteDataSource.getInstance(), counterFragment);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_counter, menu);
+        return true;
     }
 
     @Override

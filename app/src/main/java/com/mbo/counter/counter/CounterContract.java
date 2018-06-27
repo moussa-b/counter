@@ -19,10 +19,18 @@ public interface CounterContract
         void setName(String name);
 
         void setProgression(int total, int count);
+
+        void showEditCounter();
+
+        void showCounterStatistics();
+
+        void showCountersList();
     }
 
     interface Presenter extends BasePresenter
     {
+        int getCounterId();
+
         int getTotal();
 
         int incrementCounter();

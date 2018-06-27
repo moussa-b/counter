@@ -64,6 +64,11 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
     }
 
+    public static HomeFragment newInstance()
+    {
+        return new HomeFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     { // Lifecycle : called first, for doing any non-graphical initialisations
@@ -126,7 +131,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
         switch (item.getItemId())
         {
-            case R.id.action_settings:
+            case R.id.action_edit:
                 editCounters(true);
                 break;
         }
@@ -181,11 +186,6 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
         mCountListView.setVisibility(View.GONE);
         mNoCounterTextView.setVisibility(View.VISIBLE);
-    }
-
-    public static HomeFragment newInstance()
-    {
-        return new HomeFragment();
     }
 
     public interface CounterItemListener

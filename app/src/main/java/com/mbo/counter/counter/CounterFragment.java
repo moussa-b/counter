@@ -1,14 +1,21 @@
 package com.mbo.counter.counter;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mbo.counter.R;
+import com.mbo.counter.addeditcounter.AddEditCounterActivity;
+import com.mbo.counter.settings.SettingsActivity;
+
+import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -41,8 +48,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
         mCount = (TextView) root.findViewById(R.id.counter_count_text_view);
         mTotal = (TextView) root.findViewById(R.id.counter_total_text_view);
         mProgressBar = (ProgressBar) root.findViewById(R.id.counter_progress_bar);
-
-        mCount.setOnClickListener(new View.OnClickListener()
+        mProgressBar.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -52,6 +58,9 @@ public class CounterFragment extends Fragment implements CounterContract.View
                 setProgression(mPresenter.getTotal(), count);
             }
         });
+
+        setHasOptionsMenu(true);
+
         return root;
     }
 
@@ -60,6 +69,24 @@ public class CounterFragment extends Fragment implements CounterContract.View
     {
         super.onResume();
         mPresenter.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_edit:
+                showEditCounter();
+                break;
+            case R.id.action_statistics:
+                showCounterStatistics();
+                break;
+            case android.R.id.home:
+                showCountersList();
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -90,6 +117,27 @@ public class CounterFragment extends Fragment implements CounterContract.View
     public void setProgression(int total, int count)
     {
         float progession = 100 * (float) count / (float) total;
-        mProgressBar.setProgress((int)progession);
+        mProgressBar.setProgress((int) progession);
+    }
+
+    @Override
+    public void showEditCounter()
+    {
+        Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
+        intent.putExtra(ARGUMENT_EDIT_COUNTER_ID, mPresenter.getCounterId());
+        startActivityForResult(intent, AddEditCounterActivity.REQUEST_ADD_COUNTER);
+    }
+
+    @Override
+    public void showCounterStatistics()
+    {
+        startActivity(new Intent(getContext(), SettingsActivity.class));
+    }
+
+    @Override
+    public void showCountersList()
+    {
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 }

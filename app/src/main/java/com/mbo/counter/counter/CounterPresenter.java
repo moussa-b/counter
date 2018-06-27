@@ -34,6 +34,12 @@ public class CounterPresenter implements CounterContract.Presenter
     }
 
     @Override
+    public int getCounterId()
+    {
+        return mCounterId;
+    }
+
+    @Override
     public int getTotal()
     {
         return mCounter.getTotal();
