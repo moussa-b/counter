@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +42,8 @@ public class HomeFragment extends Fragment implements HomeContract.View
     private TextView mNoCounterTextView;
 
     private ListView mCountListView;
+
+    private Menu menu;
 
     private CounterItemListener mCounterListener = new CounterItemListener()
     {
@@ -110,6 +115,13 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        this.menu = menu;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
@@ -155,6 +167,12 @@ public class HomeFragment extends Fragment implements HomeContract.View
     public void editCounters(boolean activeEdition)
     {
         mListAdapter.toggleEditMode();
+
+        if (mListAdapter.isActiveEditMode())
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_done));
+        else
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_edit));
+
         mListAdapter.notifyDataSetChanged();
     }
 
@@ -289,6 +307,11 @@ public class HomeFragment extends Fragment implements HomeContract.View
         private void toggleEditMode()
         {
             activeEditMode = !activeEditMode;
+        }
+
+        private boolean isActiveEditMode()
+        {
+            return activeEditMode;
         }
     }
 }
