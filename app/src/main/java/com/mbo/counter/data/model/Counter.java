@@ -5,16 +5,16 @@ import com.j256.ormlite.field.DatabaseField;
 public class Counter
 {
     @DatabaseField(generatedId = true)
-    private long id;
+    private int id;
 
     @DatabaseField(canBeNull = false)
     private String name;
 
     @DatabaseField(canBeNull = false)
-    private int count;
+    private int total;
 
     @DatabaseField
-    private int currentCount;
+    private int count;
 
     @DatabaseField
     private String note;
@@ -25,6 +25,9 @@ public class Counter
     @DatabaseField
     private String direction;
 
+    @DatabaseField
+    private int order;
+
     public Counter()
     {
     }
@@ -34,11 +37,11 @@ public class Counter
         this.name = name;
     }
 
-    public Counter(long id, String name, int count, String note, String direction, String color)
+    public Counter(int id, String name, int total, String note, String direction, String color)
     {
         this.id = id;
         this.name = name;
-        this.count = count;
+        this.total = total;
         this.note = note;
         this.direction = direction;
         this.color = color;
@@ -49,7 +52,7 @@ public class Counter
         return id;
     }
 
-    public void setId(long id)
+    public void setId(int id)
     {
         this.id = id;
     }
@@ -72,16 +75,6 @@ public class Counter
     public void setCount(int count)
     {
         this.count = count;
-    }
-
-    public int getCurrentCount()
-    {
-        return currentCount;
-    }
-
-    public void setCurrentCount(int currentCount)
-    {
-        this.currentCount = currentCount;
     }
 
     public String getNote()
@@ -112,5 +105,25 @@ public class Counter
     public void setDirection(String direction)
     {
         this.direction = direction;
+    }
+
+    public int getTotal()
+    {
+        return total;
+    }
+
+    public void setTotal(int total)
+    {
+        this.total = total;
+    }
+
+    public int getOrder()
+    {
+        return order;
+    }
+
+    public void setOrder(int order)
+    {
+        this.order = order;
     }
 }

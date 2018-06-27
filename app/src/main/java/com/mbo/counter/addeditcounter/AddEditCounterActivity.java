@@ -37,9 +37,9 @@ public class AddEditCounterActivity extends AppCompatActivity
             // Create the fragment
             addEditFragment = AddEditCounterFragment.newInstance();
 
-            long counterId = 0;
+            int counterId = 0;
             if (getIntent().hasExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID))
-                counterId = getIntent().getLongExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID, 0);
+                counterId = getIntent().getIntExtra(AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID, 0);
 
             Utils.addFragmentToActivity(getSupportFragmentManager(), addEditFragment, R.id.contentFrame);
 

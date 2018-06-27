@@ -34,22 +34,22 @@ public class CounterPresenter implements CounterContract.Presenter
     }
 
     @Override
-    public int getCount()
+    public int getTotal()
     {
-        return mCounter.getCount();
+        return mCounter.getTotal();
     }
 
     @Override
     public int incrementCounter()
     {
-        if (mCounter.getCurrentCount() < mCounter.getCount())
-            mCounter.setCurrentCount(mCounter.getCurrentCount() + 1);
+        if (mCounter.getCount() < mCounter.getTotal())
+            mCounter.setCount(mCounter.getCount() + 1);
         else
-            mCounter.setCurrentCount(0);
+            mCounter.setCount(0);
 
         saveCounter(mCounter);
 
-        return mCounter.getCurrentCount();
+        return mCounter.getCount();
     }
 
     @Override
@@ -68,8 +68,8 @@ public class CounterPresenter implements CounterContract.Presenter
             {
                 mCounter = counter;
                 mCounterView.setName(counter.getName());
-                mCounterView.setCurrentCount(counter.getCurrentCount());
-                mCounterView.setProgression(counter.getCount(), counter.getCurrentCount());
+                mCounterView.setTotal(counter.getTotal());
+                mCounterView.setProgression(counter.getTotal(), counter.getCount());
                 mCounterView.setCount(counter.getCount());
             }
 

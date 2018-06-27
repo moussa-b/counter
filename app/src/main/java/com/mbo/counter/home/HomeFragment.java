@@ -190,17 +190,17 @@ public class HomeFragment extends Fragment implements HomeContract.View
 
             final Counter counter = getItem(i);
 
-            TextView currentCountTextView = (TextView) rowView.findViewById(R.id.current_count_text_view);
-            currentCountTextView.setText(String.valueOf(counter.getCurrentCount()));
+            TextView countTextView = (TextView) rowView.findViewById(R.id.count_text_view);
+            countTextView.setText(String.valueOf(counter.getCount()));
 
             TextView nameTextView = (TextView) rowView.findViewById(R.id.name_text_view);
             nameTextView.setText(counter.getName());
 
-            TextView countTextView = (TextView) rowView.findViewById(R.id.count_text_view);
-            countTextView.setText("(" + counter.getCount() + ")");
+            TextView totalTextView = (TextView) rowView.findViewById(R.id.total_text_view);
+            totalTextView.setText("(" + counter.getTotal() + ")");
 
             TextView progressionTextView = (TextView) rowView.findViewById(R.id.progression_text_view);
-            int progression = (int) (100 * (float) counter.getCurrentCount() / ((float) counter.getCount()));
+            int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getTotal()));
             progressionTextView.setText(String.valueOf(progression) + "%");
 
             ProgressBar counterItemProgressBar = (ProgressBar) rowView.findViewById(R.id.counter_item_progress_bar);

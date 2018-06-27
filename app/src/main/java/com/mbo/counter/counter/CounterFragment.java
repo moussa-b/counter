@@ -17,7 +17,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
 {
     public static final String ARGUMENT_COUNTER_ID = "COUNTER_ID";
 
-    private TextView mName, mCurrentCount, mCount;
+    private TextView mName, mCount, mTotal;
 
     private ProgressBar mProgressBar;
 
@@ -38,18 +38,18 @@ public class CounterFragment extends Fragment implements CounterContract.View
         View root = inflater.inflate(R.layout.counter_fragment, container, false);
 
         mName = (TextView) root.findViewById(R.id.counter_name_text_view);
-        mCurrentCount = (TextView) root.findViewById(R.id.counter_count_text_view);
-        mCount = (TextView) root.findViewById(R.id.count_text_view);
+        mCount = (TextView) root.findViewById(R.id.counter_count_text_view);
+        mTotal = (TextView) root.findViewById(R.id.counter_total_text_view);
         mProgressBar = (ProgressBar) root.findViewById(R.id.counter_progress_bar);
 
-        mCurrentCount.setOnClickListener(new View.OnClickListener()
+        mCount.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                int currentCount = mPresenter.incrementCounter();
-                setCurrentCount(currentCount);
-                setProgression(mPresenter.getCount(), currentCount);
+                int count = mPresenter.incrementCounter();
+                setCount(count);
+                setProgression(mPresenter.getTotal(), count);
             }
         });
         return root;
@@ -75,21 +75,21 @@ public class CounterFragment extends Fragment implements CounterContract.View
     }
 
     @Override
+    public void setTotal(int total)
+    {
+        mTotal.setText(getString(R.string.objective) + " : " + String.valueOf(total));
+    }
+
+    @Override
     public void setCount(int count)
     {
-        mCount.setText(getString(R.string.objective) + " : " + String.valueOf(count));
+        mCount.setText(String.valueOf(count));
     }
 
     @Override
-    public void setCurrentCount(int currentCount)
+    public void setProgression(int total, int count)
     {
-        mCurrentCount.setText(String.valueOf(currentCount));
-    }
-
-    @Override
-    public void setProgression(int count, int currentCount)
-    {
-        float progession = 100 * (float) currentCount / (float) count;
+        float progession = 100 * (float) count / (float) total;
         mProgressBar.setProgress((int)progession);
     }
 }

@@ -14,16 +14,16 @@ public interface CounterContract
     {
         void setCount(int count);
 
-        void setCurrentCount(int currentCount);
+        void setTotal(int total);
 
         void setName(String name);
 
-        void setProgression(int count, int currentCount);
+        void setProgression(int total, int count);
     }
 
     interface Presenter extends BasePresenter
     {
-        int getCount();
+        int getTotal();
 
         int incrementCounter();
 

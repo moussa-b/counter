@@ -26,7 +26,7 @@ public interface AddEditCounterContract
 
     interface Presenter extends BasePresenter
     {
-        void saveCounter(String name, int count, String note, String direction, String color);
+        void saveCounter(String name, int total, String note, String direction, String color);
 
         void populateCounter();
     }

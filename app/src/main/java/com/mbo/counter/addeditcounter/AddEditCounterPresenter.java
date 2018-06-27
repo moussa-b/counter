@@ -13,9 +13,9 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     @NonNull
     private final AddEditCounterContract.View mAddCounterView;
 
-    private long mCounterId;
+    private int mCounterId;
 
-    public AddEditCounterPresenter(long counterId, @NonNull CounterDataSource counterDataSource,
+    public AddEditCounterPresenter(int counterId, @NonNull CounterDataSource counterDataSource,
                                    @NonNull AddEditCounterContract.View addCounterView)
     {
         this.mCounterId = counterId;
@@ -33,9 +33,9 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     }
 
     @Override
-    public void saveCounter(final String name, int count, String note, String direction, String color)
+    public void saveCounter(final String name, int total, String note, String direction, String color)
     {
-        mCounterDataSource.saveCounter(new Counter(mCounterId, name, count, note, direction, color));
+        mCounterDataSource.saveCounter(new Counter(mCounterId, name, total, note, direction, color));
         mAddCounterView.showCountersList();
     }
 
