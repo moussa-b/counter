@@ -7,27 +7,51 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable
-public class Statistic
+public class Statistics
 {
+    @DatabaseField(generatedId = true)
+    private int id;
+
     @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd")
     private Date date;
 
-    @DatabaseField
+    @DatabaseField(index = true)
     private int counterId;
 
-    public Statistic()
+    @DatabaseField
+    private int value;
+
+    public Statistics()
     {
     }
 
-    public Statistic(Date date, int counterId)
+    public Statistics(Date date, int counterId)
     {
         this.date = date;
         this.counterId = counterId;
+        this.value = 1;
+    }
+
+    public Statistics(Date date, int counterId, int value)
+    {
+        this.date = date;
+        this.counterId = counterId;
+        this.value = value;
     }
 
     public Date getDate()
     {
         return date;
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
     public void setDate(Date date)
@@ -43,5 +67,15 @@ public class Statistic
     public void setCounterId(int counterId)
     {
         this.counterId = counterId;
+    }
+
+    public int getValue()
+    {
+        return value;
+    }
+
+    public void setValue(int value)
+    {
+        this.value = value;
     }
 }

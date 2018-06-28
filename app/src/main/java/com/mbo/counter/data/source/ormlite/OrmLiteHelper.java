@@ -7,6 +7,8 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Statistics;
 
 import java.sql.SQLException;
 
@@ -26,6 +28,8 @@ public class OrmLiteHelper extends OrmLiteSqliteOpenHelper
         try
         {
             TableUtils.createTable(connectionSource, Counter.class);
+            TableUtils.createTable(connectionSource, CounterGroup.class);
+            TableUtils.createTable(connectionSource, Statistics.class);
         }
         catch (SQLException e)
         {

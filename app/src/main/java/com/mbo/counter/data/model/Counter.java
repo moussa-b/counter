@@ -30,6 +30,9 @@ public class Counter
     @DatabaseField
     private int order;
 
+    @DatabaseField(foreign = true)
+    private CounterGroup counterGroup;
+
     public Counter()
     {
     }
@@ -127,5 +130,15 @@ public class Counter
     public void setOrder(int order)
     {
         this.order = order;
+    }
+
+    public CounterGroup getCounterGroup()
+    {
+        return counterGroup;
+    }
+
+    public void setCounterGroup(CounterGroup counterGroup)
+    {
+        this.counterGroup = counterGroup;
     }
 }

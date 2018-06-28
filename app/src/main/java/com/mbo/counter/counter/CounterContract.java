@@ -29,6 +29,8 @@ public interface CounterContract
 
     interface Presenter extends BasePresenter
     {
+        void addStatistics();
+
         int getCounterId();
 
         int getTotal();

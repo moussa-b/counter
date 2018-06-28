@@ -6,9 +6,9 @@ import com.mbo.counter.data.model.Counter;
 
 import java.sql.SQLException;
 
-public class CounterDao extends BaseDaoImpl<Counter, Long>
+public class DaoCounter extends BaseDaoImpl<Counter, Long>
 {
-    protected CounterDao(ConnectionSource connectionSource, Class<Counter> dataClass) throws SQLException
+    protected DaoCounter(ConnectionSource connectionSource, Class<Counter> dataClass) throws SQLException
     {
         super(connectionSource, dataClass);
     }

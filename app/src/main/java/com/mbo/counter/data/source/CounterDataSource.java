@@ -3,11 +3,14 @@ package com.mbo.counter.data.source;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.Statistics;
 
 import java.util.List;
 
 public interface CounterDataSource
 {
+    void addStatistics(@NonNull Statistics statistics);
+
     void getCounters(@NonNull LoadCountersCallback callback);
 
     void getCounter(int counterId, @NonNull GetCounterCallback callback);

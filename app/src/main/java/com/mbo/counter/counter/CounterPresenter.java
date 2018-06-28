@@ -3,7 +3,10 @@ package com.mbo.counter.counter;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.Statistics;
 import com.mbo.counter.data.source.CounterDataSource;
+
+import java.util.Date;
 
 public class CounterPresenter implements CounterContract.Presenter
 {
@@ -34,6 +37,12 @@ public class CounterPresenter implements CounterContract.Presenter
     }
 
     @Override
+    public void addStatistics()
+    {
+        mCounterDataSource.addStatistics(new Statistics(new Date(), mCounterId));
+    }
+
+    @Override
     public int getCounterId()
     {
         return mCounterId;
@@ -54,6 +63,7 @@ public class CounterPresenter implements CounterContract.Presenter
             mCounter.setCount(0);
 
         saveCounter(mCounter);
+        addStatistics();
 
         return mCounter.getCount();
     }

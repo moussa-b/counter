@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.Statistics;
 import com.mbo.counter.data.source.CounterDataSource;
 
 import java.sql.SQLException;
@@ -13,14 +14,17 @@ public class OrmLiteDataSource implements CounterDataSource
 {
     private static OrmLiteDataSource INSTANCE;
 
-    private CounterDao mCounterDao;
+    private DaoCounter mDaoCounter;
+
+    private DaoStatistics mDaoStatistics;
 
     // Prevent direct instantiation.
     private OrmLiteDataSource(@NonNull OrmLiteSqliteOpenHelper helper)
     {
         try
         {
-            mCounterDao = new CounterDao(helper.getConnectionSource(), Counter.class);
+            mDaoCounter = new DaoCounter(helper.getConnectionSource(), Counter.class);
+            mDaoStatistics = new DaoStatistics(helper.getConnectionSource(), Statistics.class);
         }
         catch (SQLException e)
         {
@@ -32,7 +36,7 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         if (INSTANCE == null)
             throw new IllegalStateException("OrmLiteDataSource has not been initialized");
-        else if (INSTANCE.mCounterDao == null)
+        else if (INSTANCE.mDaoCounter == null)
             throw new IllegalStateException("Error in CounterDao initialization");
         else
             return INSTANCE;
@@ -45,11 +49,24 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
+    public void addStatistics(@NonNull Statistics statistics)
+    {
+        try
+        {
+            mDaoStatistics.createOrUpdate(statistics);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void getCounters(@NonNull LoadCountersCallback callback)
     {
         try
         {
-            final List<Counter> counters = mCounterDao.queryForAll();
+            final List<Counter> counters = mDaoCounter.queryForAll();
             if (counters != null)
             {
                 callback.onCountersLoaded(counters);
@@ -70,7 +87,7 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            final Counter counter = mCounterDao.queryForId((long) counterId);
+            final Counter counter = mDaoCounter.queryForId((long) counterId);
             if (counter != null)
             {
                 callback.onCounterLoaded(counter);
@@ -91,7 +108,7 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            mCounterDao.createOrUpdate(counter);
+            mDaoCounter.createOrUpdate(counter);
         }
         catch (SQLException e)
         {
@@ -110,7 +127,7 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            mCounterDao.deleteBuilder().delete();
+            mDaoCounter.deleteBuilder().delete();
         }
         catch (SQLException e)
         {
@@ -123,7 +140,7 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            mCounterDao.deleteById((long) counterId);
+            mDaoCounter.deleteById((long) counterId);
         }
         catch (SQLException e)
         {
