@@ -5,12 +5,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mbo.counter.R;
+import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 import com.mbo.counter.utils.Utils;
 
 public class StatisticsActivity extends AppCompatActivity
 {
-
     private ActionBar mActionBar;
+
+    private StatisticsPresenter mStatisticsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,7 +34,14 @@ public class StatisticsActivity extends AppCompatActivity
         {
             // Create the fragment
             statisticsFragment = StatisticsFragment.newInstance();
+
+            int counterId = 0;
+            if (getIntent().hasExtra(StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID))
+                counterId = getIntent().getIntExtra(StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID, 0);
+
             Utils.addFragmentToActivity(getSupportFragmentManager(), statisticsFragment, R.id.contentFrame);
+
+            mStatisticsPresenter = new StatisticsPresenter(counterId, OrmLiteDataSource.getInstance(), statisticsFragment);
         }
     }
 

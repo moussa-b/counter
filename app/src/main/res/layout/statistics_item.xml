@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/list_item_vertical_margin"
+    android:paddingLeft="@dimen/list_item_horizontal_margin"
+    android:paddingRight="@dimen/list_item_horizontal_margin"
+    android:paddingTop="@dimen/list_item_vertical_margin">
+
+    <TextView
+        android:id="@+id/date_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="01.01.2000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.5"
+        tools:ignore="HardcodedText"/>
+
+    <TextView
+        android:id="@+id/value_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="15"
+        app:layout_constraintLeft_toRightOf="@id/date_text_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.5"
+        tools:ignore="HardcodedText"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -11,6 +11,8 @@ public interface CounterDataSource
 {
     void addStatistics(@NonNull Statistics statistics);
 
+    void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback);
+
     void getCounters(@NonNull LoadCountersCallback callback);
 
     void getCounter(int counterId, @NonNull GetCounterCallback callback);
@@ -27,6 +29,14 @@ public interface CounterDataSource
     {
 
         void onCountersLoaded(List<Counter> counters);
+
+        void onDataNotAvailable();
+    }
+
+    interface LoadStatisticsCallback
+    {
+
+        void onStatisticsLoaded(List<Statistics.Row> counters);
 
         void onDataNotAvailable();
     }

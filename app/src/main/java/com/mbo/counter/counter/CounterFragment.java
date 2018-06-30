@@ -13,9 +13,10 @@ import android.widget.TextView;
 
 import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
-import com.mbo.counter.settings.SettingsActivity;
+import com.mbo.counter.statistics.StatisticsActivity;
 
 import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
+import static com.mbo.counter.statistics.StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -131,7 +132,9 @@ public class CounterFragment extends Fragment implements CounterContract.View
     @Override
     public void showCounterStatistics()
     {
-        startActivity(new Intent(getContext(), SettingsActivity.class));
+        Intent intent = new Intent(getContext(), StatisticsActivity.class);
+        intent.putExtra(ARGUMENT_STATISTICS_COUNTER_ID, mPresenter.getCounterId());
+        startActivity(intent);
     }
 
     @Override

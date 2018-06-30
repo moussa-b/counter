@@ -62,6 +62,27 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
+    public void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback)
+    {
+        try
+        {
+            final List<Statistics.Row> statistics = mDaoStatistics.getCounterStatisticsById(counterId);
+            if (statistics != null)
+            {
+                callback.onStatisticsLoaded(statistics);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void getCounters(@NonNull LoadCountersCallback callback)
     {
         try
