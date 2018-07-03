@@ -14,11 +14,11 @@ public interface CounterContract
     {
         void setCount(int count);
 
-        void setTotal(int total);
+        void setLimit(int limit);
 
         void setName(String name);
 
-        void setProgression(int total, int count);
+        void setProgression(int limit, int count);
 
         void showEditCounter();
 
@@ -29,13 +29,21 @@ public interface CounterContract
 
     interface Presenter extends BasePresenter
     {
-        void addStatistics();
+        void addDecrementStatistics();
+
+        void addIncrementStatistics();
+
+        void addResetStatistics();
 
         int getCounterId();
 
-        int getTotal();
+        int getLimit();
+
+        int decrementCounter();
 
         int incrementCounter();
+
+        void resetCounter();
 
         void saveCounter(Counter counter);
 

@@ -33,9 +33,9 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     }
 
     @Override
-    public void saveCounter(final String name, int total, String note, String direction, String color)
+    public void saveCounter(final String name, int limit, String note, String direction, String color)
     {
-        mCounterDataSource.saveCounter(new Counter(mCounterId, name, total, note, direction, color));
+        mCounterDataSource.saveCounter(new Counter(mCounterId, name, limit, note, direction, color));
         mAddCounterView.showCountersList();
     }
 

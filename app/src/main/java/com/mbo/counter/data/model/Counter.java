@@ -11,9 +11,8 @@ public class Counter
 
     @DatabaseField(canBeNull = false)
     private String name;
-
-    @DatabaseField(canBeNull = false)
-    private int total;
+    @DatabaseField
+    private int limit;
 
     @DatabaseField
     private int count;
@@ -33,6 +32,9 @@ public class Counter
     @DatabaseField(foreign = true)
     private CounterGroup counterGroup;
 
+    @DatabaseField
+    private int step;
+
     public Counter()
     {
     }
@@ -40,16 +42,23 @@ public class Counter
     public Counter(String name)
     {
         this.name = name;
+        this.step = 1;
     }
 
-    public Counter(int id, String name, int total, String note, String direction, String color)
+    public Counter(int id, String name, int limit, String note, String direction, String color)
+    {
+        this(id, name, limit, note, direction, color, 1);
+    }
+
+    public Counter(int id, String name, int limit, String note, String direction, String color, int step)
     {
         this.id = id;
         this.name = name;
-        this.total = total;
+        this.limit = limit;
         this.note = note;
         this.direction = direction;
         this.color = color;
+        this.step = step;
     }
 
     public int getId()
@@ -112,14 +121,14 @@ public class Counter
         this.direction = direction;
     }
 
-    public int getTotal()
+    public int getLimit()
     {
-        return total;
+        return limit;
     }
 
-    public void setTotal(int total)
+    public void setLimit(int limit)
     {
-        this.total = total;
+        this.limit = limit;
     }
 
     public int getOrder()
@@ -140,5 +149,15 @@ public class Counter
     public void setCounterGroup(CounterGroup counterGroup)
     {
         this.counterGroup = counterGroup;
+    }
+
+    public int getStep()
+    {
+        return step;
+    }
+
+    public void setStep(int step)
+    {
+        this.step = step;
     }
 }

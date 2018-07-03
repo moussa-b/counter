@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.model.Statistics;
+import com.mbo.counter.data.model.StatisticsType;
 import com.mbo.counter.data.source.CounterDataSource;
 
 import java.util.Date;
@@ -37,9 +38,21 @@ public class CounterPresenter implements CounterContract.Presenter
     }
 
     @Override
-    public void addStatistics()
+    public void addDecrementStatistics()
     {
-        mCounterDataSource.addStatistics(new Statistics(new Date(), mCounterId));
+        mCounterDataSource.addStatistics(new Statistics(new Date(), mCounterId, -mCounter.getStep(), StatisticsType.DECREMENT));
+    }
+
+    @Override
+    public void addIncrementStatistics()
+    {
+        mCounterDataSource.addStatistics(new Statistics(new Date(), mCounterId, mCounter.getStep(), StatisticsType.INCREMENT));
+    }
+
+    @Override
+    public void addResetStatistics()
+    {
+        mCounterDataSource.addStatistics(new Statistics(new Date(), mCounterId, 0, StatisticsType.RESET));
     }
 
     @Override
@@ -49,23 +62,45 @@ public class CounterPresenter implements CounterContract.Presenter
     }
 
     @Override
-    public int getTotal()
+    public int getLimit()
     {
-        return mCounter.getTotal();
+        return mCounter.getLimit();
+    }
+
+    @Override
+    public int decrementCounter()
+    {
+        if ((mCounter.getCount() - mCounter.getStep()) >= 0)
+            mCounter.setCount(mCounter.getCount() - mCounter.getStep());
+        else
+            mCounter.setCount(mCounter.getLimit() + mCounter.getCount() - mCounter.getStep());
+
+        saveCounter(mCounter);
+        addDecrementStatistics();
+
+        return mCounter.getCount();
     }
 
     @Override
     public int incrementCounter()
     {
-        if (mCounter.getCount() < mCounter.getTotal())
-            mCounter.setCount(mCounter.getCount() + 1);
+        if ((mCounter.getCount() + mCounter.getStep()) <= mCounter.getLimit())
+            mCounter.setCount(mCounter.getCount() + mCounter.getStep());
         else
-            mCounter.setCount(0);
+            mCounter.setCount((mCounter.getCount() + mCounter.getStep()) - mCounter.getLimit());
 
         saveCounter(mCounter);
-        addStatistics();
+        addIncrementStatistics();
 
         return mCounter.getCount();
+    }
+
+    @Override
+    public void resetCounter()
+    {
+        mCounter.setCount(0);
+        saveCounter(mCounter);
+        addResetStatistics();
     }
 
     @Override
@@ -84,8 +119,8 @@ public class CounterPresenter implements CounterContract.Presenter
             {
                 mCounter = counter;
                 mCounterView.setName(counter.getName());
-                mCounterView.setTotal(counter.getTotal());
-                mCounterView.setProgression(counter.getTotal(), counter.getCount());
+                mCounterView.setLimit(counter.getLimit());
+                mCounterView.setProgression(counter.getLimit(), counter.getCount());
                 mCounterView.setCount(counter.getCount());
             }
 

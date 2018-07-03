@@ -21,6 +21,9 @@ public class Statistics
     @DatabaseField
     private int value;
 
+    @DatabaseField
+    private StatisticsType type;
+
     public static class Row
     {
         private String date;
@@ -76,6 +79,14 @@ public class Statistics
         this.value = value;
     }
 
+    public Statistics(Date date, int counterId, int value, StatisticsType type)
+    {
+        this.date = date;
+        this.counterId = counterId;
+        this.value = value;
+        this.type = type;
+    }
+
     public Date getDate()
     {
         return date;
@@ -114,5 +125,15 @@ public class Statistics
     public void setValue(int value)
     {
         this.value = value;
+    }
+
+    public StatisticsType getType()
+    {
+        return type;
+    }
+
+    public void setType(StatisticsType type)
+    {
+        this.type = type;
     }
 }

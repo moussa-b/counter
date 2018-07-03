@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,11 +26,13 @@ public class CounterFragment extends Fragment implements CounterContract.View
 {
     public static final String ARGUMENT_COUNTER_ID = "COUNTER_ID";
 
-    private TextView mName, mCount, mTotal;
+    private TextView mName, mCount, mLimit;
 
     private ProgressBar mProgressBar;
 
     private CounterContract.Presenter mPresenter;
+
+    private Button mIncreaseButton, mDecreaseButton, mResetButton;
 
     public CounterFragment()
     {
@@ -47,16 +50,42 @@ public class CounterFragment extends Fragment implements CounterContract.View
 
         mName = (TextView) root.findViewById(R.id.counter_name_text_view);
         mCount = (TextView) root.findViewById(R.id.counter_count_text_view);
-        mTotal = (TextView) root.findViewById(R.id.counter_total_text_view);
+        mLimit = (TextView) root.findViewById(R.id.counter_limit_text_view);
+        mIncreaseButton = (Button) root.findViewById(R.id.counter_increase_button);
+        mDecreaseButton = (Button) root.findViewById(R.id.counter_decrease_button);
+        mResetButton = (Button) root.findViewById(R.id.counter_reset_button);
         mProgressBar = (ProgressBar) root.findViewById(R.id.counter_progress_bar);
-        mProgressBar.setOnClickListener(new View.OnClickListener()
+
+        mIncreaseButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 int count = mPresenter.incrementCounter();
                 setCount(count);
-                setProgression(mPresenter.getTotal(), count);
+                setProgression(mPresenter.getLimit(), count);
+            }
+        });
+
+        mDecreaseButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                int count = mPresenter.decrementCounter();
+                setCount(count);
+                setProgression(mPresenter.getLimit(), count);
+            }
+        });
+
+        mResetButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mPresenter.resetCounter();
+                setCount(0);
+                setProgression(mPresenter.getLimit(), 0);
             }
         });
 
@@ -103,9 +132,9 @@ public class CounterFragment extends Fragment implements CounterContract.View
     }
 
     @Override
-    public void setTotal(int total)
+    public void setLimit(int limit)
     {
-        mTotal.setText(getString(R.string.objective) + " : " + String.valueOf(total));
+        mLimit.setText(getString(R.string.objective) + " : " + String.valueOf(limit));
     }
 
     @Override
@@ -115,9 +144,9 @@ public class CounterFragment extends Fragment implements CounterContract.View
     }
 
     @Override
-    public void setProgression(int total, int count)
+    public void setProgression(int limit, int count)
     {
-        float progession = 100 * (float) count / (float) total;
+        float progession = 100 * (float) count / (float) limit;
         mProgressBar.setProgress((int) progession);
     }
 

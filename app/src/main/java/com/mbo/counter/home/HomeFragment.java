@@ -256,8 +256,8 @@ public class HomeFragment extends Fragment implements HomeContract.View
             TextView nameTextView = (TextView) rowView.findViewById(R.id.name_text_view);
             nameTextView.setText(counter.getName());
 
-            TextView totalTextView = (TextView) rowView.findViewById(R.id.total_text_view);
-            totalTextView.setText("(" + counter.getTotal() + ")");
+            TextView limitTextView = (TextView) rowView.findViewById(R.id.limit_text_view);
+            limitTextView.setText("(" + counter.getLimit() + ")");
 
             TextView progressionTextView = (TextView) rowView.findViewById(R.id.progression_text_view);
             ProgressBar counterItemProgressBar = (ProgressBar) rowView.findViewById(R.id.counter_item_progress_bar);
@@ -269,7 +269,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
                 counterItemProgressBar.setVisibility(View.VISIBLE);
                 deleteImageButton.setVisibility(View.GONE);
 
-                int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getTotal()));
+                int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
                 progressionTextView.setText(String.valueOf(progression) + "%");
 
                 counterItemProgressBar.setProgress(progression);
