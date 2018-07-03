@@ -1,5 +1,6 @@
 package com.mbo.counter.home;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,16 +36,14 @@ import static com.mbo.counter.counter.CounterFragment.ARGUMENT_COUNTER_ID;
 public class HomeFragment extends Fragment implements HomeContract.View
 {
     private static final int REQUEST_COUNTER = 100;
-
     private HomeContract.Presenter mPresenter;
-
     private CountersAdapter mListAdapter;
-
     private TextView mNoCounterTextView;
-
     private ListView mCountListView;
-
     private Menu menu;
+    private boolean isFabOpen = false;
+    FloatingActionButton mFabBase, mFabAddCounter, mFabAddCounterGroup;
+    LinearLayout mAddCounterLayout, mAddCounterGroupLayout;
 
     private CounterItemListener mCounterListener = new CounterItemListener()
     {
@@ -97,13 +97,40 @@ public class HomeFragment extends Fragment implements HomeContract.View
         });
 
         // Set up floating action button
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_counter);
-        fab.setOnClickListener(new View.OnClickListener()
+        mFabBase = (FloatingActionButton) getActivity().findViewById(R.id.fab_base);
+        mFabAddCounter = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_counter);
+        mFabAddCounterGroup = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_counter_group);
+
+        mAddCounterLayout = (LinearLayout) getActivity().findViewById(R.id.add_counter_layout);
+        mAddCounterGroupLayout = (LinearLayout) getActivity().findViewById(R.id.add_counter_group_layout);
+
+        mFabBase.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (isFabOpen)
+                    closeFabMenu();
+                else
+                    showFabMenu();
+            }
+        });
+
+        mAddCounterLayout.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 showAddCounter();
+            }
+        });
+
+        mAddCounterGroupLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                showAddCounterGroup();
             }
         });
 
@@ -117,6 +144,13 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
         super.onResume();
         mPresenter.start();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        closeFabMenu();
     }
 
     @Override
@@ -145,6 +179,55 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
+    public void showFabMenu()
+    {
+        isFabOpen = true;
+        mAddCounterLayout.setVisibility(View.VISIBLE);
+        mAddCounterGroupLayout.setVisibility(View.VISIBLE);
+        mFabBase.animate().rotation(135);
+        mAddCounterLayout.animate().translationY(-getResources().getDimension(R.dimen.fab_first_menu_item));
+        mAddCounterGroupLayout.animate().translationY(-getResources().getDimension(R.dimen.fab_second_menu_item));
+    }
+
+    @Override
+    public void closeFabMenu()
+    {
+        isFabOpen = false;
+        mFabBase.animate().rotation(0);
+        mAddCounterLayout.animate().translationY(0);
+        mAddCounterGroupLayout.animate().translationY(0).setListener(new Animator.AnimatorListener()
+        {
+            @Override
+            public void onAnimationStart(Animator animation)
+            {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                if (!isFabOpen)
+                {
+                    mAddCounterLayout.setVisibility(View.GONE);
+                    mAddCounterGroupLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation)
+            {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation)
+            {
+
+            }
+        });
+    }
+
+    @Override
     public void showCounters(List<Counter> counters)
     {
         mListAdapter.replaceData(counters);
@@ -158,6 +241,11 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
         Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
         startActivityForResult(intent, AddEditCounterActivity.REQUEST_ADD_COUNTER);
+    }
+
+    @Override
+    public void showAddCounterGroup()
+    {
     }
 
     @Override
@@ -179,6 +267,12 @@ public class HomeFragment extends Fragment implements HomeContract.View
             menu.getItem(0).setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_edit));
 
         mListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean isFabMenuOpen()
+    {
+        return isFabOpen;
     }
 
     @Override

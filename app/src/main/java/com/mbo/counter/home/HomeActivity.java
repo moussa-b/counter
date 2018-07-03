@@ -20,6 +20,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     // https://medium.com/mindorks/essential-guide-for-designing-your-android-app-architecture-mvp-part-1-74efaf1cda40
     private HomePresenter mHomePresenter;
+    private HomeFragment mHomeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,16 +36,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (homeFragment == null)
+        mHomeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (mHomeFragment == null)
         {
             // Create the fragment
-            homeFragment = HomeFragment.newInstance();
-            Utils.addFragmentToActivity(getSupportFragmentManager(), homeFragment, R.id.contentFrame);
+            mHomeFragment = HomeFragment.newInstance();
+            Utils.addFragmentToActivity(getSupportFragmentManager(), mHomeFragment, R.id.contentFrame);
         }
 
         // Create the presenter
-        mHomePresenter = new HomePresenter(OrmLiteDataSource.getInstance(), homeFragment);
+        mHomePresenter = new HomePresenter(OrmLiteDataSource.getInstance(), mHomeFragment);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -57,6 +58,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (mHomeFragment.isFabMenuOpen())
+        {
+            mHomeFragment.closeFabMenu();
         }
         else
         {

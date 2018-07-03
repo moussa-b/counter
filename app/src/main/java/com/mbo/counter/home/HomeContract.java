@@ -17,15 +17,23 @@ public interface HomeContract
     interface View extends BaseView<Presenter>
     {
 
+        void showFabMenu();
+
+        void closeFabMenu();
+
         void showCounters(List<Counter> counters);
 
         void showAddCounter();
+
+        void showAddCounterGroup();
 
         void showNoCounters();
 
         void showCounterUi(int counterId);
 
         void editCounters(boolean activeEdition);
+
+        boolean isFabMenuOpen();
     }
 
     interface Presenter extends BasePresenter

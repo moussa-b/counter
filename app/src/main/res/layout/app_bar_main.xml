@@ -22,7 +22,7 @@
     <include layout="@layout/content_main"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_counter"
+        android:id="@+id/fab_base"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -31,5 +31,65 @@
         app:fabSize="normal"
         app:layout_anchor="@id/contentFrame"
         app:layout_anchorGravity="bottom|right|end"/>
+
+    <LinearLayout
+        android:id="@+id/add_counter_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/add_counter_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:elevation="2dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/add_counter"
+            android:typeface="normal"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_add_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_add"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_counter_group_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/add_counter_group_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:elevation="2dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/add_counter_group"
+            android:typeface="normal"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_add_counter_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="visible"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_add"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
