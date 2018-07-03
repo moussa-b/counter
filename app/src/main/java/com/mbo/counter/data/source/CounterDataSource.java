@@ -3,6 +3,7 @@ package com.mbo.counter.data.source;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.data.model.Statistics;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface CounterDataSource
     void getCounter(int counterId, @NonNull GetCounterCallback callback);
 
     void saveCounter(@NonNull Counter counter);
+
+    void saveCounterGroup(@NonNull CounterGroup counterGroup);
 
     void refreshCounters();
 

@@ -21,10 +21,15 @@ public class CounterGroup
     {
     }
 
-    public CounterGroup(ForeignCollection<Counter> counters, String name)
+    public CounterGroup(String name)
     {
-        this.counters = counters;
+        this(name, null);
+    }
+
+    public CounterGroup(String name, ForeignCollection<Counter> counters)
+    {
         this.name = name;
+        this.counters = counters;
     }
 
     public int getId()

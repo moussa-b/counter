@@ -3,6 +3,7 @@ package com.mbo.counter.home;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.data.source.CounterDataSource;
 
 import java.util.List;
@@ -57,6 +58,12 @@ public class HomePresenter implements HomeContract.Presenter
     public void openCounter(@NonNull Counter clickedCounter)
     {
         mHomeView.showCounterUi(clickedCounter.getId());
+    }
+
+    @Override
+    public void saveCounterGroup(CounterGroup counterGroup)
+    {
+        mCounterDataSource.saveCounterGroup(counterGroup);
     }
 
     private void processCounters(List<Counter> counters)

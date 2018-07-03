@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.data.model.Statistics;
 import com.mbo.counter.data.source.CounterDataSource;
 
@@ -18,6 +19,8 @@ public class OrmLiteDataSource implements CounterDataSource
 
     private DaoStatistics mDaoStatistics;
 
+    private DaoCounterGroup mDaoCounterGroup;
+
     // Prevent direct instantiation.
     private OrmLiteDataSource(@NonNull OrmLiteSqliteOpenHelper helper)
     {
@@ -25,6 +28,7 @@ public class OrmLiteDataSource implements CounterDataSource
         {
             mDaoCounter = new DaoCounter(helper.getConnectionSource(), Counter.class);
             mDaoStatistics = new DaoStatistics(helper.getConnectionSource(), Statistics.class);
+            mDaoCounterGroup = new DaoCounterGroup(helper.getConnectionSource(), CounterGroup.class);
         }
         catch (SQLException e)
         {
@@ -130,6 +134,19 @@ public class OrmLiteDataSource implements CounterDataSource
         try
         {
             mDaoCounter.createOrUpdate(counter);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveCounterGroup(@NonNull CounterGroup counterGroup)
+    {
+        try
+        {
+            mDaoCounterGroup.createOrUpdate(counterGroup);
         }
         catch (SQLException e)
         {

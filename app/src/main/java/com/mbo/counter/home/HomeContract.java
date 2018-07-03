@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.CounterGroup;
 
 import java.util.List;
 
@@ -43,5 +44,7 @@ public interface HomeContract
         void loadCounters();
 
         void openCounter(@NonNull Counter clickedCounter);
+
+        void saveCounterGroup(CounterGroup counterGroup);
     }
 }
