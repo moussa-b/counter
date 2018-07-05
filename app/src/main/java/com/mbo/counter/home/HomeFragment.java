@@ -39,8 +39,8 @@ import com.mbo.counter.data.model.CounterGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mbo.commons.utils.Utils.convertDpToPixel;
 import static com.mbo.counter.counter.CounterFragment.ARGUMENT_COUNTER_ID;
-import static com.mbo.counter.utils.Utils.convertDpToPixel;
 
 /**
  * A placeholder fragment containing a simple view.

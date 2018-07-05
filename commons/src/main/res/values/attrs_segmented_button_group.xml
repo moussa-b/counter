@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SegmentedButtonGroup">
+        <attr name="checkedButtonId" format="reference"/>
+    </declare-styleable>
+</resources>

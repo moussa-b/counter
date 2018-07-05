@@ -4,14 +4,17 @@
     <string name="add_counter_group">Add a counter group</string>
     <string name="add_counter_group_dialog_title">New counter group</string>
     <string name="add_counter_group_dialog_message">Entrer the name of the group</string>
+    <string name="all_counters">All counters</string>
     <string name="app_name">Counter</string>
     <string name="action_edit">Edit</string>
     <string name="action_settings">Settings</string>
     <string name="cancel">Cancel</string>
     <string name="change_color">Change color</string>
     <string name="count">Count</string>
+    <string name="counter_groups">Counter groups</string>
     <string name="decreasing">Decreasing</string>
     <string name="delete">Delete</string>
+    <string name="groups">Groups</string>
     <string name="increasing">Increasing</string>
     <string name="name">Name</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -24,4 +27,5 @@
     <string name="no_statistics">You have no statistics</string>
     <string name="notes">Notes</string>
     <string name="objective">Objective</string>
+    <string name="simple_counter">Simple counter</string>
 </resources>

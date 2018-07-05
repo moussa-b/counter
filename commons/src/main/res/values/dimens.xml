@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="sb_horizontal_padding">5dp</dimen>
+    <dimen name="sb_vertical_padding">10dp</dimen>
+    <dimen name="sb_title_text_size">14sp</dimen>
+</resources>

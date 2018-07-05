@@ -11,9 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mbo.commons.utils.Utils;
 import com.mbo.counter.R;
 import com.mbo.counter.data.model.Statistics;
-import com.mbo.counter.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

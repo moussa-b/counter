@@ -9,10 +9,55 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+    <com.mbo.commons.widgets.SegmentedButtonGroup
+        android:id="@+id/counter_segmented_button_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="3dp"
+        android:layout_marginBottom="13dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:checkedButtonId="@+id/simple_counter_button">
+
+        <com.mbo.commons.widgets.SegmentedButton
+            android:id="@+id/simple_counter_button"
+            style="@style/SegmentedButtonLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:sb_subtitle_visible="false"
+            app:sb_title="@string/simple_counter"
+            app:sb_title_text_color="@color/app_color_sky_blue"/>
+
+        <com.mbo.commons.widgets.SegmentedButton
+            android:id="@+id/counter_groups_button"
+            style="@style/SegmentedButtonLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:sb_subtitle_visible="false"
+            app:sb_title="@string/counter_groups"
+            app:sb_title_text_color="@color/app_color_sky_blue"/>
+
+        <com.mbo.commons.widgets.SegmentedButton
+            android:id="@+id/all_counters_button"
+            style="@style/SegmentedButtonLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:sb_subtitle_visible="false"
+            app:sb_title="@string/all_counters"
+            app:sb_title_text_color="@color/app_color_sky_blue"/>
+
+    </com.mbo.commons.widgets.SegmentedButtonGroup>
+
     <ListView
         android:id="@+id/counter_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/counter_segmented_button_group"/>
 
     <!--TODO : replace by real no counter icon-->
     <TextView

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SegmentedButton">
+        <attr name="sb_title" format="string"/>
+        <attr name="sb_subtitle" format="string"/>
+        <attr name="sb_title_text_color" format="color"/>
+        <attr name="sb_subtitle_text_color" format="color"/>
+        <attr name="sb_pressed_text_color" format="color"/>
+        <attr name="sb_subtitle_visible" format="boolean"/>
+    </declare-styleable>
+</resources>

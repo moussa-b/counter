@@ -1,4 +1,4 @@
-package com.mbo.counter.utils;
+package com.mbo.commons.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,11 +13,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
 public class Utils
 {
+    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
+
     /**
      * The {@code fragment} is added to the container view with id {@code frameId}. The operation is
      * performed by the {@code fragmentManager}.
@@ -31,7 +34,6 @@ public class Utils
         transaction.add(frameId, fragment);
         transaction.commit();
     }
-
 
     public static String formatDateForDisplay(String inputDate, Locale locale)
     {
@@ -78,5 +80,21 @@ public class Utils
         Resources r = context.getResources();
         DisplayMetrics metrics = r.getDisplayMetrics();
         return px / (metrics.densityDpi / 160f);
+    }
+
+    public static int generateViewId()
+    {
+        for (; ; )
+        {
+            final int result = sNextGeneratedId.get();
+            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+            int newValue = result + 1;
+            if (newValue > 0x00FFFFFF)
+                newValue = 1; // Roll over to 1, not 0.
+            if (sNextGeneratedId.compareAndSet(result, newValue))
+            {
+                return result;
+            }
+        }
     }
 }

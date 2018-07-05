@@ -11,9 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.mbo.commons.utils.Utils;
 import com.mbo.counter.R;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
-import com.mbo.counter.utils.Utils;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
