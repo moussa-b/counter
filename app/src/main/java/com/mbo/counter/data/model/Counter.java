@@ -1,7 +1,10 @@
 package com.mbo.counter.data.model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Date;
 
 @DatabaseTable
 public class Counter
@@ -11,6 +14,7 @@ public class Counter
 
     @DatabaseField(canBeNull = false)
     private String name;
+
     @DatabaseField
     private int limit;
 
@@ -34,6 +38,12 @@ public class Counter
 
     @DatabaseField
     private int step;
+
+    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
+    private Date creationDate;
+
+    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
+    private Date lastModificationDate;
 
     public Counter()
     {
@@ -159,5 +169,25 @@ public class Counter
     public void setStep(int step)
     {
         this.step = step;
+    }
+
+    public Date getCreationDate()
+    {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate)
+    {
+        this.creationDate = creationDate;
+    }
+
+    public Date getLastModificationDate()
+    {
+        return lastModificationDate;
+    }
+
+    public void setLastModificationDate(Date lastModificationDate)
+    {
+        this.lastModificationDate = lastModificationDate;
     }
 }

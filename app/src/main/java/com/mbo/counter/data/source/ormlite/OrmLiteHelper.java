@@ -9,6 +9,7 @@ import com.j256.ormlite.table.TableUtils;
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.data.model.Statistics;
+import com.mbo.counter.data.source.CounterDataSource;
 
 import java.sql.SQLException;
 
@@ -30,6 +31,13 @@ public class OrmLiteHelper extends OrmLiteSqliteOpenHelper
             TableUtils.createTable(connectionSource, Counter.class);
             TableUtils.createTable(connectionSource, CounterGroup.class);
             TableUtils.createTable(connectionSource, Statistics.class);
+
+            CounterDataSource dataSource = OrmLiteDataSource.getInstance();
+            CounterGroup defaultCounterGroup = new CounterGroup("");
+            Counter defaultCounter = new Counter("");
+            dataSource.saveCounterGroup(defaultCounterGroup);
+            defaultCounter.setCounterGroup(defaultCounterGroup);
+            dataSource.saveCounter(defaultCounter);
         }
         catch (SQLException e)
         {

@@ -9,6 +9,7 @@ import com.mbo.counter.data.model.Statistics;
 import com.mbo.counter.data.source.CounterDataSource;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class OrmLiteDataSource implements CounterDataSource
@@ -133,6 +134,11 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
+            if (counter.getCreationDate() == null)
+                counter.setCreationDate(new Date());
+
+            counter.setLastModificationDate(new Date());
+
             mDaoCounter.createOrUpdate(counter);
         }
         catch (SQLException e)
@@ -146,6 +152,11 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
+            if (counterGroup.getCreationDate() == null)
+                counterGroup.setCreationDate(new Date());
+
+            counterGroup.setLastModificationDate(new Date());
+
             mDaoCounterGroup.createOrUpdate(counterGroup);
         }
         catch (SQLException e)

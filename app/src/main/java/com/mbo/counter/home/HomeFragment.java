@@ -29,7 +29,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.mbo.commons.widgets.SegmentedButtonGroup;
 import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.counter.CounterActivity;
@@ -56,6 +58,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
     private boolean isFabOpen = false;
     FloatingActionButton mFabBase, mFabAddCounter, mFabAddCounterGroup;
     LinearLayout mAddCounterLayout, mAddCounterGroupLayout;
+    SegmentedButtonGroup mSegmentedButtonGroup;
 
     private CounterItemListener mCounterListener = new CounterItemListener()
     {
@@ -97,7 +100,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
         mCountListView = (ListView) root.findViewById(R.id.counter_list_view);
         mCountListView.setAdapter(mListAdapter);
 
-        // Set up  no tasks view
+        // Set up no tasks view
         mNoCounterTextView = (TextView) root.findViewById(R.id.no_counter_text_view);
         mNoCounterTextView.setOnClickListener(new View.OnClickListener()
         {
@@ -147,6 +150,17 @@ public class HomeFragment extends Fragment implements HomeContract.View
         });
 
         setHasOptionsMenu(true);
+
+        // Set up segmented button group
+        mSegmentedButtonGroup = (SegmentedButtonGroup) root.findViewById(R.id.counter_segmented_button_group);
+        mSegmentedButtonGroup.setOnCheckedChangeListener(new SegmentedButtonGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(View radioGroup, View radioButton, boolean isChecked, int checkedId)
+            {
+                Toast.makeText(getContext(), "Hello " + checkedId, Toast.LENGTH_LONG).show();
+            }
+        });
 
         return root;
     }
