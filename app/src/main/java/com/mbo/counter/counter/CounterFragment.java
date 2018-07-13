@@ -146,6 +146,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
     @Override
     public void setProgression(int limit, int count)
     {
+        // dans le cas d'un compteur infini mettre en gradient qui du blanc et simplement faire tourner le cercle de 10°
         float progession = 100 * (float) count / (float) limit;
         mProgressBar.setProgress((int) progession);
     }

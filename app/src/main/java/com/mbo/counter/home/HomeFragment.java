@@ -5,75 +5,49 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.mbo.commons.utils.Utils;
+import com.mbo.commons.widgets.SegmentedButton;
 import com.mbo.commons.widgets.SegmentedButtonGroup;
 import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
-import com.mbo.counter.counter.CounterActivity;
-import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.counter.CounterFragment;
+import com.mbo.counter.counter.CounterPresenter;
+import com.mbo.counter.counterlist.CounterListFragment;
+import com.mbo.counter.counterlist.CounterListPresenter;
 import com.mbo.counter.data.model.CounterGroup;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 
 import static com.mbo.commons.utils.Utils.convertDpToPixel;
-import static com.mbo.counter.counter.CounterFragment.ARGUMENT_COUNTER_ID;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class HomeFragment extends Fragment implements HomeContract.View
 {
-    private static final int REQUEST_COUNTER = 100;
     private HomeContract.Presenter mPresenter;
-    private CountersAdapter mListAdapter;
-    private TextView mNoCounterTextView;
-    private ListView mCountListView;
-    private Menu menu;
     private boolean isFabOpen = false;
     FloatingActionButton mFabBase, mFabAddCounter, mFabAddCounterGroup;
     LinearLayout mAddCounterLayout, mAddCounterGroupLayout;
     SegmentedButtonGroup mSegmentedButtonGroup;
-
-    private CounterItemListener mCounterListener = new CounterItemListener()
-    {
-        @Override
-        public void onCounterClick(Counter clickedCounter)
-        {
-            mPresenter.openCounter(clickedCounter);
-        }
-
-        @Override
-        public void delete(Counter clickedCounter)
-        {
-            mPresenter.deleteCounter(clickedCounter.getId());
-        }
-    };
+    CounterFragment mCounterFragment;
+    CounterListFragment mCounterListFragment;
 
     public HomeFragment()
     {
@@ -85,39 +59,17 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    { // Lifecycle : called first, for doing any non-graphical initialisations
-        super.onCreate(savedInstanceState);
-        mListAdapter = new CountersAdapter(new ArrayList<Counter>(0), mCounterListener);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     { // Lifecycle : called after onCreate, for doing any graphical initialisations
         View root = inflater.inflate(R.layout.home_fragment, container, false);
 
-        // Set up tasks view
-        mCountListView = (ListView) root.findViewById(R.id.counter_list_view);
-        mCountListView.setAdapter(mListAdapter);
-
-        // Set up no tasks view
-        mNoCounterTextView = (TextView) root.findViewById(R.id.no_counter_text_view);
-        mNoCounterTextView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                showAddCounter();
-            }
-        });
-
         // Set up floating action button
-        mFabBase = (FloatingActionButton) getActivity().findViewById(R.id.fab_base);
-        mFabAddCounter = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_counter);
-        mFabAddCounterGroup = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_counter_group);
+        mFabBase = getActivity().findViewById(R.id.fab_base);
+        mFabAddCounter = getActivity().findViewById(R.id.fab_add_counter);
+        mFabAddCounterGroup = getActivity().findViewById(R.id.fab_add_counter_group);
 
-        mAddCounterLayout = (LinearLayout) getActivity().findViewById(R.id.add_counter_layout);
-        mAddCounterGroupLayout = (LinearLayout) getActivity().findViewById(R.id.add_counter_group_layout);
+        mAddCounterLayout = getActivity().findViewById(R.id.add_counter_layout);
+        mAddCounterGroupLayout = getActivity().findViewById(R.id.add_counter_group_layout);
 
         mFabBase.setOnClickListener(new View.OnClickListener()
         {
@@ -152,15 +104,22 @@ public class HomeFragment extends Fragment implements HomeContract.View
         setHasOptionsMenu(true);
 
         // Set up segmented button group
-        mSegmentedButtonGroup = (SegmentedButtonGroup) root.findViewById(R.id.counter_segmented_button_group);
+        mSegmentedButtonGroup = root.findViewById(R.id.counter_segmented_button_group);
         mSegmentedButtonGroup.setOnCheckedChangeListener(new SegmentedButtonGroup.OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(View radioGroup, View radioButton, boolean isChecked, int checkedId)
             {
-                Toast.makeText(getContext(), "Hello " + checkedId, Toast.LENGTH_LONG).show();
+                prepareViewByCheckedId(checkedId);
             }
         });
+
+        mCounterFragment = CounterFragment.newInstance();
+        new CounterPresenter(1, OrmLiteDataSource.getInstance(), mCounterFragment);
+        Utils.addFragmentToActivity(getChildFragmentManager(), mCounterFragment, R.id.contentFrame);
+
+        mCounterListFragment = CounterListFragment.newInstance();
+        new CounterListPresenter(OrmLiteDataSource.getInstance(), mCounterListFragment);
 
         return root;
     }
@@ -170,6 +129,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
         super.onResume();
         mPresenter.start();
+        prepareViewByCheckedId(getCheckedSegmentedButton());
     }
 
     @Override
@@ -177,25 +137,6 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
         super.onPause();
         closeFabMenu();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        super.onCreateOptionsMenu(menu, inflater);
-        this.menu = menu;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.action_edit:
-                editCounters(true);
-                break;
-        }
-        return true;
     }
 
     @Override
@@ -254,12 +195,34 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
-    public void showCounters(List<Counter> counters)
+    public int getCheckedSegmentedButton()
     {
-        mListAdapter.replaceData(counters);
+        SegmentedButton segmentedButton = mSegmentedButtonGroup.findViewById(R.id.simple_counter_button);
+        if (segmentedButton.isChecked())
+            return R.id.simple_counter_button;
 
-        mCountListView.setVisibility(View.VISIBLE);
-        mNoCounterTextView.setVisibility(View.GONE);
+        segmentedButton = mSegmentedButtonGroup.findViewById(R.id.counter_groups_button);
+        if (segmentedButton.isChecked())
+            return R.id.counter_groups_button;
+
+        segmentedButton = mSegmentedButtonGroup.findViewById(R.id.all_counters_button);
+        if (segmentedButton.isChecked())
+            return R.id.all_counters_button;
+
+        return View.NO_ID;
+    }
+
+    @Override
+    public void toggleFabVisibility(boolean visible)
+    {
+        if (visible)
+            mFabBase.setVisibility(View.VISIBLE);
+        else
+        {
+            if (isFabOpen)
+                closeFabMenu();
+            mFabBase.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -337,163 +300,36 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
-    public void showCounterUi(int counterId)
-    {
-        Intent intent = new Intent(getContext(), CounterActivity.class);
-        intent.putExtra(ARGUMENT_COUNTER_ID, counterId);
-        startActivityForResult(intent, REQUEST_COUNTER);
-    }
-
-    @Override
-    public void editCounters(boolean activeEdition)
-    {
-        mListAdapter.toggleEditMode();
-
-        if (mListAdapter.isActiveEditMode())
-            menu.getItem(0).setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_done));
-        else
-            menu.getItem(0).setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_edit));
-
-        mListAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public boolean isFabMenuOpen()
     {
         return isFabOpen;
     }
 
     @Override
-    public void showNoCounters()
+    public void prepareViewByCheckedId(int id)
     {
-        mCountListView.setVisibility(View.GONE);
-        mNoCounterTextView.setVisibility(View.VISIBLE);
-    }
-
-    public interface CounterItemListener
-    {
-        void onCounterClick(Counter clickedCounter);
-
-        void delete(Counter clickedCounter);
-    }
-
-    private static class CountersAdapter extends BaseAdapter
-    {
-        private List<Counter> mCounters;
-
-        private CounterItemListener mCounterListener;
-
-        private boolean activeEditMode = false;
-
-        public CountersAdapter(List<Counter> counters, CounterItemListener itemListener)
+        toggleFabVisibility(id != R.id.simple_counter_button);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        if (id == R.id.simple_counter_button)
         {
-            this.mCounters = counters;
-            this.mCounterListener = itemListener;
-        }
-
-        @Override
-        public int getCount()
-        {
-            return mCounters.size();
-        }
-
-        @Override
-        public Counter getItem(int i)
-        {
-            return mCounters.get(i);
-        }
-
-        @Override
-        public long getItemId(int i)
-        {
-            return i;
-        }
-
-        @Override
-        public View getView(final int i, View view, ViewGroup viewGroup)
-        {
-            View rowView = view;
-
-            if (rowView == null)
-            {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                rowView = inflater.inflate(R.layout.counter_item, viewGroup, false);
-            }
-
-            final Counter counter = getItem(i);
-
-            rowView.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if (!activeEditMode)
-                        mCounterListener.onCounterClick(counter);
-                }
-            });
-
-            TextView countTextView = (TextView) rowView.findViewById(R.id.count_text_view);
-            countTextView.setText(String.valueOf(counter.getCount()));
-
-            TextView nameTextView = (TextView) rowView.findViewById(R.id.name_text_view);
-            nameTextView.setText(counter.getName());
-
-            TextView limitTextView = (TextView) rowView.findViewById(R.id.limit_text_view);
-            limitTextView.setText("(" + counter.getLimit() + ")");
-
-            TextView progressionTextView = (TextView) rowView.findViewById(R.id.progression_text_view);
-            ProgressBar counterItemProgressBar = (ProgressBar) rowView.findViewById(R.id.counter_item_progress_bar);
-            ImageButton deleteImageButton = (ImageButton) rowView.findViewById(R.id.delete_image_button);
-
-            if (!activeEditMode)
-            {
-                progressionTextView.setVisibility(View.VISIBLE);
-                counterItemProgressBar.setVisibility(View.VISIBLE);
-                deleteImageButton.setVisibility(View.GONE);
-
-                int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
-                progressionTextView.setText(String.valueOf(progression) + "%");
-
-                counterItemProgressBar.setProgress(progression);
-            }
+            if (mCounterFragment.isAdded())
+                transaction.show(mCounterFragment);
             else
-            {
-                progressionTextView.setVisibility(View.GONE);
-                counterItemProgressBar.setVisibility(View.GONE);
-                deleteImageButton.setVisibility(View.VISIBLE);
-            }
+                Utils.addFragmentToActivity(getChildFragmentManager(), mCounterFragment, R.id.contentFrame);
 
-            deleteImageButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if (activeEditMode)
-                    {
-                        mCounterListener.delete(counter);
-                        mCounters.remove(i);
-                        notifyDataSetChanged();
-                    }
-                }
-            });
-
-            return rowView;
+            if (mCounterListFragment.isAdded())
+                transaction.hide(mCounterListFragment);
         }
-
-        private void replaceData(List<Counter> counters)
+        else
         {
-            this.mCounters = counters;
-            notifyDataSetChanged();
-        }
+            if (mCounterListFragment.isAdded())
+                transaction.show(mCounterListFragment);
+            else
+                Utils.addFragmentToActivity(getChildFragmentManager(), mCounterListFragment, R.id.contentFrame);
 
-        private void toggleEditMode()
-        {
-            activeEditMode = !activeEditMode;
+            if (mCounterFragment.isAdded())
+                transaction.hide(mCounterFragment);
         }
-
-        private boolean isActiveEditMode()
-        {
-            return activeEditMode;
-        }
+        transaction.commit();
     }
 }

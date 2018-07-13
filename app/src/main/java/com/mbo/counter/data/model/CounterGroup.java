@@ -20,6 +20,9 @@ public class CounterGroup
     @DatabaseField
     private String name;
 
+    @DatabaseField
+    private int order;
+
     @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
     private Date creationDate;
 
@@ -89,5 +92,15 @@ public class CounterGroup
     public void setLastModificationDate(Date lastModificationDate)
     {
         this.lastModificationDate = lastModificationDate;
+    }
+
+    public int getOrder()
+    {
+        return order;
+    }
+
+    public void setOrder(int order)
+    {
+        this.order = order;
     }
 }

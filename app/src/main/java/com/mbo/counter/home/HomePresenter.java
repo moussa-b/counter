@@ -26,62 +26,11 @@ public class HomePresenter implements HomeContract.Presenter
     @Override
     public void start()
     {
-        loadCounters();
-    }
-
-    @Override
-    public void deleteCounter(int counterId)
-    {
-        mCounterDataSource.deleteCounter(counterId);
-    }
-
-    @Override
-    public void loadCounters()
-    {
-        mCounterDataSource.getCounters(new CounterDataSource.LoadCountersCallback()
-        {
-            @Override
-            public void onCountersLoaded(List<Counter> counters)
-            {
-                processCounters(counters);
-            }
-
-            @Override
-            public void onDataNotAvailable()
-            {
-
-            }
-        });
-    }
-
-    @Override
-    public void openCounter(@NonNull Counter clickedCounter)
-    {
-        mHomeView.showCounterUi(clickedCounter.getId());
     }
 
     @Override
     public void saveCounterGroup(CounterGroup counterGroup)
     {
         mCounterDataSource.saveCounterGroup(counterGroup);
-    }
-
-    private void processCounters(List<Counter> counters)
-    {
-        if (counters.isEmpty())
-        {
-            // Show a message indicating there are no tasks for that filter type.
-            processEmptyCounters();
-        }
-        else
-        {
-            // Show the list of tasks
-            mHomeView.showCounters(counters);
-        }
-    }
-
-    private void processEmptyCounters()
-    {
-        mHomeView.showNoCounters();
     }
 }

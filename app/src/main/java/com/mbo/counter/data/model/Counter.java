@@ -33,6 +33,9 @@ public class Counter
     @DatabaseField
     private int order;
 
+    @DatabaseField
+    private int orderInGroup;
+
     @DatabaseField(foreign = true)
     private CounterGroup counterGroup;
 
@@ -91,6 +94,16 @@ public class Counter
         this.name = name;
     }
 
+    public int getLimit()
+    {
+        return limit;
+    }
+
+    public void setLimit(int limit)
+    {
+        this.limit = limit;
+    }
+
     public int getCount()
     {
         return count;
@@ -131,16 +144,6 @@ public class Counter
         this.direction = direction;
     }
 
-    public int getLimit()
-    {
-        return limit;
-    }
-
-    public void setLimit(int limit)
-    {
-        this.limit = limit;
-    }
-
     public int getOrder()
     {
         return order;
@@ -149,6 +152,16 @@ public class Counter
     public void setOrder(int order)
     {
         this.order = order;
+    }
+
+    public int getOrderInGroup()
+    {
+        return orderInGroup;
+    }
+
+    public void setOrderInGroup(int orderInGroup)
+    {
+        this.orderInGroup = orderInGroup;
     }
 
     public CounterGroup getCounterGroup()
