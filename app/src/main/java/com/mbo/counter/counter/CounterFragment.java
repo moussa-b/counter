@@ -3,6 +3,7 @@ package com.mbo.counter.counter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,8 +33,6 @@ public class CounterFragment extends Fragment implements CounterContract.View
 
     private CounterContract.Presenter mPresenter;
 
-    private Button mIncreaseButton, mDecreaseButton, mResetButton;
-
     public CounterFragment()
     {
     }
@@ -44,19 +43,19 @@ public class CounterFragment extends Fragment implements CounterContract.View
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.counter_fragment, container, false);
 
-        mName = (TextView) root.findViewById(R.id.counter_name_text_view);
-        mCount = (TextView) root.findViewById(R.id.counter_count_text_view);
-        mLimit = (TextView) root.findViewById(R.id.counter_limit_text_view);
-        mIncreaseButton = (Button) root.findViewById(R.id.counter_increase_button);
-        mDecreaseButton = (Button) root.findViewById(R.id.counter_decrease_button);
-        mResetButton = (Button) root.findViewById(R.id.counter_reset_button);
-        mProgressBar = (ProgressBar) root.findViewById(R.id.counter_progress_bar);
+        mName = root.findViewById(R.id.counter_name_text_view);
+        mCount = root.findViewById(R.id.counter_count_text_view);
+        mLimit = root.findViewById(R.id.counter_limit_text_view);
+        Button increaseButton = root.findViewById(R.id.counter_increase_button);
+        Button decreaseButton = root.findViewById(R.id.counter_decrease_button);
+        Button resetButton = root.findViewById(R.id.counter_reset_button);
+        mProgressBar = root.findViewById(R.id.counter_progress_bar);
 
-        mIncreaseButton.setOnClickListener(new View.OnClickListener()
+        increaseButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -67,7 +66,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
             }
         });
 
-        mDecreaseButton.setOnClickListener(new View.OnClickListener()
+        decreaseButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -78,7 +77,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
             }
         });
 
-        mResetButton.setOnClickListener(new View.OnClickListener()
+        resetButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -134,7 +133,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
     @Override
     public void setLimit(int limit)
     {
-        mLimit.setText(getString(R.string.objective) + " : " + String.valueOf(limit));
+        mLimit.setText(String.format("%s : %s", getString(R.string.objective), String.valueOf(limit)));
     }
 
     @Override
@@ -147,8 +146,8 @@ public class CounterFragment extends Fragment implements CounterContract.View
     public void setProgression(int limit, int count)
     {
         // dans le cas d'un compteur infini mettre en gradient qui du blanc et simplement faire tourner le cercle de 10°
-        float progession = 100 * (float) count / (float) limit;
-        mProgressBar.setProgress((int) progession);
+        float progression = 100 * (float) count / (float) limit;
+        mProgressBar.setProgress((int) progression);
     }
 
     @Override
@@ -170,7 +169,11 @@ public class CounterFragment extends Fragment implements CounterContract.View
     @Override
     public void showCountersList()
     {
-        getActivity().setResult(Activity.RESULT_OK);
-        getActivity().finish();
+        Activity activity = getActivity();
+        if (activity != null)
+        {
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
+        }
     }
 }

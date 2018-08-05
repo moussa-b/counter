@@ -92,7 +92,7 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            final List<Counter> counters = mDaoCounter.queryForAll();
+            final List<Counter> counters = mDaoCounter.queryBuilder().where().ne("id", 1).query();
             if (counters != null)
             {
                 callback.onCountersLoaded(counters);
@@ -117,6 +117,48 @@ public class OrmLiteDataSource implements CounterDataSource
             if (counter != null)
             {
                 callback.onCounterLoaded(counter);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getCounterGroups(@NonNull LoadCounterGroupsCallback callback)
+    {
+        try
+        {
+            final List<CounterGroup> counters = mDaoCounterGroup.queryBuilder().where().ne("id", 1).query();
+            if (counters != null)
+            {
+                callback.onCounterGroupsLoaded(counters);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getCounterGroup(int counterId, @NonNull GetCounterGroupCallback callback)
+    {
+        try
+        {
+            final CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterId);
+            if (counterGroup != null)
+            {
+                callback.onCounterGroupLoaded(counterGroup);
             }
             else
             {
@@ -176,7 +218,22 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
+            mDaoCounter.deleteBuilder().where().ne("id", 1);
             mDaoCounter.deleteBuilder().delete();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteAllCounterGroups()
+    {
+        try
+        {
+            mDaoCounterGroup.deleteBuilder().where().ne("id", 1);
+            mDaoCounterGroup.deleteBuilder().delete();
         }
         catch (SQLException e)
         {

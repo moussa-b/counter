@@ -16,23 +16,35 @@ public interface CounterListContract
 
     interface View extends BaseView<Presenter>
     {
+        void setCount(int index, int count);
+
+        void setProgression(int index, int progression);
+
         void showAddCounter();
+
+        void showCounterMenu(int counterId);
 
         void showCounters(List<Counter> counters);
 
-        void showNoCounters();
-
         void showCounterUi(int counterId);
 
-        void editCounters(boolean activeEdition);
+        void showEditCounterUi(int counterId);
+
+        void showNoCounters();
     }
 
     interface Presenter extends BasePresenter
     {
+        void decrementCounter(final int index, final int counterId);
+
         void deleteCounter(int counterId);
+
+        void incrementCounter(final int index, final int counterId);
 
         void loadCounters();
 
         void openCounter(@NonNull Counter clickedCounter);
+
+        void resetCounter(final int index, final int counterId);
     }
 }
