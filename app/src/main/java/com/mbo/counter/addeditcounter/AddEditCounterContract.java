@@ -8,7 +8,6 @@ import com.mbo.counter.BaseView;
  */
 public interface AddEditCounterContract
 {
-
     interface View extends BaseView<Presenter>
     {
         void setCount(int count);

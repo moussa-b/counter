@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface StatisticsContract
 {
-
     interface View extends BaseView<Presenter>
     {
         void showStatistics(List<Statistics.Row> statistics);

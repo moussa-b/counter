@@ -13,7 +13,6 @@ import java.util.List;
  */
 public interface CounterListContract
 {
-
     interface View extends BaseView<Presenter>
     {
         void setCount(int index, int count);

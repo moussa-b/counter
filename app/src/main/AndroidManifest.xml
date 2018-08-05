@@ -30,6 +30,8 @@
         <activity android:name=".statistics.StatisticsActivity"/>
 
         <activity android:name=".countersettings.CounterSettingsActivity"/>
+
+        <activity android:name=".countergrouplist.CounterGroupListActivity"/>
     </application>
 
 </manifest>

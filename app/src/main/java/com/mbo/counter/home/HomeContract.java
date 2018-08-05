@@ -9,7 +9,6 @@ import com.mbo.counter.data.model.CounterGroup;
  */
 public interface HomeContract
 {
-
     interface View extends BaseView<Presenter>
     {
         void closeFabMenu();

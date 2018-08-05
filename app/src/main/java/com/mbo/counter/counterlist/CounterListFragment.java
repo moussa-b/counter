@@ -33,6 +33,7 @@ public class CounterListFragment extends Fragment implements CounterListContract
     private static final int REQUEST_COUNTER = 100;
     private RecyclerView mCounterRecyclerView;
     private TextView mNoCounterTextView;
+    private CounterListContract.Presenter mPresenter;
     private CounterListFragment.CounterItemListener mCounterListener = new CounterListFragment.CounterItemListener()
     {
         @Override
@@ -71,7 +72,6 @@ public class CounterListFragment extends Fragment implements CounterListContract
             mPresenter.deleteCounter(clickedCounter.getId());
         }
     };
-    private CounterListContract.Presenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)

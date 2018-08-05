@@ -1,6 +1,7 @@
 package com.mbo.counter.home;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +30,8 @@ import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.counter.CounterFragment;
 import com.mbo.counter.counter.CounterPresenter;
+import com.mbo.counter.countergrouplist.CounterGroupListFragment;
+import com.mbo.counter.countergrouplist.CounterGroupListPresenter;
 import com.mbo.counter.counterlist.CounterListFragment;
 import com.mbo.counter.counterlist.CounterListPresenter;
 import com.mbo.counter.data.model.CounterGroup;
@@ -48,6 +51,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
     SegmentedButtonGroup mSegmentedButtonGroup;
     CounterFragment mCounterFragment;
     CounterListFragment mCounterListFragment;
+    CounterGroupListFragment mCounterGroupListFragment;
 
     public HomeFragment()
     {
@@ -64,42 +68,46 @@ public class HomeFragment extends Fragment implements HomeContract.View
         View root = inflater.inflate(R.layout.home_fragment, container, false);
 
         // Set up floating action button
-        mFabBase = getActivity().findViewById(R.id.fab_base);
-        mFabAddCounter = getActivity().findViewById(R.id.fab_add_counter);
-        mFabAddCounterGroup = getActivity().findViewById(R.id.fab_add_counter_group);
-
-        mAddCounterLayout = getActivity().findViewById(R.id.add_counter_layout);
-        mAddCounterGroupLayout = getActivity().findViewById(R.id.add_counter_group_layout);
-
-        mFabBase.setOnClickListener(new View.OnClickListener()
+        Activity activity = getActivity();
+        if (activity != null)
         {
-            @Override
-            public void onClick(View view)
-            {
-                if (isFabOpen)
-                    closeFabMenu();
-                else
-                    showFabMenu();
-            }
-        });
+            mFabBase = activity.findViewById(R.id.fab_base);
+            mFabAddCounter = activity.findViewById(R.id.fab_add_counter);
+            mFabAddCounterGroup = activity.findViewById(R.id.fab_add_counter_group);
 
-        mAddCounterLayout.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                showAddCounter();
-            }
-        });
+            mAddCounterLayout = activity.findViewById(R.id.add_counter_layout);
+            mAddCounterGroupLayout = activity.findViewById(R.id.add_counter_group_layout);
 
-        mAddCounterGroupLayout.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+            mFabBase.setOnClickListener(new View.OnClickListener()
             {
-                showAddCounterGroup();
-            }
-        });
+                @Override
+                public void onClick(View view)
+                {
+                    if (isFabOpen)
+                        closeFabMenu();
+                    else
+                        showFabMenu();
+                }
+            });
+
+            mAddCounterLayout.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    showAddCounter();
+                }
+            });
+
+            mAddCounterGroupLayout.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    showAddCounterGroup();
+                }
+            });
+        }
 
         setHasOptionsMenu(true);
 
@@ -120,6 +128,9 @@ public class HomeFragment extends Fragment implements HomeContract.View
 
         mCounterListFragment = CounterListFragment.newInstance();
         new CounterListPresenter(OrmLiteDataSource.getInstance(), mCounterListFragment);
+
+        mCounterGroupListFragment = CounterGroupListFragment.newInstance();
+        new CounterGroupListPresenter(OrmLiteDataSource.getInstance(), mCounterGroupListFragment);
 
         return root;
     }
@@ -310,17 +321,7 @@ public class HomeFragment extends Fragment implements HomeContract.View
     {
         toggleFabVisibility(id != R.id.simple_counter_button);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        if (id == R.id.simple_counter_button)
-        {
-            if (mCounterFragment.isAdded())
-                transaction.show(mCounterFragment);
-            else
-                Utils.addFragmentToActivity(getChildFragmentManager(), mCounterFragment, R.id.contentFrame);
-
-            if (mCounterListFragment.isAdded())
-                transaction.hide(mCounterListFragment);
-        }
-        else
+        if (id == R.id.all_counters_button)
         {
             if (mCounterListFragment.isAdded())
                 transaction.show(mCounterListFragment);
@@ -329,6 +330,35 @@ public class HomeFragment extends Fragment implements HomeContract.View
 
             if (mCounterFragment.isAdded())
                 transaction.hide(mCounterFragment);
+
+            if (mCounterGroupListFragment.isAdded())
+                transaction.hide(mCounterGroupListFragment);
+        }
+        else if (id == R.id.counter_groups_button)
+        {
+            if (mCounterGroupListFragment.isAdded())
+                transaction.show(mCounterGroupListFragment);
+            else
+                Utils.addFragmentToActivity(getChildFragmentManager(), mCounterGroupListFragment, R.id.contentFrame);
+
+            if (mCounterFragment.isAdded())
+                transaction.hide(mCounterFragment);
+
+            if (mCounterListFragment.isAdded())
+                transaction.hide(mCounterListFragment);
+        }
+        else
+        {
+            if (mCounterFragment.isAdded())
+                transaction.show(mCounterFragment);
+            else
+                Utils.addFragmentToActivity(getChildFragmentManager(), mCounterFragment, R.id.contentFrame);
+
+            if (mCounterListFragment.isAdded())
+                transaction.hide(mCounterListFragment);
+
+            if (mCounterGroupListFragment.isAdded())
+                transaction.hide(mCounterGroupListFragment);
         }
         transaction.commit();
     }

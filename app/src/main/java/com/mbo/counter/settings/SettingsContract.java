@@ -8,7 +8,6 @@ import com.mbo.counter.BaseView;
  */
 public interface SettingsContract
 {
-
     interface View extends BaseView<Presenter>
     {
 
