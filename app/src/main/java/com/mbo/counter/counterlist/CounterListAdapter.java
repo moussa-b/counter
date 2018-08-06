@@ -43,9 +43,9 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
 
     private List<Counter> mCounters;
 
-    private CounterListFragment.CounterItemListener mCounterListener;
+    private CounterItemListener mCounterListener;
 
-    CounterListAdapter(List<Counter> counters, CounterListFragment.CounterItemListener itemListener)
+    CounterListAdapter(List<Counter> counters, CounterItemListener itemListener)
     {
         this.mCounters = counters;
         this.mCounterListener = itemListener;

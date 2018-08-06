@@ -38,7 +38,7 @@ public class CounterListFragment extends Fragment implements CounterListContract
     private RecyclerView mCounterRecyclerView;
     private TextView mNoCounterTextView;
     private CounterListContract.Presenter mPresenter;
-    private CounterListFragment.CounterItemListener mCounterListener = new CounterListFragment.CounterItemListener()
+    private CounterItemListener mCounterListener = new CounterItemListener()
     {
         @Override
         public void onCounterDecrement(int position, int counterId)
@@ -162,6 +162,14 @@ public class CounterListFragment extends Fragment implements CounterListContract
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden)
+    {
+        if (!hidden) {
+            mPresenter.loadCounters();
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         super.onCreateOptionsMenu(menu, inflater);
@@ -228,14 +236,5 @@ public class CounterListFragment extends Fragment implements CounterListContract
     {
         mCounterRecyclerView.setVisibility(View.GONE);
         mNoCounterTextView.setVisibility(View.VISIBLE);
-    }
-
-    public interface CounterItemListener
-    {
-        void onCounterDecrement(int position, int counterId);
-
-        void onCounterIncrement(int position, int counterId);
-
-        void onCounterShowMenu(View view, Counter clickedCounter, int position);
     }
 }
