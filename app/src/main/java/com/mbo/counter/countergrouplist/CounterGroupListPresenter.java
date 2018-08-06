@@ -2,10 +2,14 @@ package com.mbo.counter.countergrouplist;
 
 import android.support.annotation.NonNull;
 
+import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Statistics;
+import com.mbo.counter.data.model.StatisticsType;
 import com.mbo.counter.data.source.CounterDataSource;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 
+import java.util.Date;
 import java.util.List;
 
 public class CounterGroupListPresenter implements CounterGroupListContract.Presenter
@@ -30,6 +34,73 @@ public class CounterGroupListPresenter implements CounterGroupListContract.Prese
     }
 
     @Override
+    public void decrementCounter(final int groupPosition, final int childPosition, final int counterId)
+    {
+        mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
+        {
+            @Override
+            public void onCounterLoaded(Counter counter)
+            {
+                if ((counter.getCount() - counter.getStep()) >= 0)
+                    counter.setCount(counter.getCount() - counter.getStep());
+                else
+                    counter.setCount(counter.getLimit() + counter.getCount() - counter.getStep());
+
+                mCounterDataSource.saveCounter(counter);
+                mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, -counter.getStep(), StatisticsType.DECREMENT));
+                mCounterGroupListView.setCount(groupPosition, childPosition, counter.getCount());
+
+            }
+
+            @Override
+            public void onDataNotAvailable()
+            {
+
+            }
+        });
+    }
+
+    @Override
+    public void deleteCounter(int counterId)
+    {
+        mCounterDataSource.deleteCounter(counterId);
+        loadCounterGroups();
+    }
+
+    @Override
+    public void duplicateCounter(int counterId)
+    {
+        mCounterDataSource.duplicateCounter(counterId);
+        loadCounterGroups();
+    }
+
+    @Override
+    public void incrementCounter(final int groupPosition, final int childPosition, final int counterId)
+    {
+        mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
+        {
+            @Override
+            public void onCounterLoaded(Counter counter)
+            {
+                if ((counter.getCount() + counter.getStep()) <= counter.getLimit())
+                    counter.setCount(counter.getCount() + counter.getStep());
+                else
+                    counter.setCount((counter.getCount() + counter.getStep()) - counter.getLimit());
+
+                mCounterDataSource.saveCounter(counter);
+                mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, counter.getStep(), StatisticsType.INCREMENT));
+                mCounterGroupListView.setCount(groupPosition, childPosition, counter.getCount());
+            }
+
+            @Override
+            public void onDataNotAvailable()
+            {
+
+            }
+        });
+    }
+
+    @Override
     public void loadCounterGroups()
     {
         mCounterDataSource.getCounterGroups(new CounterDataSource.LoadCounterGroupsCallback()
@@ -38,6 +109,28 @@ public class CounterGroupListPresenter implements CounterGroupListContract.Prese
             public void onCounterGroupsLoaded(List<CounterGroup> counterGroups)
             {
                 processCounterGroups(counterGroups);
+            }
+
+            @Override
+            public void onDataNotAvailable()
+            {
+
+            }
+        });
+    }
+
+    @Override
+    public void resetCounter(final int groupPosition, final int childPosition, final int counterId)
+    {
+        mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
+        {
+            @Override
+            public void onCounterLoaded(Counter counter)
+            {
+                counter.setCount(0);
+                mCounterDataSource.saveCounter(counter);
+                mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, 0, StatisticsType.RESET));
+                mCounterGroupListView.setCount(groupPosition, childPosition, 0);
             }
 
             @Override

@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mbo.counter.R;
@@ -16,11 +19,14 @@ import java.util.List;
 
 public class CounterExpandableListAdapter extends BaseExpandableListAdapter
 {
+    private CounterGroupItemListener mCounterGroupListener;
+
     private List<CounterGroup> mCounterGroups;
 
-    CounterExpandableListAdapter(List<CounterGroup> counterGroups)
+    CounterExpandableListAdapter(List<CounterGroup> counterGroups, CounterGroupItemListener counterGroupListener)
     {
         this.mCounterGroups = counterGroups;
+        this.mCounterGroupListener = counterGroupListener;
     }
 
     @Override
@@ -85,7 +91,7 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
     {
         if (convertView == null)
         {
@@ -96,8 +102,43 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
         if (convertView != null)
         {
             final Counter counter = (Counter) getChild(groupPosition, childPosition);
-            TextView counterNameTextView = convertView.findViewById(R.id.name_text_view);
-            counterNameTextView.setText(counter.getName());
+            TextView countTextView = convertView.findViewById(R.id.count_text_view);
+            TextView nameTextView = convertView.findViewById(R.id.name_text_view);
+            TextView  progressionTextView = convertView.findViewById(R.id.progression_text_view);
+            ProgressBar counterItemProgressBar = convertView.findViewById(R.id.counter_item_progress_bar);
+            ImageButton decreaseCounterImageButton = convertView.findViewById(R.id.decrease_counter_image_button);
+            ImageButton increaseCounterImageButton = convertView.findViewById(R.id.increase_counter_image_button);
+            ImageView editCounterImageView = convertView.findViewById(R.id.edit_counter_image_view);
+
+            countTextView.setText(String.valueOf(counter.getCount()));
+            nameTextView.setText(counter.getName());
+            int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
+            progressionTextView.setText(String.format("%s%%", String.valueOf(progression)));
+            counterItemProgressBar.setProgress(progression);
+            decreaseCounterImageButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mCounterGroupListener.onCounterDecrement(groupPosition, childPosition, counter.getId());
+                }
+            });
+            increaseCounterImageButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mCounterGroupListener.onCounterIncrement(groupPosition, childPosition, counter.getId());
+                }
+            });
+            editCounterImageView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mCounterGroupListener.onCounterShowMenu(v, counter, groupPosition, childPosition);
+                }
+            });
         }
         return convertView;
     }

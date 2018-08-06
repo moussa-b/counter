@@ -1,33 +1,99 @@
 package com.mbo.counter.countergrouplist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.mbo.counter.R;
+import com.mbo.counter.addeditcounter.AddEditCounterActivity;
+import com.mbo.counter.counter.CounterActivity;
+import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.statistics.StatisticsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
+import static com.mbo.counter.counter.CounterFragment.ARGUMENT_COUNTER_ID;
+import static com.mbo.counter.statistics.StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
+
 public class CounterGroupListFragment extends Fragment implements CounterGroupListContract.View
 {
+    private static final int REQUEST_COUNTER = 100;
     private ExpandableListView mCounterExpandableListView;
     private TextView mNoCounterTextView;
     private CounterGroupListContract.Presenter mPresenter;
     private CounterExpandableListAdapter mExpandableAdapter;
+    private CounterGroupItemListener mCounterGroupListener = new CounterGroupItemListener()
+    {
+        @Override
+        public void onCounterDecrement(int groupPosition, int childPosition, int counterId)
+        {
+            mPresenter.decrementCounter(groupPosition, childPosition, counterId);
+        }
+
+        @Override
+        public void onCounterIncrement(int groupPosition, int childPosition, int counterId)
+        {
+            mPresenter.incrementCounter(groupPosition, childPosition, counterId);
+        }
+
+        @Override
+        public void onCounterShowMenu(View view, final Counter clickedCounter, final int groupPosition, final int childPosition)
+        {
+            if (getActivity() != null)
+            {
+                PopupMenu popup = new PopupMenu(getActivity(), view);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                {
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.action_full_screen:
+                                showCounterUi(clickedCounter.getId());
+                                return true;
+                            case R.id.action_reset:
+                                mPresenter.resetCounter(groupPosition, childPosition, clickedCounter.getId());
+                                return true;
+                            case R.id.action_edit:
+                                showEditCounterUi(clickedCounter.getId());
+                                return true;
+                            case R.id.action_duplicate:
+                                mPresenter.duplicateCounter(clickedCounter.getId());
+                                return true;
+                            case R.id.action_delete:
+                                mPresenter.deleteCounter(clickedCounter.getId());
+                                return true;
+                            case R.id.action_statistics:
+                                showCounterStatisticsUi(clickedCounter.getId());
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.inflate(R.menu.popup_menu_counter);
+                popup.show();
+            }
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mExpandableAdapter = new CounterExpandableListAdapter(new ArrayList<CounterGroup>(0));
+        mExpandableAdapter = new CounterExpandableListAdapter(new ArrayList<CounterGroup>(0), mCounterGroupListener);
     }
 
     @Override
@@ -47,6 +113,13 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
         mPresenter.start();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden)
+    {
+        if (!hidden)
+            mPresenter.loadCounterGroups();
+    }
+
     public static CounterGroupListFragment newInstance()
     {
         return new CounterGroupListFragment();
@@ -59,6 +132,14 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
     }
 
     @Override
+    public void setCount(int groupPosition, int childPosition, int count)
+    {
+        Counter counter = ((Counter) mExpandableAdapter.getChild(groupPosition, childPosition));
+        counter.setCount(count);
+        mExpandableAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void showCounterGroups(List<CounterGroup> counterGroups)
     {
         mCounterExpandableListView.setVisibility(View.VISIBLE);
@@ -67,9 +148,33 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
     }
 
     @Override
+    public void showCounterUi(int counterId)
+    {
+        Intent intent = new Intent(getContext(), CounterActivity.class);
+        intent.putExtra(ARGUMENT_COUNTER_ID, counterId);
+        startActivityForResult(intent, REQUEST_COUNTER);
+    }
+
+    @Override
+    public void showEditCounterUi(int counterId)
+    {
+        Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
+        intent.putExtra(ARGUMENT_EDIT_COUNTER_ID, counterId);
+        startActivityForResult(intent, REQUEST_COUNTER);
+    }
+
+    @Override
     public void showNoCounterGroups()
     {
         mCounterExpandableListView.setVisibility(View.GONE);
         mNoCounterTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showCounterStatisticsUi(int counterId)
+    {
+        Intent intent = new Intent(getContext(), StatisticsActivity.class);
+        intent.putExtra(ARGUMENT_STATISTICS_COUNTER_ID, counterId);
+        startActivityForResult(intent, REQUEST_COUNTER);
     }
 }
