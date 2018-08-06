@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,11 +21,14 @@ import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.counter.CounterActivity;
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.statistics.StatisticsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
 import static com.mbo.counter.counter.CounterFragment.ARGUMENT_COUNTER_ID;
+import static com.mbo.counter.statistics.StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
 
 public class CounterListFragment extends Fragment implements CounterListContract.View
 {
@@ -37,39 +41,55 @@ public class CounterListFragment extends Fragment implements CounterListContract
     private CounterListFragment.CounterItemListener mCounterListener = new CounterListFragment.CounterItemListener()
     {
         @Override
-        public void onCounterClick(Counter clickedCounter)
+        public void onCounterDecrement(int position, int counterId)
         {
-            mPresenter.openCounter(clickedCounter);
+            mPresenter.decrementCounter(position, counterId);
         }
 
         @Override
-        public void onCounterDecrement(int index, int counterId)
+        public void onCounterIncrement(int position, int counterId)
         {
-            mPresenter.decrementCounter(index, counterId);
+            mPresenter.incrementCounter(position, counterId);
         }
 
         @Override
-        public void onCounterIncrement(int index, int counterId)
+        public void onCounterShowMenu(View view, final Counter clickedCounter, final int position)
         {
-            mPresenter.incrementCounter(index, counterId);
-        }
-
-        @Override
-        public void onCounterReset(int index, Counter clickedCounter)
-        {
-
-        }
-
-        @Override
-        public void onCounterShowMenu(Counter clickedCounter)
-        {
-
-        }
-
-        @Override
-        public void delete(Counter clickedCounter)
-        {
-            mPresenter.deleteCounter(clickedCounter.getId());
+            if (getActivity() != null)
+            {
+                PopupMenu popup = new PopupMenu(getActivity(), view);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                {
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.action_full_screen:
+                                showCounterUi(clickedCounter.getId());
+                                return true;
+                            case R.id.action_reset:
+                                mPresenter.resetCounter(position, clickedCounter.getId());
+                                return true;
+                            case R.id.action_edit:
+                                showEditCounterUi(clickedCounter.getId());
+                                return true;
+                            case R.id.action_duplicate:
+                                mPresenter.duplicateCounter(clickedCounter.getId());
+                                return true;
+                            case R.id.action_delete:
+                                mPresenter.deleteCounter(clickedCounter.getId());
+                                return true;
+                            case R.id.action_statistics:
+                                showCounterStatisticsUi(clickedCounter.getId());
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.inflate(R.menu.popup_menu_counter);
+                popup.show();
+            }
         }
     };
 
@@ -116,17 +136,17 @@ public class CounterListFragment extends Fragment implements CounterListContract
     }
 
     @Override
-    public void setCount(int index, int count)
+    public void setCount(int position, int count)
     {
-        CounterListAdapter.CounterViewHolder counterViewHolder = (CounterListAdapter.CounterViewHolder) mCounterRecyclerView.findViewHolderForAdapterPosition(index);
+        CounterListAdapter.CounterViewHolder counterViewHolder = (CounterListAdapter.CounterViewHolder) mCounterRecyclerView.findViewHolderForAdapterPosition(position);
         if (counterViewHolder != null)
             counterViewHolder.countTextView.setText(String.valueOf(count));
     }
 
     @Override
-    public void setProgression(int index, int progression)
+    public void setProgression(int position, int progression)
     {
-        CounterListAdapter.CounterViewHolder counterViewHolder = (CounterListAdapter.CounterViewHolder) mCounterRecyclerView.findViewHolderForAdapterPosition(index);
+        CounterListAdapter.CounterViewHolder counterViewHolder = (CounterListAdapter.CounterViewHolder) mCounterRecyclerView.findViewHolderForAdapterPosition(position);
         if (counterViewHolder != null)
         {
             counterViewHolder.counterItemProgressBar.setProgress(progression);
@@ -159,12 +179,6 @@ public class CounterListFragment extends Fragment implements CounterListContract
     }
 
     @Override
-    public void showCounterMenu(int counterId)
-    {
-
-    }
-
-    @Override
     public void showAddCounter()
     {
         Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
@@ -188,7 +202,9 @@ public class CounterListFragment extends Fragment implements CounterListContract
     @Override
     public void showEditCounterUi(int counterId)
     {
-
+        Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
+        intent.putExtra(ARGUMENT_EDIT_COUNTER_ID, counterId);
+        startActivityForResult(intent, REQUEST_COUNTER);
     }
 
     @Override
@@ -196,6 +212,14 @@ public class CounterListFragment extends Fragment implements CounterListContract
     {
         Intent intent = new Intent(getContext(), CounterActivity.class);
         intent.putExtra(ARGUMENT_COUNTER_ID, counterId);
+        startActivityForResult(intent, REQUEST_COUNTER);
+    }
+
+    @Override
+    public void showCounterStatisticsUi(int counterId)
+    {
+        Intent intent = new Intent(getContext(), StatisticsActivity.class);
+        intent.putExtra(ARGUMENT_STATISTICS_COUNTER_ID, counterId);
         startActivityForResult(intent, REQUEST_COUNTER);
     }
 
@@ -208,16 +232,10 @@ public class CounterListFragment extends Fragment implements CounterListContract
 
     public interface CounterItemListener
     {
-        void delete(Counter clickedCounter);
+        void onCounterDecrement(int position, int counterId);
 
-        void onCounterClick(Counter clickedCounter);
+        void onCounterIncrement(int position, int counterId);
 
-        void onCounterDecrement(int index, int counterId);
-
-        void onCounterIncrement(int index, int counterId);
-
-        void onCounterReset(int index, Counter clickedCounter);
-
-        void onCounterShowMenu(Counter clickedCounter);
+        void onCounterShowMenu(View view, Counter clickedCounter, int position);
     }
 }

@@ -33,7 +33,7 @@ public class CounterListPresenter implements CounterListContract.Presenter
     }
 
     @Override
-    public void decrementCounter(final int index, final int counterId)
+    public void decrementCounter(final int position, final int counterId)
     {
         mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
         {
@@ -47,9 +47,9 @@ public class CounterListPresenter implements CounterListContract.Presenter
 
                 mCounterDataSource.saveCounter(counter);
                 mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, -counter.getStep(), StatisticsType.DECREMENT));
-                mCounterListView.setCount(index, counter.getCount());
+                mCounterListView.setCount(position, counter.getCount());
                 int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
-                mCounterListView.setProgression(index, progression);
+                mCounterListView.setProgression(position, progression);
 
             }
 
@@ -65,10 +65,18 @@ public class CounterListPresenter implements CounterListContract.Presenter
     public void deleteCounter(int counterId)
     {
         mCounterDataSource.deleteCounter(counterId);
+        loadCounters();
     }
 
     @Override
-    public void incrementCounter(final int index, final int counterId)
+    public void duplicateCounter(int counterId)
+    {
+        mCounterDataSource.duplicateCounter(counterId);
+        loadCounters();
+    }
+
+    @Override
+    public void incrementCounter(final int position, final int counterId)
     {
         mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
         {
@@ -82,9 +90,9 @@ public class CounterListPresenter implements CounterListContract.Presenter
 
                 mCounterDataSource.saveCounter(counter);
                 mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, counter.getStep(), StatisticsType.INCREMENT));
-                mCounterListView.setCount(index, counter.getCount());
+                mCounterListView.setCount(position, counter.getCount());
                 int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
-                mCounterListView.setProgression(index, progression);
+                mCounterListView.setProgression(position, progression);
             }
 
             @Override
@@ -115,13 +123,7 @@ public class CounterListPresenter implements CounterListContract.Presenter
     }
 
     @Override
-    public void openCounter(@NonNull Counter clickedCounter)
-    {
-        mCounterListView.showCounterUi(clickedCounter.getId());
-    }
-
-    @Override
-    public void resetCounter(final int index, final int counterId)
+    public void resetCounter(final int position, final int counterId)
     {
         mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
         {
@@ -131,7 +133,8 @@ public class CounterListPresenter implements CounterListContract.Presenter
                 counter.setCount(0);
                 mCounterDataSource.saveCounter(counter);
                 mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, 0, StatisticsType.RESET));
-                mCounterListView.setCount(index, 0);
+                mCounterListView.setCount(position, 0);
+                mCounterListView.setProgression(position, 0);
             }
 
             @Override

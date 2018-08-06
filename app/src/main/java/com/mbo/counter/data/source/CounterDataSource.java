@@ -12,6 +12,8 @@ public interface CounterDataSource
 {
     void addStatistics(@NonNull Statistics statistics);
 
+    void duplicateCounter(int counterId);
+
     void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback);
 
     void getCounters(@NonNull LoadCountersCallback callback);

@@ -89,7 +89,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             @Override
             public void onClick(View v)
             {
-                mCounterListener.onCounterShowMenu(counter);
+                mCounterListener.onCounterShowMenu(v, counter, position);
             }
         });
     }

@@ -67,6 +67,26 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
+    public void duplicateCounter(int counterId)
+    {
+        try
+        {
+            Counter counter = mDaoCounter.queryForId((long) counterId);
+            if (counter != null)
+            {
+                counter.setId(0);
+                counter.setCreationDate(new Date());
+                counter.setLastModificationDate(new Date());
+                mDaoCounter.create(counter);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback)
     {
         try
