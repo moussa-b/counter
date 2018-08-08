@@ -3,7 +3,10 @@ package com.mbo.counter.addeditcounter;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.data.source.CounterDataSource;
+
+import java.util.List;
 
 public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
 {
@@ -14,6 +17,8 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     private final AddEditCounterContract.View mAddCounterView;
 
     private int mCounterId;
+
+    private Counter mCounter;
 
     public AddEditCounterPresenter(int counterId, @NonNull CounterDataSource counterDataSource,
                                    @NonNull AddEditCounterContract.View addCounterView)
@@ -30,13 +35,42 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     {
         if (mCounterId != 0)
             populateCounter();
+        else
+            mCounter = new Counter();
+
+        loadCounterGroups();
     }
 
     @Override
-    public void saveCounter(final String name, int limit, String note, String direction, String color)
+    public void loadCounterGroups()
     {
-        mCounterDataSource.saveCounter(new Counter(mCounterId, name, limit, note, direction, color));
+        mCounterDataSource.getCounterGroups(new CounterDataSource.LoadCounterGroupsCallback()
+        {
+            @Override
+            public void onCounterGroupsLoaded(List<CounterGroup> counterGroups)
+            {
+                mAddCounterView.processCounterGroups(counterGroups);
+            }
+
+            @Override
+            public void onDataNotAvailable()
+            {
+
+            }
+        });
+    }
+
+    @Override
+    public void saveCounter()
+    {
+        mCounterDataSource.saveCounter(mCounter);
         mAddCounterView.showCountersList();
+    }
+
+    @Override
+    public void saveCounterGroup(CounterGroup counterGroup)
+    {
+        mCounterDataSource.saveCounterGroup(counterGroup);
     }
 
     @Override
@@ -50,6 +84,7 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
                 mAddCounterView.setName(counter.getName());
                 mAddCounterView.setCount(counter.getCount());
                 mAddCounterView.setNote(counter.getNote());
+                mCounter = counter;
             }
 
             @Override

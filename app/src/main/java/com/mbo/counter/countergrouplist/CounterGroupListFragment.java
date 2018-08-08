@@ -87,6 +87,42 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
                 popup.show();
             }
         }
+
+        @Override
+        public void onCounterGroupShowMenu(View view, final CounterGroup clickedCounterGroup, int groupPosition)
+        {
+            if (getActivity() != null)
+            {
+                PopupMenu popup = new PopupMenu(getActivity(), view);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                {
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.action_rename:
+                                return true;
+                            case R.id.action_reset_all:
+                                return true;
+                            case R.id.action_delete_all:
+                                return true;
+                            case R.id.action_duplicate:
+                                mPresenter.duplicateCounterGroup(clickedCounterGroup.getId());
+                                return true;
+                            case R.id.action_delete:
+                                mPresenter.deleteCounterGroup(clickedCounterGroup.getId());
+                                return true;
+                            case R.id.action_statistics:
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.inflate(R.menu.popup_menu_counter_group);
+                popup.show();
+            }
+        }
     };
 
     @Override

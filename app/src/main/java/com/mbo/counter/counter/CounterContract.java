@@ -12,6 +12,8 @@ public interface CounterContract
 
     interface View extends BaseView<Presenter>
     {
+        void rotateProgressBar(int angle);
+
         void setCount(int count);
 
         void setLimit(int limit);

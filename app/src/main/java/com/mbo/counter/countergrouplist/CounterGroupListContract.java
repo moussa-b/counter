@@ -29,7 +29,11 @@ public interface CounterGroupListContract
 
         void deleteCounter(int counterId);
 
+        void deleteCounterGroup(int counterGroupId);
+
         void duplicateCounter(int counterId);
+
+        void duplicateCounterGroup(int counterGroupId);
 
         void incrementCounter(final int groupPosition, final int childPosition, final int counterId);
 

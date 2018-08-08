@@ -3,6 +3,7 @@ package com.mbo.counter.countergrouplist;
 import android.view.View;
 
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.CounterGroup;
 
 public interface CounterGroupItemListener
 {
@@ -11,4 +12,6 @@ public interface CounterGroupItemListener
     void onCounterIncrement(int groupPosition, int childPosition, int counterId);
 
     void onCounterShowMenu(View view, Counter clickedCounter, int groupPosition, int childPosition);
+
+    void onCounterGroupShowMenu(View view, CounterGroup clickedCounterGroup, int groupPosition);
 }

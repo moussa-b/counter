@@ -36,6 +36,8 @@ import com.mbo.counter.counterlist.CounterListFragment;
 import com.mbo.counter.counterlist.CounterListPresenter;
 import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
+import com.mbo.counter.utils.CallBack;
+import com.mbo.counter.utils.CounterGroupUtils;
 
 import static com.mbo.commons.utils.Utils.convertDpToPixel;
 
@@ -250,64 +252,15 @@ public class HomeFragment extends Fragment implements HomeContract.View
         Context context = getContext();
         if (context != null)
         {
-            final EditText addCounterGroupEditText = new EditText(context);
-            addCounterGroupEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-            addCounterGroupEditText.setSingleLine();
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            int margin = (int) convertDpToPixel(10, context);
-            params.leftMargin = margin;
-            params.rightMargin = margin;
-            addCounterGroupEditText.setLayoutParams(params);
-            FrameLayout container = new FrameLayout(context);
-            container.addView(addCounterGroupEditText);
-
-            final AlertDialog dialog = new AlertDialog.Builder(context)
-                    .setTitle(getString(R.string.add_counter_group_dialog_title))
-                    .setMessage(getString(R.string.add_counter_group_dialog_message))
-                    .setView(container)
-                    .setPositiveButton(getString(R.string.add), new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            mPresenter.saveCounterGroup(new CounterGroup(addCounterGroupEditText.getText().toString()));
-                        }
-                    })
-                    .setNegativeButton(getString(R.string.cancel), null)
-                    .create();
-
-            dialog.show();
-
-            final Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            if (positiveButton != null)
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-            addCounterGroupEditText.addTextChangedListener(new TextWatcher()
+            CounterGroupUtils.showAddCounterGroup(context, new CallBack()
             {
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count)
+                public void execute(Object data)
                 {
-                }
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s)
-                {
-                    if (positiveButton != null)
-                    {
-                        if (TextUtils.isEmpty(s) || s.length() < 2)
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                        else
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                    }
+                    mPresenter.saveCounterGroup(new CounterGroup((String) data));
                 }
             });
         }
-
     }
 
     @Override

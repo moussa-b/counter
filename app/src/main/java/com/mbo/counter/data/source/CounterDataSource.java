@@ -12,7 +12,17 @@ public interface CounterDataSource
 {
     void addStatistics(@NonNull Statistics statistics);
 
+    void deleteAllCounters();
+
+    void deleteAllCounterGroups();
+
+    void deleteCounter(int counterId);
+
+    void deleteCounterGroup(int counterGroupId);
+
     void duplicateCounter(int counterId);
+
+    void duplicateCounterGroup(int counterGroupId);
 
     void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback);
 
@@ -29,12 +39,6 @@ public interface CounterDataSource
     void saveCounterGroup(@NonNull CounterGroup counterGroup);
 
     void refreshCounters();
-
-    void deleteAllCounters();
-
-    void deleteAllCounterGroups();
-
-    void deleteCounter(int counterId);
 
     interface LoadCountersCallback
     {

@@ -68,9 +68,23 @@ public class CounterGroupListPresenter implements CounterGroupListContract.Prese
     }
 
     @Override
+    public void deleteCounterGroup(int counterGroupId)
+    {
+        mCounterDataSource.deleteCounterGroup(counterGroupId);
+        loadCounterGroups();
+    }
+
+    @Override
     public void duplicateCounter(int counterId)
     {
         mCounterDataSource.duplicateCounter(counterId);
+        loadCounterGroups();
+    }
+
+    @Override
+    public void duplicateCounterGroup(int counterGroupId)
+    {
+        mCounterDataSource.duplicateCounterGroup(counterGroupId);
         loadCounterGroups();
     }
 

@@ -24,7 +24,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/count_layout"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/name_layout">
 
@@ -35,24 +35,6 @@
             android:hint="@string/count"/>
 
     </android.support.design.widget.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/decrease_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@id/count_layout"
-        app:layout_constraintEnd_toStartOf="@id/increase_image"
-        app:srcCompat="@drawable/down_arrow"/>
-
-    <ImageView
-        android:id="@+id/increase_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@id/count_layout"
-        app:layout_constraintEnd_toEndOf="@id/name_layout"
-        app:srcCompat="@drawable/up_arrow"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/note_layout"
@@ -68,14 +50,74 @@
 
     </android.support.design.widget.TextInputLayout>
 
+    <TextView
+        android:id="@+id/select_group_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:labelFor="@id/group_auto_complete_text_view"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:text="@string/select_group"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/note_layout"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/group_auto_complete_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/touch_or_leave_empty"
+        app:layout_constraintStart_toEndOf="@id/select_group_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/note_layout"/>
+
+    <TextView
+        android:id="@+id/direction_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:text="@string/direction"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/select_group_text_view"/>
+
+    <ImageView
+        android:id="@+id/decrease_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@string/ascending"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/direction_text_view"
+        app:layout_constraintStart_toEndOf="@id/direction_text_view"
+        app:srcCompat="@drawable/down_arrow"/>
+
+    <ImageView
+        android:id="@+id/increase_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@string/descending"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/direction_text_view"
+        app:layout_constraintStart_toEndOf="@id/decrease_image"
+        app:srcCompat="@drawable/up_arrow"/>
+
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:id="@+id/change_color_button"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingEnd="@dimen/material_button_horizontal_padding"
         android:background="@color/colorPrimary"
-        android:drawableEnd="@android:drawable/arrow_down_float"
         android:text="@string/change_color"
         android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/note_layout"/>
+        android:paddingStart="@dimen/material_button_horizontal_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/direction_text_view"/>
 
 </android.support.constraint.ConstraintLayout>

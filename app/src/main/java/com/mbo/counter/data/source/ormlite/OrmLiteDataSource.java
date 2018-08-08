@@ -87,6 +87,26 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
+    public void duplicateCounterGroup(int counterGroupId)
+    {
+        try
+        {
+            CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
+            if (counterGroup != null)
+            {
+                counterGroup.setId(0);
+                counterGroup.setCreationDate(new Date());
+                counterGroup.setLastModificationDate(new Date());
+                mDaoCounterGroup.create(counterGroup);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback)
     {
         try
@@ -267,6 +287,19 @@ public class OrmLiteDataSource implements CounterDataSource
         try
         {
             mDaoCounter.deleteById((long) counterId);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteCounterGroup(int counterGroupId)
+    {
+        try
+        {
+            mDaoCounterGroup.deleteById((long) counterGroupId);
         }
         catch (SQLException e)
         {

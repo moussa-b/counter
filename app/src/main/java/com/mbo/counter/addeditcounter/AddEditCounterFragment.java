@@ -10,9 +10,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.mbo.counter.R;
+import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.utils.CallBack;
+import com.mbo.counter.utils.CounterGroupUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -23,9 +33,15 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
 
     private TextInputEditText mName, mCount, mNote;
 
+    private AutoCompleteTextView mGroup;
+
     private AddEditCounterContract.Presenter mPresenter;
 
     private Button mChangeColor;
+
+    private ArrayAdapter<String> mAutoCompleteAdapter;
+
+    private ArrayList<String> mCounterGroupsName = new ArrayList<>();
 
     public AddEditCounterFragment()
     {
@@ -41,38 +57,72 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     {
         super.onActivityCreated(savedInstanceState);
 
-        FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_counter_done);
-        fab.setOnClickListener(new View.OnClickListener()
+        if (getActivity() != null)
         {
-            @Override
-            public void onClick(View v)
+            FloatingActionButton fab = getActivity().findViewById(R.id.fab_edit_counter_done);
+            fab.setOnClickListener(new View.OnClickListener()
             {
-                mPresenter.saveCounter(mName.getText().toString(), Integer.parseInt(mCount.getText().toString()), null, null, null);
-            }
-        });
+                @Override
+                public void onClick(View v)
+                {
+                    mPresenter.saveCounter();
+                    Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.add_edit_counter_fragment, container, false);
+        mName = root.findViewById(R.id.name_text_input);
+        mCount = root.findViewById(R.id.count_text_input);
+        mNote = root.findViewById(R.id.note_text_input);
+        mGroup = root.findViewById(R.id.group_auto_complete_text_view);
+        mCounterGroupsName.add("+ " + getString(R.string.add_counter_group));
+        if (getActivity() != null)
+        {
+            mAutoCompleteAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, mCounterGroupsName);
+            mGroup.setAdapter(mAutoCompleteAdapter);
+        }
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_counter_done);
-        fab.setOnClickListener(new View.OnClickListener()
+        mGroup.setOnFocusChangeListener(new View.OnFocusChangeListener()
         {
             @Override
-            public void onClick(View view)
+            public void onFocusChange(View view, boolean hasFocus)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (hasFocus)
+                {
+                    mGroup.showDropDown();
+                }
             }
         });
 
-        mName = (TextInputEditText) root.findViewById(R.id.name_text_input);
-        mCount = (TextInputEditText) root.findViewById(R.id.count_text_input);
-        mNote = (TextInputEditText) root.findViewById(R.id.note_text_input);
-
+        mGroup.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id)
+            {
+                if (pos == 0)
+                {
+                    CounterGroupUtils.showAddCounterGroup(getContext(), new CallBack()
+                    {
+                        @Override
+                        public void execute(Object data)
+                        {
+                            CounterGroup counterGroup = new CounterGroup((String) data);
+                            mPresenter.saveCounterGroup(counterGroup);
+                            mCounterGroupsName.add(counterGroup.getName());
+                            mAutoCompleteAdapter.notifyDataSetChanged();
+                            mGroup.setSelection(mCounterGroupsName.size() - 1);
+                        }
+                    });
+                }
+                Toast.makeText(getContext(), " selected : " + pos + ", id : " + id, Toast.LENGTH_LONG).show();
+            }
+        });
         return root;
     }
 
@@ -87,6 +137,18 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     public void setPresenter(@NonNull AddEditCounterContract.Presenter presenter)
     {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void processCounterGroups(List<CounterGroup> counterGroups)
+    {
+        if (getActivity() != null && counterGroups != null && counterGroups.size() > 0)
+        {
+            for (CounterGroup counterGroup : counterGroups)
+                mCounterGroupsName.add(counterGroup.getName());
+
+            mAutoCompleteAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -122,7 +184,11 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     @Override
     public void showCountersList()
     {
-        getActivity().setResult(Activity.RESULT_OK);
-        getActivity().finish();
+        Activity activity = getActivity();
+        if (activity != null)
+        {
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
+        }
     }
 }

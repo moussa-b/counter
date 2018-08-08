@@ -72,20 +72,30 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
     {
-        CounterGroup counterGroup = (CounterGroup) getGroup(groupPosition);
+        final CounterGroup counterGroup = (CounterGroup) getGroup(groupPosition);
         if (convertView == null)
         {
             LayoutInflater layoutInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (layoutInflater != null)
-                convertView = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+                convertView = layoutInflater.inflate(R.layout.counter_group_item, parent, false);
         }
         if (convertView != null)
         {
-            TextView counterGroupNameTextView = convertView.findViewById(android.R.id.text1);
+            TextView counterGroupNameTextView = convertView.findViewById(R.id.name_text_view);
             counterGroupNameTextView.setTypeface(null, Typeface.BOLD);
             counterGroupNameTextView.setText(counterGroup.getName());
+
+            ImageView editCounterImageView = convertView.findViewById(R.id.edit_counter_image_view);
+            editCounterImageView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mCounterGroupListener.onCounterGroupShowMenu(v, counterGroup, groupPosition);
+                }
+            });
         }
         return convertView;
     }

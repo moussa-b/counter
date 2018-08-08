@@ -6,6 +6,8 @@
     <string name="add_counter_group_dialog_message">Entrer the name of the group</string>
     <string name="all_counters">All counters</string>
     <string name="app_name">Counter</string>
+    <string name="ascending">Ascending</string>
+    <string name="direction">Direction</string>
     <string name="duplicate">Duplicate</string>
     <string name="edit">Edit</string>
     <string name="full_screen">Full screen</string>
@@ -15,7 +17,9 @@
     <string name="count">Count</string>
     <string name="counter_groups">Counter groups</string>
     <string name="decreasing">Decreasing</string>
+    <string name="descending">Descending</string>
     <string name="delete">Delete</string>
+    <string name="delete_all_counters">Delete all counters</string>
     <string name="groups">Groups</string>
     <string name="increasing">Increasing</string>
     <string name="name">Name</string>
@@ -29,7 +33,11 @@
     <string name="no_statistics">You have no statistics</string>
     <string name="notes">Notes</string>
     <string name="objective">Objective</string>
+    <string name="rename">Rename</string>
     <string name="reset">Reset</string>
+    <string name="reset_all_counters">Reset all counters</string>
     <string name="simple_counter">Simple counter</string>
     <string name="statistics">Statistics</string>
+    <string name="select_group">Select a group</string>
+    <string name="touch_or_leave_empty">Touch or leave empty</string>
 </resources>

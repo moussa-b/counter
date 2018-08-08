@@ -17,6 +17,7 @@ import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.statistics.StatisticsActivity;
 
+import static android.text.TextUtils.isEmpty;
 import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
 import static com.mbo.counter.statistics.StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
 
@@ -26,6 +27,8 @@ import static com.mbo.counter.statistics.StatisticsFragment.ARGUMENT_STATISTICS_
 public class CounterFragment extends Fragment implements CounterContract.View
 {
     public static final String ARGUMENT_COUNTER_ID = "COUNTER_ID";
+    public static int progressBarRotation = 90;
+    public static final int ROTATION_ANGLE = 10;
 
     private TextView mName, mCount, mLimit;
 
@@ -62,7 +65,11 @@ public class CounterFragment extends Fragment implements CounterContract.View
             {
                 int count = mPresenter.incrementCounter();
                 setCount(count);
-                setProgression(mPresenter.getLimit(), count);
+                int limit = mPresenter.getLimit();
+                if (limit != 0)
+                    setProgression(limit, count);
+                else
+                    rotateProgressBar(-ROTATION_ANGLE);
             }
         });
 
@@ -73,7 +80,11 @@ public class CounterFragment extends Fragment implements CounterContract.View
             {
                 int count = mPresenter.decrementCounter();
                 setCount(count);
-                setProgression(mPresenter.getLimit(), count);
+                int limit = mPresenter.getLimit();
+                if (limit != 0)
+                    setProgression(limit, count);
+                else
+                    rotateProgressBar(ROTATION_ANGLE);
             }
         });
 
@@ -84,7 +95,8 @@ public class CounterFragment extends Fragment implements CounterContract.View
             {
                 mPresenter.resetCounter();
                 setCount(0);
-                setProgression(mPresenter.getLimit(), 0);
+                if (mPresenter.getLimit() != 0)
+                    setProgression(mPresenter.getLimit(), 0);
             }
         });
 
@@ -127,13 +139,26 @@ public class CounterFragment extends Fragment implements CounterContract.View
     @Override
     public void setName(String name)
     {
-        mName.setText(name);
+        if (!isEmpty(name))
+            mName.setText(name);
+        else
+            mName.setVisibility(View.GONE);
     }
 
     @Override
     public void setLimit(int limit)
     {
-        mLimit.setText(String.format("%s : %s", getString(R.string.objective), String.valueOf(limit)));
+        if (limit != 0)
+            mLimit.setText(String.format("%s : %s", getString(R.string.objective), String.valueOf(limit)));
+        else
+            mLimit.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void rotateProgressBar(int angle)
+    {
+        progressBarRotation -= angle;
+        mProgressBar.setRotation(progressBarRotation);
     }
 
     @Override
@@ -145,9 +170,13 @@ public class CounterFragment extends Fragment implements CounterContract.View
     @Override
     public void setProgression(int limit, int count)
     {
-        // dans le cas d'un compteur infini mettre en gradient qui du blanc et simplement faire tourner le cercle de 10°
-        float progression = 100 * (float) count / (float) limit;
-        mProgressBar.setProgress((int) progression);
+        if (limit == 0)
+            mProgressBar.setProgress(100);
+        else
+        {
+            float progression = 100 * (float) count / (float) limit;
+            mProgressBar.setProgress((int) progression);
+        }
     }
 
     @Override
