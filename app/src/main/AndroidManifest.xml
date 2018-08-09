@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.mbo.counter">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".CounterApplication"
         android:allowBackup="true"
@@ -32,6 +34,10 @@
         <activity android:name=".countersettings.CounterSettingsActivity"/>
 
         <activity android:name=".countergrouplist.CounterGroupListActivity"/>
-    </application>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7e8a986867a519186bc346db093c31080833293e"/>
+
+    </application>
 </manifest>
