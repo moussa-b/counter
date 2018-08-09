@@ -31,12 +31,6 @@ public interface CounterContract
 
     interface Presenter extends BasePresenter
     {
-        void addDecrementStatistics();
-
-        void addIncrementStatistics();
-
-        void addResetStatistics();
-
         int getCounterId();
 
         int getLimit();
@@ -46,8 +40,6 @@ public interface CounterContract
         int incrementCounter();
 
         void resetCounter();
-
-        void saveCounter(Counter counter);
 
         void populateCounter();
     }

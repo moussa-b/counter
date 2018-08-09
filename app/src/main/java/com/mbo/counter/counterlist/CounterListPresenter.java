@@ -3,12 +3,9 @@ package com.mbo.counter.counterlist;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.Statistics;
-import com.mbo.counter.data.model.StatisticsType;
 import com.mbo.counter.data.source.CounterDataSource;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 
-import java.util.Date;
 import java.util.List;
 
 public class CounterListPresenter implements CounterListContract.Presenter
@@ -33,32 +30,13 @@ public class CounterListPresenter implements CounterListContract.Presenter
     }
 
     @Override
-    public void decrementCounter(final int position, final int counterId)
+    public void decrementCounter(final int position, final int counterId, int limit)
     {
-        mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
-        {
-            @Override
-            public void onCounterLoaded(Counter counter)
-            {
-                if ((counter.getCount() - counter.getStep()) >= 0)
-                    counter.setCount(counter.getCount() - counter.getStep());
-                else
-                    counter.setCount(counter.getLimit() + counter.getCount() - counter.getStep());
+        int count = mCounterDataSource.decrementCounter(counterId);
+        mCounterListView.setCount(position, count);
+        int progression = (int) (100 * (float) count / ((float) limit));
+        mCounterListView.setProgression(position, progression);
 
-                mCounterDataSource.saveCounter(counter);
-                mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, -counter.getStep(), StatisticsType.DECREMENT));
-                mCounterListView.setCount(position, counter.getCount());
-                int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
-                mCounterListView.setProgression(position, progression);
-
-            }
-
-            @Override
-            public void onDataNotAvailable()
-            {
-
-            }
-        });
     }
 
     @Override
@@ -76,31 +54,12 @@ public class CounterListPresenter implements CounterListContract.Presenter
     }
 
     @Override
-    public void incrementCounter(final int position, final int counterId)
+    public void incrementCounter(final int position, final int counterId, int limit)
     {
-        mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
-        {
-            @Override
-            public void onCounterLoaded(Counter counter)
-            {
-                if ((counter.getCount() + counter.getStep()) <= counter.getLimit())
-                    counter.setCount(counter.getCount() + counter.getStep());
-                else
-                    counter.setCount((counter.getCount() + counter.getStep()) - counter.getLimit());
-
-                mCounterDataSource.saveCounter(counter);
-                mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, counter.getStep(), StatisticsType.INCREMENT));
-                mCounterListView.setCount(position, counter.getCount());
-                int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
-                mCounterListView.setProgression(position, progression);
-            }
-
-            @Override
-            public void onDataNotAvailable()
-            {
-
-            }
-        });
+        int count = mCounterDataSource.incrementCounter(counterId);
+        mCounterListView.setCount(position, count);
+        int progression = (int) (100 * (float) count / ((float) limit));
+        mCounterListView.setProgression(position, progression);
     }
 
     @Override
@@ -125,24 +84,9 @@ public class CounterListPresenter implements CounterListContract.Presenter
     @Override
     public void resetCounter(final int position, final int counterId)
     {
-        mCounterDataSource.getCounter(counterId, new CounterDataSource.GetCounterCallback()
-        {
-            @Override
-            public void onCounterLoaded(Counter counter)
-            {
-                counter.setCount(0);
-                mCounterDataSource.saveCounter(counter);
-                mCounterDataSource.addStatistics(new Statistics(new Date(), counterId, 0, StatisticsType.RESET));
-                mCounterListView.setCount(position, 0);
-                mCounterListView.setProgression(position, 0);
-            }
-
-            @Override
-            public void onDataNotAvailable()
-            {
-
-            }
-        });
+        mCounterDataSource.resetCounter(counterId);
+        mCounterListView.setCount(position, 0);
+        mCounterListView.setProgression(position, 0);
     }
 
     private void processCounters(List<Counter> counters)

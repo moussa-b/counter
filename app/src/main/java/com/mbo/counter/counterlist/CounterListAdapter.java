@@ -73,7 +73,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             @Override
             public void onClick(View v)
             {
-                mCounterListener.onCounterDecrement(position, counter.getId());
+                mCounterListener.onCounterDecrement(position, counter.getId(), counter.getLimit());
             }
         });
         counterViewHolder.increaseCounterImageButton.setOnClickListener(new View.OnClickListener()
@@ -81,7 +81,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             @Override
             public void onClick(View v)
             {
-                mCounterListener.onCounterIncrement(position, counter.getId());
+                mCounterListener.onCounterIncrement(position, counter.getId(), counter.getLimit());
             }
         });
         counterViewHolder.editCounterImageView.setOnClickListener(new View.OnClickListener()

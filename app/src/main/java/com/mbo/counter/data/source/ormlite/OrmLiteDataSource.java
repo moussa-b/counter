@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import static com.mbo.counter.data.model.StatisticsType.DECREMENT;
+import static com.mbo.counter.data.model.StatisticsType.INCREMENT;
+import static com.mbo.counter.data.model.StatisticsType.RESET;
+
 public class OrmLiteDataSource implements CounterDataSource
 {
     private static OrmLiteDataSource INSTANCE;
@@ -67,190 +71,32 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void duplicateCounter(int counterId)
-    {
-        try
-        {
-            Counter counter = mDaoCounter.queryForId((long) counterId);
-            if (counter != null)
-            {
-                counter.setId(0);
-                counter.setCreationDate(new Date());
-                counter.setLastModificationDate(new Date());
-                mDaoCounter.create(counter);
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void duplicateCounterGroup(int counterGroupId)
-    {
-        try
-        {
-            CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
-            if (counterGroup != null)
-            {
-                counterGroup.setId(0);
-                counterGroup.setCreationDate(new Date());
-                counterGroup.setLastModificationDate(new Date());
-                mDaoCounterGroup.create(counterGroup);
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback)
-    {
-        try
-        {
-            final List<Statistics.Row> statistics = mDaoStatistics.getCounterStatisticsById(counterId);
-            if (statistics != null)
-            {
-                callback.onStatisticsLoaded(statistics);
-            }
-            else
-            {
-                callback.onDataNotAvailable();
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void getCounters(@NonNull LoadCountersCallback callback)
-    {
-        try
-        {
-            final List<Counter> counters = mDaoCounter.queryBuilder().where().ne("id", 1).query();
-            if (counters != null)
-            {
-                callback.onCountersLoaded(counters);
-            }
-            else
-            {
-                callback.onDataNotAvailable();
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void getCounter(int counterId, @NonNull GetCounterCallback callback)
+    public int decrementCounter(int counterId)
     {
         try
         {
             final Counter counter = mDaoCounter.queryForId((long) counterId);
             if (counter != null)
             {
-                callback.onCounterLoaded(counter);
-            }
-            else
-            {
-                callback.onDataNotAvailable();
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
+                Date today = new Date();
+                counter.setLastModificationDate(today);
 
-    @Override
-    public void getCounterGroups(@NonNull LoadCounterGroupsCallback callback)
-    {
-        try
-        {
-            final List<CounterGroup> counters = mDaoCounterGroup.queryBuilder().where().ne("id", 1).query();
-            if (counters != null)
-            {
-                callback.onCounterGroupsLoaded(counters);
-            }
-            else
-            {
-                callback.onDataNotAvailable();
+                if (counter.getLimit() == 0 || (counter.getCount() - counter.getStep()) >= 0)
+                    counter.setCount(counter.getCount() - counter.getStep());
+                else
+                    counter.setCount(counter.getLimit() + counter.getCount() - counter.getStep());
+
+                mDaoCounter.update(counter);
+                mDaoStatistics.create(new Statistics(today, counter.getId(), 0, DECREMENT));
+                return counter.getCount();
             }
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
-    }
 
-    @Override
-    public void getCounterGroup(int counterId, @NonNull GetCounterGroupCallback callback)
-    {
-        try
-        {
-            final CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterId);
-            if (counterGroup != null)
-            {
-                callback.onCounterGroupLoaded(counterGroup);
-            }
-            else
-            {
-                callback.onDataNotAvailable();
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void saveCounter(@NonNull Counter counter)
-    {
-        try
-        {
-            if (counter.getCreationDate() == null)
-                counter.setCreationDate(new Date());
-
-            counter.setLastModificationDate(new Date());
-
-            mDaoCounter.createOrUpdate(counter);
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void saveCounterGroup(@NonNull CounterGroup counterGroup)
-    {
-        try
-        {
-            if (counterGroup.getCreationDate() == null)
-                counterGroup.setCreationDate(new Date());
-
-            counterGroup.setLastModificationDate(new Date());
-
-            mDaoCounterGroup.createOrUpdate(counterGroup);
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void refreshCounters()
-    {
-
+        return 0;
     }
 
     @Override
@@ -300,6 +146,277 @@ public class OrmLiteDataSource implements CounterDataSource
         try
         {
             mDaoCounterGroup.deleteById((long) counterGroupId);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteCountersInGroup(int counterGroupId)
+    {
+        try
+        {
+            CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
+            if (counterGroup != null && counterGroup.getCounters() != null && counterGroup.getCounters().size() > 0)
+            {
+                counterGroup.getCounters().clear();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void duplicateCounter(int counterId)
+    {
+        try
+        {
+            Counter counter = mDaoCounter.queryForId((long) counterId);
+            if (counter != null)
+            {
+                counter.setId(0);
+                counter.setCreationDate(new Date());
+                counter.setLastModificationDate(new Date());
+                mDaoCounter.create(counter);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void duplicateCounterGroup(int counterGroupId)
+    {
+        try
+        {
+            CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
+            if (counterGroup != null)
+            {
+                counterGroup.setId(0);
+                counterGroup.setCreationDate(new Date());
+                counterGroup.setLastModificationDate(new Date());
+                mDaoCounterGroup.create(counterGroup);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getCounter(int counterId, @NonNull GetCounterCallback callback)
+    {
+        try
+        {
+            final Counter counter = mDaoCounter.queryForId((long) counterId);
+            if (counter != null)
+            {
+                callback.onCounterLoaded(counter);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getCounters(@NonNull LoadCountersCallback callback)
+    {
+        try
+        {
+            final List<Counter> counters = mDaoCounter.queryBuilder().where().ne("id", 1).query();
+            if (counters != null)
+            {
+                callback.onCountersLoaded(counters);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getCounterGroup(int counterId, @NonNull GetCounterGroupCallback callback)
+    {
+        try
+        {
+            final CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterId);
+            if (counterGroup != null)
+            {
+                callback.onCounterGroupLoaded(counterGroup);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getCounterGroups(@NonNull LoadCounterGroupsCallback callback)
+    {
+        try
+        {
+            final List<CounterGroup> counters = mDaoCounterGroup.queryBuilder().where().ne("id", 1).query();
+            if (counters != null)
+            {
+                callback.onCounterGroupsLoaded(counters);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback)
+    {
+        try
+        {
+            final List<Statistics.Row> statistics = mDaoStatistics.getCounterStatisticsById(counterId);
+            if (statistics != null)
+            {
+                callback.onStatisticsLoaded(statistics);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int incrementCounter(int counterId)
+    {
+        try
+        {
+            final Counter counter = mDaoCounter.queryForId((long) counterId);
+            if (counter != null)
+            {
+                Date today = new Date();
+                counter.setLastModificationDate(today);
+
+                if (counter.getLimit() == 0 || (counter.getCount() + counter.getStep()) <= counter.getLimit())
+                    counter.setCount(counter.getCount() + counter.getStep());
+                else
+                    counter.setCount((counter.getCount() + counter.getStep()) - counter.getLimit());
+
+                mDaoCounter.update(counter);
+                mDaoStatistics.create(new Statistics(today, counter.getId(), 0, INCREMENT));
+                return counter.getCount();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public void saveCounter(@NonNull Counter counter)
+    {
+        try
+        {
+            if (counter.getCreationDate() == null)
+                counter.setCreationDate(new Date());
+
+            counter.setLastModificationDate(new Date());
+
+            mDaoCounter.createOrUpdate(counter);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void resetCounter(int counterId)
+    {
+        try
+        {
+            final Counter counter = mDaoCounter.queryForId((long) counterId);
+            if (counter != null)
+            {
+                Date today = new Date();
+                counter.setLastModificationDate(today);
+                counter.setCount(0);
+                mDaoCounter.update(counter);
+                mDaoStatistics.create(new Statistics(today, counter.getId(), 0, RESET));
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void resetCountersInGroup(int counterGroupId)
+    {
+        try
+        {
+            final CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
+            if (counterGroup != null && counterGroup.getCounters() != null && counterGroup.getCounters().size() > 0)
+            {
+                for (Counter counter : counterGroup.getCounters())
+                {
+                    Date today = new Date();
+                    counter.setCount(0);
+                    counter.setLastModificationDate(today);
+                    mDaoCounter.update(counter);
+                    mDaoStatistics.create(new Statistics(today, counter.getId(), 0, RESET));
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveCounterGroup(@NonNull CounterGroup counterGroup)
+    {
+        try
+        {
+            if (counterGroup.getCreationDate() == null)
+                counterGroup.setCreationDate(new Date());
+
+            counterGroup.setLastModificationDate(new Date());
+
+            mDaoCounterGroup.createOrUpdate(counterGroup);
         }
         catch (SQLException e)
         {

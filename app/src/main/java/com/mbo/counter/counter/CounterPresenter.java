@@ -3,11 +3,7 @@ package com.mbo.counter.counter;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.Statistics;
-import com.mbo.counter.data.model.StatisticsType;
 import com.mbo.counter.data.source.CounterDataSource;
-
-import java.util.Date;
 
 public class CounterPresenter implements CounterContract.Presenter
 {
@@ -38,24 +34,6 @@ public class CounterPresenter implements CounterContract.Presenter
     }
 
     @Override
-    public void addDecrementStatistics()
-    {
-        mCounterDataSource.addStatistics(new Statistics(new Date(), mCounterId, -mCounter.getStep(), StatisticsType.DECREMENT));
-    }
-
-    @Override
-    public void addIncrementStatistics()
-    {
-        mCounterDataSource.addStatistics(new Statistics(new Date(), mCounterId, mCounter.getStep(), StatisticsType.INCREMENT));
-    }
-
-    @Override
-    public void addResetStatistics()
-    {
-        mCounterDataSource.addStatistics(new Statistics(new Date(), mCounterId, 0, StatisticsType.RESET));
-    }
-
-    @Override
     public int getCounterId()
     {
         return mCounterId;
@@ -70,43 +48,19 @@ public class CounterPresenter implements CounterContract.Presenter
     @Override
     public int decrementCounter()
     {
-        if ((mCounter.getCount() - mCounter.getStep()) >= 0)
-            mCounter.setCount(mCounter.getCount() - mCounter.getStep());
-        else
-            mCounter.setCount(mCounter.getLimit() + mCounter.getCount() - mCounter.getStep());
-
-        saveCounter(mCounter);
-        addDecrementStatistics();
-
-        return mCounter.getCount();
+        return mCounterDataSource.decrementCounter(mCounter.getId());
     }
 
     @Override
     public int incrementCounter()
     {
-        if ((mCounter.getCount() + mCounter.getStep()) <= mCounter.getLimit())
-            mCounter.setCount(mCounter.getCount() + mCounter.getStep());
-        else
-            mCounter.setCount((mCounter.getCount() + mCounter.getStep()) - mCounter.getLimit());
-
-        saveCounter(mCounter);
-        addIncrementStatistics();
-
-        return mCounter.getCount();
+        return mCounterDataSource.incrementCounter(mCounter.getId());
     }
 
     @Override
     public void resetCounter()
     {
-        mCounter.setCount(0);
-        saveCounter(mCounter);
-        addResetStatistics();
-    }
-
-    @Override
-    public void saveCounter(Counter counter)
-    {
-        mCounterDataSource.saveCounter(counter);
+        mCounterDataSource.resetCounter(mCounter.getId());
     }
 
     @Override

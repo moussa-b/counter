@@ -6,9 +6,9 @@ import com.mbo.counter.data.model.Counter;
 
 public interface CounterItemListener
 {
-    void onCounterDecrement(int position, int counterId);
+    void onCounterDecrement(int position, int counterId, int limit);
 
-    void onCounterIncrement(int position, int counterId);
+    void onCounterIncrement(int position, int counterId, int limit);
 
     void onCounterShowMenu(View view, Counter clickedCounter, int position);
 }

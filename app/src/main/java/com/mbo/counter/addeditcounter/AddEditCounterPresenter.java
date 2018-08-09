@@ -42,6 +42,12 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     }
 
     @Override
+    public Counter getCounter()
+    {
+        return mCounter;
+    }
+
+    @Override
     public void loadCounterGroups()
     {
         mCounterDataSource.getCounterGroups(new CounterDataSource.LoadCounterGroupsCallback()
@@ -82,7 +88,7 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
             public void onCounterLoaded(Counter counter)
             {
                 mAddCounterView.setName(counter.getName());
-                mAddCounterView.setCount(counter.getCount());
+                mAddCounterView.setLimit(counter.getLimit());
                 mAddCounterView.setNote(counter.getNote());
                 mCounter = counter;
             }

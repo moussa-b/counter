@@ -2,6 +2,7 @@ package com.mbo.counter.addeditcounter;
 
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;
+import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.model.CounterGroup;
 
 import java.util.List;
@@ -15,11 +16,15 @@ public interface AddEditCounterContract
     {
         void processCounterGroups(List<CounterGroup> counterGroups);
 
-        void setCount(int count);
+        void saveCounter();
 
         void setColor(String color);
 
         void setDirection(String direction);
+
+        void setLimit(int limit);
+
+        void setListeners();
 
         void setNote(String note);
 
@@ -30,6 +35,8 @@ public interface AddEditCounterContract
 
     interface Presenter extends BasePresenter
     {
+        Counter getCounter();
+
         void loadCounterGroups();
 
         void saveCounter();

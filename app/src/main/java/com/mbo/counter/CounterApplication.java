@@ -13,7 +13,8 @@ public class CounterApplication extends Application
     public void onCreate()
     {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        if (!BuildConfig.DEBUG)
+            Fabric.with(this, new Crashlytics());
         OrmLiteDataSource.initialize(new OrmLiteHelper(getApplicationContext()));
     }
 }

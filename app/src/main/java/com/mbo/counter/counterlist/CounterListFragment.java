@@ -41,15 +41,15 @@ public class CounterListFragment extends Fragment implements CounterListContract
     private CounterItemListener mCounterListener = new CounterItemListener()
     {
         @Override
-        public void onCounterDecrement(int position, int counterId)
+        public void onCounterDecrement(int position, int counterId, int limit)
         {
-            mPresenter.decrementCounter(position, counterId);
+            mPresenter.decrementCounter(position, counterId, limit);
         }
 
         @Override
-        public void onCounterIncrement(int position, int counterId)
+        public void onCounterIncrement(int position, int counterId, int limit)
         {
-            mPresenter.incrementCounter(position, counterId);
+            mPresenter.incrementCounter(position, counterId, limit);
         }
 
         @Override

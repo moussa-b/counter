@@ -19,6 +19,8 @@ import com.mbo.counter.counter.CounterActivity;
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.statistics.StatisticsActivity;
+import com.mbo.counter.utils.CallBack;
+import com.mbo.counter.utils.CounterGroupUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +91,7 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
         }
 
         @Override
-        public void onCounterGroupShowMenu(View view, final CounterGroup clickedCounterGroup, int groupPosition)
+        public void onCounterGroupShowMenu(View view, final CounterGroup clickedCounterGroup, final int groupPosition)
         {
             if (getActivity() != null)
             {
@@ -101,10 +103,13 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
                         switch (item.getItemId())
                         {
                             case R.id.action_rename:
+                                renameCounterGroup(groupPosition);
                                 return true;
                             case R.id.action_reset_all:
+                                mPresenter.resetCountersInGroup(clickedCounterGroup.getId());
                                 return true;
                             case R.id.action_delete_all:
+                                mPresenter.deleteCountersInGroup(clickedCounterGroup.getId());
                                 return true;
                             case R.id.action_duplicate:
                                 mPresenter.duplicateCounterGroup(clickedCounterGroup.getId());
@@ -113,6 +118,7 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
                                 mPresenter.deleteCounterGroup(clickedCounterGroup.getId());
                                 return true;
                             case R.id.action_statistics:
+                                // TODO faire les statistics par groupe
                                 return true;
                             default:
                                 return false;
@@ -212,5 +218,21 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
         Intent intent = new Intent(getContext(), StatisticsActivity.class);
         intent.putExtra(ARGUMENT_STATISTICS_COUNTER_ID, counterId);
         startActivityForResult(intent, REQUEST_COUNTER);
+    }
+
+    @Override
+    public void renameCounterGroup(final int groupPosition)
+    {
+        final CounterGroup counterGroup = ((CounterGroup) mExpandableAdapter.getGroup(groupPosition));
+        CounterGroupUtils.showAddCounterGroup(getContext(), counterGroup.getName(), new CallBack()
+        {
+            @Override
+            public void execute(Object data)
+            {
+                counterGroup.setName((String) data);
+                mPresenter.saveCounterGroup(counterGroup);
+                mExpandableAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

@@ -18,11 +18,13 @@ import static com.mbo.commons.utils.Utils.convertDpToPixel;
 
 public class CounterGroupUtils
 {
-    public static void showAddCounterGroup(Context context, final CallBack callBack)
+    public static void showAddCounterGroup(Context context, String counterGroupName, final CallBack callBack)
     {
         if (context != null)
         {
             final EditText addCounterGroupEditText = new EditText(context);
+            if (counterGroupName != null)
+                addCounterGroupEditText.setText(counterGroupName);
             addCounterGroupEditText.setInputType(InputType.TYPE_CLASS_TEXT);
             addCounterGroupEditText.setSingleLine();
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -32,12 +34,13 @@ public class CounterGroupUtils
             addCounterGroupEditText.setLayoutParams(params);
             FrameLayout container = new FrameLayout(context);
             container.addView(addCounterGroupEditText);
+            String positiveButtonLabel = counterGroupName == null ? context.getString(R.string.add) : context.getString(R.string.validate);
 
             final AlertDialog dialog = new AlertDialog.Builder(context)
                     .setTitle(context.getString(R.string.add_counter_group_dialog_title))
                     .setMessage(context.getString(R.string.add_counter_group_dialog_message))
                     .setView(container)
-                    .setPositiveButton(context.getString(R.string.add), new DialogInterface.OnClickListener()
+                    .setPositiveButton(positiveButtonLabel, new DialogInterface.OnClickListener()
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which)
@@ -80,6 +83,10 @@ public class CounterGroupUtils
                 }
             });
         }
+    }
 
+    public static void showAddCounterGroup(Context context, final CallBack callBack)
+    {
+        showAddCounterGroup(context, null, callBack);
     }
 }

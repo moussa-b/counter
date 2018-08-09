@@ -21,6 +21,8 @@ public interface CounterGroupListContract
         void showNoCounterGroups();
 
         void showCounterStatisticsUi(int counterId);
+
+        void renameCounterGroup(int groupPosition);
     }
 
     interface Presenter extends BasePresenter
@@ -31,6 +33,8 @@ public interface CounterGroupListContract
 
         void deleteCounterGroup(int counterGroupId);
 
+        void deleteCountersInGroup(int counterGroupId);
+
         void duplicateCounter(int counterId);
 
         void duplicateCounterGroup(int counterGroupId);
@@ -40,5 +44,9 @@ public interface CounterGroupListContract
         void loadCounterGroups();
 
         void resetCounter(int groupPosition, int childPosition, int counterId);
+
+        void resetCountersInGroup(int counterGroupId);
+
+        void saveCounterGroup(CounterGroup counterGroup);
     }
 }

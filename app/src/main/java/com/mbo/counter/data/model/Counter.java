@@ -50,6 +50,7 @@ public class Counter
 
     public Counter()
     {
+        this.step = 1;
     }
 
     public Counter(String name)

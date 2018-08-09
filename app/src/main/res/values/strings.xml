@@ -22,7 +22,9 @@
     <string name="delete_all_counters">Delete all counters</string>
     <string name="groups">Groups</string>
     <string name="increasing">Increasing</string>
+    <string name="limit">Limit</string>
     <string name="name">Name</string>
+    <string name="name_required_warning">Name is required</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_title">Android Studio</string>
@@ -40,4 +42,5 @@
     <string name="statistics">Statistics</string>
     <string name="select_group">Select a group</string>
     <string name="touch_or_leave_empty">Touch or leave empty</string>
+    <string name="validate">Validate</string>
 </resources>

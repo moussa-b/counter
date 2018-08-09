@@ -32,13 +32,13 @@ public interface CounterListContract
 
     interface Presenter extends BasePresenter
     {
-        void decrementCounter(final int position, final int counterId);
+        void decrementCounter(final int position, final int counterId, int limit);
 
         void deleteCounter(int counterId);
 
         void duplicateCounter(int counterId);
 
-        void incrementCounter(final int position, final int counterId);
+        void incrementCounter(final int position, final int counterId, int limit);
 
         void loadCounters();
 
