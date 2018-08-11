@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mbo.counter.R;
@@ -35,7 +35,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
 
     private TextInputEditText mName, mLimit, mNote, mStep;
 
-    private AutoCompleteTextView mGroup;
+    private Spinner mGroup;
 
     private Button mChangeColor;
 
@@ -83,17 +83,52 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
         mLimit = root.findViewById(R.id.limit_text_input);
         mNote = root.findViewById(R.id.note_text_input);
         mStep = root.findViewById(R.id.step_text_input);
-        mGroup = root.findViewById(R.id.group_auto_complete_text_view);
+        mGroup = root.findViewById(R.id.group_spinner);
         mChangeColor = root.findViewById(R.id.change_color_button);
+        mCounterGroupsName.add(getString(R.string.select_group));
         mCounterGroupsName.add("+ " + getString(R.string.add_counter_group));
-        mCounterGroups.add(new CounterGroup("+ " + getString(R.string.add_counter_group)));
         if (getActivity() != null)
         {
             mAutoCompleteAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, mCounterGroupsName);
             mGroup.setAdapter(mAutoCompleteAdapter);
-        }
+            mGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+                    if (position == 1)
+                    {
+                        CounterGroupUtils.showAddCounterGroup(getContext(), new CallBack()
+                        {
+                            @Override
+                            public void execute(Object data)
+                            {
+                                CounterGroup counterGroup = new CounterGroup((String) data);
+                                mPresenter.saveCounterGroup(counterGroup);
 
-        setListeners();
+                                mCounterGroupsName.add(counterGroup.getName());
+                                mCounterGroups.add(counterGroup);
+                                mPresenter.getCounter().setCounterGroup(counterGroup);
+
+                                mAutoCompleteAdapter.notifyDataSetChanged();
+                                mGroup.setSelection(mCounterGroupsName.size() - 1);
+                            }
+                        });
+                    }
+                    else if (position != 0)
+                    {
+                        CounterGroup counterGroup = mCounterGroups.get(position - 2);
+                        mPresenter.getCounter().setCounterGroup(counterGroup);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent)
+                {
+
+                }
+            });
+        }
 
         return root;
     }
@@ -161,59 +196,17 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     @Override
     public void setGroup(CounterGroup counterGroup)
     {
-
+        for (int i = 0; i < mCounterGroups.size(); i++)
+        {
+            if (mCounterGroups.get(i).getId() == counterGroup.getId())
+                mGroup.setSelection(i + 2); // + 2 because spinner has 2 extra entries "Select Group" and "Create Groupe"
+        }
     }
 
     @Override
     public void setLimit(int limit)
     {
         mLimit.setText(String.valueOf(limit));
-    }
-
-    @Override
-    public void setListeners()
-    {
-        mGroup.setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus)
-            {
-                if (hasFocus)
-                    mGroup.showDropDown();
-            }
-        });
-
-        mGroup.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View arg1, int pos, long id)
-            {
-                if (pos == 0)
-                {
-                    CounterGroupUtils.showAddCounterGroup(getContext(), new CallBack()
-                    {
-                        @Override
-                        public void execute(Object data)
-                        {
-                            CounterGroup counterGroup = new CounterGroup((String) data);
-                            mPresenter.saveCounterGroup(counterGroup);
-
-                            mCounterGroupsName.add(counterGroup.getName());
-                            mCounterGroups.add(counterGroup);
-                            mPresenter.getCounter().setCounterGroup(counterGroup);
-
-                            mAutoCompleteAdapter.notifyDataSetChanged();
-                            mGroup.setSelection(mCounterGroupsName.size() - 1);
-                        }
-                    });
-                }
-                else
-                {
-                    CounterGroup counterGroup = mCounterGroups.get(pos);
-                    mPresenter.getCounter().setCounterGroup(counterGroup);
-                }
-            }
-        });
     }
 
     @Override

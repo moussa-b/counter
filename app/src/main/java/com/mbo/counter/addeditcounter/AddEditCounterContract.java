@@ -24,8 +24,6 @@ public interface AddEditCounterContract
 
         void setLimit(int limit);
 
-        void setListeners();
-
         void setNote(String note);
 
         void setName(String name);

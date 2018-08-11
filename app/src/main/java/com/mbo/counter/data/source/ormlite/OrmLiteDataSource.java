@@ -145,6 +145,11 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
+            CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
+            if (counterGroup != null && counterGroup.getCounters() != null && counterGroup.getCounters().size() > 0)
+            {
+                counterGroup.getCounters().clear();
+            }
             mDaoCounterGroup.deleteById((long) counterGroupId);
         }
         catch (SQLException e)
@@ -253,11 +258,11 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void getCounterGroup(int counterId, @NonNull GetCounterGroupCallback callback)
+    public void getCounterGroup(int counterGroupId, @NonNull GetCounterGroupCallback callback)
     {
         try
         {
-            final CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterId);
+            final CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
             if (counterGroup != null)
             {
                 callback.onCounterGroupLoaded(counterGroup);
