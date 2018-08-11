@@ -20,7 +20,7 @@ public interface AddEditCounterContract
 
         void setColor(String color);
 
-        void setDirection(String direction);
+        void setGroup(CounterGroup counterGroup);
 
         void setLimit(int limit);
 
@@ -29,6 +29,8 @@ public interface AddEditCounterContract
         void setNote(String note);
 
         void setName(String name);
+
+        void setStep(int step);
 
         void showCountersList();
     }

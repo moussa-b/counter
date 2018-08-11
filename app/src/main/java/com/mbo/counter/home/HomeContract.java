@@ -13,17 +13,27 @@ public interface HomeContract
     {
         void closeFabMenu();
 
+        void contactUs();
+
         int getCheckedSegmentedButton();
 
         boolean isFabMenuOpen();
 
         void prepareViewByCheckedId(int id);
 
+        void shareApplication();
+
+        void showAboutUi();
+
         void showAddCounter();
 
         void showAddCounterGroup();
 
+        void showEvaluateUi();
+
         void showFabMenu();
+
+        void showSettingsUi();
 
         void toggleFabVisibility(boolean visible);
     }

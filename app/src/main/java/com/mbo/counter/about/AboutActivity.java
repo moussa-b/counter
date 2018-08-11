@@ -1,4 +1,4 @@
-package com.mbo.counter.settings;
+package com.mbo.counter.about;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.mbo.commons.utils.Utils;
 import com.mbo.counter.R;
 
-public class SettingsActivity extends AppCompatActivity
+public class AboutActivity extends AppCompatActivity
 {
 
     private ActionBar mActionBar;
@@ -24,15 +24,15 @@ public class SettingsActivity extends AppCompatActivity
         {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setDisplayShowHomeEnabled(true);
-            mActionBar.setTitle(R.string.settings);
+            mActionBar.setTitle(getString(R.string.about) + " " + getString(R.string.app_name));
         }
 
-        SettingsFragment settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (settingsFragment == null)
+        AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (aboutFragment == null)
         {
             // Create the fragment
-            settingsFragment = SettingsFragment.newInstance();
-            Utils.addFragmentToActivity(getSupportFragmentManager(), settingsFragment, R.id.contentFrame);
+            aboutFragment = AboutFragment.newInstance();
+            Utils.addFragmentToActivity(getSupportFragmentManager(), aboutFragment, R.id.contentFrame);
         }
     }
 

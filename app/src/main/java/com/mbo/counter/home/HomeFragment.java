@@ -2,31 +2,27 @@ package com.mbo.counter.home;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.mbo.commons.utils.Utils;
 import com.mbo.commons.widgets.SegmentedButton;
 import com.mbo.commons.widgets.SegmentedButtonGroup;
 import com.mbo.counter.R;
+import com.mbo.counter.about.AboutActivity;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.counter.CounterFragment;
 import com.mbo.counter.counter.CounterPresenter;
@@ -36,10 +32,12 @@ import com.mbo.counter.counterlist.CounterListFragment;
 import com.mbo.counter.counterlist.CounterListPresenter;
 import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
+import com.mbo.counter.settings.SettingsActivity;
 import com.mbo.counter.utils.CallBack;
 import com.mbo.counter.utils.CounterGroupUtils;
+import com.mbo.counter.utils.PropertiesReader;
 
-import static com.mbo.commons.utils.Utils.convertDpToPixel;
+import java.util.Properties;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -170,6 +168,13 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
+    public void showSettingsUi()
+    {
+        Intent intent = new Intent(getContext(), SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public void closeFabMenu()
     {
         isFabOpen = false;
@@ -205,6 +210,32 @@ public class HomeFragment extends Fragment implements HomeContract.View
 
             }
         });
+    }
+
+    @Override
+    public void contactUs()
+    {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+
+        PropertiesReader propertiesReader = new PropertiesReader(getContext());
+        Properties properties = propertiesReader.getProperties("configuration.properties");
+        if (properties != null)
+        {
+            String mailTo = "mailto:" + properties.getProperty("contact_email") +
+                    "?subject=" + Uri.encode(getString(R.string.app_name)) +
+                    "&body=" + Uri.encode("Hello");
+
+            emailIntent.setData(Uri.parse(mailTo));
+
+            try
+            {
+                startActivity(emailIntent);
+            }
+            catch (ActivityNotFoundException e)
+            {
+                Toast.makeText(getContext(), getString(R.string.email_warning), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -264,6 +295,30 @@ public class HomeFragment extends Fragment implements HomeContract.View
     }
 
     @Override
+    public void showEvaluateUi()
+    {
+        if (getContext() != null)
+        {
+            Uri uri = Uri.parse("market://details?id=" + getContext().getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            // To count with Play market backstack, After pressing back button,
+            // to taken back to our application, we need to add following flags to intent.
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try
+            {
+                startActivity(goToMarket);
+            }
+            catch (ActivityNotFoundException e)
+            {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + getContext().getPackageName())));
+            }
+        }
+    }
+
+    @Override
     public boolean isFabMenuOpen()
     {
         return isFabOpen;
@@ -314,5 +369,26 @@ public class HomeFragment extends Fragment implements HomeContract.View
                 transaction.hide(mCounterGroupListFragment);
         }
         transaction.commit();
+    }
+
+    @Override
+    public void shareApplication()
+    {
+        Activity activity = getActivity();
+        if (activity != null)
+        {
+            ShareCompat.IntentBuilder.from(activity)
+                    .setType("text/plain")
+                    .setChooserTitle(getString(R.string.share) + " " + getString(R.string.app_name))
+                    .setText("http://play.google.com/store/apps/details?id=" + activity.getPackageName())
+                    .startChooser();
+        }
+    }
+
+    @Override
+    public void showAboutUi()
+    {
+        Intent intent = new Intent(getContext(), AboutActivity.class);
+        startActivity(intent);
     }
 }

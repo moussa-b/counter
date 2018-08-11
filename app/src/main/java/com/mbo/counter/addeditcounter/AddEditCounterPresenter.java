@@ -33,12 +33,8 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     @Override
     public void start()
     {
-        if (mCounterId != 0)
-            populateCounter();
-        else
-            mCounter = new Counter();
-
         loadCounterGroups();
+        populateCounter();
     }
 
     @Override
@@ -82,21 +78,32 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     @Override
     public void populateCounter()
     {
-        mCounterDataSource.getCounter(mCounterId, new CounterDataSource.GetCounterCallback()
+        if (mCounterId != 0)
         {
-            @Override
-            public void onCounterLoaded(Counter counter)
+            mCounterDataSource.getCounter(mCounterId, new CounterDataSource.GetCounterCallback()
             {
-                mAddCounterView.setName(counter.getName());
-                mAddCounterView.setLimit(counter.getLimit());
-                mAddCounterView.setNote(counter.getNote());
-                mCounter = counter;
-            }
+                @Override
+                public void onCounterLoaded(Counter counter)
+                {
+                    mCounter = counter;
+                    mAddCounterView.setName(mCounter.getName());
+                    mAddCounterView.setColor(mCounter.getColor());
+                    mAddCounterView.setGroup(mCounter.getCounterGroup());
+                    mAddCounterView.setLimit(mCounter.getLimit());
+                    mAddCounterView.setStep(mCounter.getStep());
+                    mAddCounterView.setNote(mCounter.getNote());
+                }
 
-            @Override
-            public void onDataNotAvailable()
-            {
-            }
-        });
+                @Override
+                public void onDataNotAvailable()
+                {
+                }
+            });
+        }
+        else
+        {
+            mCounter = new Counter();
+            mAddCounterView.setStep(mCounter.getStep());
+        }
     }
 }

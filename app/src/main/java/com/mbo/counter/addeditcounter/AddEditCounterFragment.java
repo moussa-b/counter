@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.mbo.counter.R;
@@ -34,13 +33,11 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
 {
     public static final String ARGUMENT_EDIT_COUNTER_ID = "EDIT_COUNTER_ID";
 
-    private TextInputEditText mName, mLimit, mNote;
+    private TextInputEditText mName, mLimit, mNote, mStep;
 
     private AutoCompleteTextView mGroup;
 
     private Button mChangeColor;
-
-    private ImageButton mDecrease, mIncrease;
 
     private AddEditCounterContract.Presenter mPresenter;
 
@@ -85,10 +82,9 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
         mName = root.findViewById(R.id.name_text_input);
         mLimit = root.findViewById(R.id.limit_text_input);
         mNote = root.findViewById(R.id.note_text_input);
+        mStep = root.findViewById(R.id.step_text_input);
         mGroup = root.findViewById(R.id.group_auto_complete_text_view);
         mChangeColor = root.findViewById(R.id.change_color_button);
-        mDecrease = root.findViewById(R.id.decrease_image_view);
-        mIncrease = root.findViewById(R.id.increase_image_view);
         mCounterGroupsName.add("+ " + getString(R.string.add_counter_group));
         mCounterGroups.add(new CounterGroup("+ " + getString(R.string.add_counter_group)));
         if (getActivity() != null)
@@ -144,6 +140,8 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
             {
                 int limit = Integer.parseInt(mLimit.getText().toString());
                 counter.setLimit(limit);
+                int step = Integer.parseInt(mStep.getText().toString());
+                counter.setStep(step);
             }
             catch (NumberFormatException e)
             {
@@ -161,7 +159,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
-    public void setDirection(String direction)
+    public void setGroup(CounterGroup counterGroup)
     {
 
     }
@@ -188,7 +186,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
         mGroup.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id)
+            public void onItemClick(AdapterView<?> parent, final View arg1, int pos, long id)
             {
                 if (pos == 0)
                 {
@@ -199,9 +197,11 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
                         {
                             CounterGroup counterGroup = new CounterGroup((String) data);
                             mPresenter.saveCounterGroup(counterGroup);
-                            mPresenter.getCounter().setCounterGroup(counterGroup);
+
                             mCounterGroupsName.add(counterGroup.getName());
                             mCounterGroups.add(counterGroup);
+                            mPresenter.getCounter().setCounterGroup(counterGroup);
+
                             mAutoCompleteAdapter.notifyDataSetChanged();
                             mGroup.setSelection(mCounterGroupsName.size() - 1);
                         }
@@ -212,24 +212,6 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
                     CounterGroup counterGroup = mCounterGroups.get(pos);
                     mPresenter.getCounter().setCounterGroup(counterGroup);
                 }
-            }
-        });
-
-        mDecrease.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mPresenter.getCounter().setDirection("DESC");
-            }
-        });
-
-        mIncrease.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mPresenter.getCounter().setDirection("ASC");
             }
         });
     }
@@ -244,6 +226,12 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     public void setName(String name)
     {
         mName.setText(name);
+    }
+
+    @Override
+    public void setStep(int step)
+    {
+        mStep.setText(String.valueOf(step));
     }
 
     @Override

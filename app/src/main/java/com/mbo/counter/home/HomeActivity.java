@@ -27,10 +27,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout mDrawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
@@ -47,14 +47,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Create the presenter
         mHomePresenter = new HomePresenter(OrmLiteDataSource.getInstance(), mHomeFragment);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed()
     {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
@@ -93,33 +93,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera)
+        switch (id)
         {
-            // Handle the camera action
-        }
-        else if (id == R.id.nav_gallery)
-        {
-
-        }
-        else if (id == R.id.nav_slideshow)
-        {
-
-        }
-        else if (id == R.id.nav_manage)
-        {
-
-        }
-        else if (id == R.id.nav_share)
-        {
-
-        }
-        else if (id == R.id.nav_send)
-        {
-
+            case R.id.nav_settings:
+                mHomeFragment.showSettingsUi();
+                break;
+            case R.id.nav_evaluate:
+                mHomeFragment.showEvaluateUi();
+                break;
+            case R.id.nav_about:
+                mHomeFragment.showAboutUi();
+                break;
+            case R.id.nav_share:
+                mHomeFragment.shareApplication();
+                break;
+            case R.id.nav_contact:
+                mHomeFragment.contactUs();
+                break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
