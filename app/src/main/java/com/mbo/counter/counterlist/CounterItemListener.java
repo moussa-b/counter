@@ -11,4 +11,6 @@ public interface CounterItemListener
     void onCounterIncrement(int position, int counterId, int limit);
 
     void onCounterShowMenu(View view, Counter clickedCounter, int position);
+
+    void onItemMove(Counter counter);
 }

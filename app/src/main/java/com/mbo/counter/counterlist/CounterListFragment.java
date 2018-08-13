@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -91,6 +92,12 @@ public class CounterListFragment extends Fragment implements CounterListContract
                 popup.show();
             }
         }
+
+        @Override
+        public void onItemMove(Counter counter)
+        {
+            mPresenter.saveCounter(counter);
+        }
     };
 
     @Override
@@ -120,6 +127,11 @@ public class CounterListFragment extends Fragment implements CounterListContract
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(container.getContext(), DividerItemDecoration.VERTICAL);
         mCounterRecyclerView.addItemDecoration(itemDecoration);
         mCounterRecyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
+
+        // Set up drag and drop
+        ItemTouchHelper.Callback callback = new CounterListItemTouchHelperCallback(mRecyclerAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mCounterRecyclerView);
 
         // Set up no counters view
         mNoCounterTextView = root.findViewById(R.id.no_counter_text_view);
@@ -164,9 +176,9 @@ public class CounterListFragment extends Fragment implements CounterListContract
     @Override
     public void onHiddenChanged(boolean hidden)
     {
-        if (!hidden) {
+        // Required to update counters when change between counter groups and counter list
+        if (!hidden)
             mPresenter.loadCounters();
-        }
     }
 
     @Override

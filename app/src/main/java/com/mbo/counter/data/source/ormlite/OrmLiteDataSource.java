@@ -241,7 +241,9 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            final List<Counter> counters = mDaoCounter.queryBuilder().where().ne("id", 1).query();
+            final List<Counter> counters = mDaoCounter.queryBuilder()
+                    .orderBy("order", true)
+                    .where().ne("id", 1).query();
             if (counters != null)
             {
                 callback.onCountersLoaded(counters);
@@ -283,7 +285,9 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            final List<CounterGroup> counters = mDaoCounterGroup.queryBuilder().where().ne("id", 1).query();
+            final List<CounterGroup> counters = mDaoCounterGroup.queryBuilder()
+                    .orderBy("order", true)
+                    .where().ne("id", 1).query();
             if (counters != null)
             {
                 callback.onCounterGroupsLoaded(counters);
@@ -358,7 +362,15 @@ public class OrmLiteDataSource implements CounterDataSource
 
             counter.setLastModificationDate(new Date());
 
-            mDaoCounter.createOrUpdate(counter);
+            if (counter.getId() == 0)
+            {
+                mDaoCounter.create(counter);
+                counter.setOrder(10000 * counter.getId());
+                counter.setOrderInGroup(10000 * counter.getId());
+                mDaoCounter.update(counter);
+            }
+            else
+                mDaoCounter.update(counter);
         }
         catch (SQLException e)
         {
@@ -421,7 +433,14 @@ public class OrmLiteDataSource implements CounterDataSource
 
             counterGroup.setLastModificationDate(new Date());
 
-            mDaoCounterGroup.createOrUpdate(counterGroup);
+            if (counterGroup.getId() == 0)
+            {
+                mDaoCounterGroup.create(counterGroup);
+                counterGroup.setOrder(10000 * counterGroup.getId());
+                mDaoCounterGroup.update(counterGroup);
+            }
+            else
+                mDaoCounterGroup.update(counterGroup);
         }
         catch (SQLException e)
         {

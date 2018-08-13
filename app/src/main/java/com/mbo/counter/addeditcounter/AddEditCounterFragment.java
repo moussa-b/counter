@@ -196,11 +196,15 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     @Override
     public void setGroup(CounterGroup counterGroup)
     {
-        for (int i = 0; i < mCounterGroups.size(); i++)
+        if (counterGroup != null)
         {
-            if (mCounterGroups.get(i).getId() == counterGroup.getId())
-                mGroup.setSelection(i + 2); // + 2 because spinner has 2 extra entries "Select Group" and "Create Groupe"
+            for (int i = 0; i < mCounterGroups.size(); i++)
+            {
+                if (mCounterGroups.get(i).getId() == counterGroup.getId())
+                    mGroup.setSelection(i + 2); // + 2 because spinner has 2 extra entries "Select Group" and "Create Groupe"
+            }
         }
+
     }
 
     @Override

@@ -12,11 +12,63 @@ import android.widget.TextView;
 
 import com.mbo.counter.R;
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.utils.ItemTouchHelperAdapter;
 
+import java.util.Collections;
 import java.util.List;
 
-public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.CounterViewHolder>
+public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.CounterViewHolder> implements ItemTouchHelperAdapter
 {
+    @Override
+    public void onItemMove(int fromPosition, int toPosition)
+    {
+        if (fromPosition < toPosition)
+        {
+            for (int i = fromPosition; i < toPosition; i++)
+            {
+                Collections.swap(mCounters, i, i + 1);
+            }
+        }
+        else
+        {
+            for (int i = fromPosition; i > toPosition; i--)
+            {
+                Collections.swap(mCounters, i, i - 1);
+            }
+        }
+
+        Counter currentCounter = mCounters.get(toPosition);
+        Counter previousCounter, nextCounter;
+        notifyItemMoved(fromPosition, toPosition);
+
+        try
+        {
+            previousCounter = mCounters.get(toPosition - 1);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            previousCounter = null;
+        }
+
+        try
+        {
+            nextCounter = mCounters.get(toPosition + 1);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            nextCounter = null;
+        }
+
+        if (previousCounter != null && nextCounter != null) // in middle of the list
+            currentCounter.setOrder((previousCounter.getOrder() + nextCounter.getOrder()) / 2);
+        else if (previousCounter == null && nextCounter != null) // at top of the list
+            currentCounter.setOrder(nextCounter.getOrder() / 2);
+        else if (previousCounter != null) // at bottom of the list
+            currentCounter.setOrder(previousCounter.getOrder() + previousCounter.getOrder() / 2);
+
+        mCounterListener.onItemMove(currentCounter);
+    }
+
     class CounterViewHolder extends RecyclerView.ViewHolder
     {
         TextView countTextView;

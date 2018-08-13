@@ -31,10 +31,10 @@ public class Counter
     private String direction;
 
     @DatabaseField
-    private int order;
+    private double order;
 
     @DatabaseField
-    private int orderInGroup;
+    private double orderInGroup;
 
     @DatabaseField(foreign = true)
     private CounterGroup counterGroup;
@@ -145,22 +145,22 @@ public class Counter
         this.direction = direction;
     }
 
-    public int getOrder()
+    public double getOrder()
     {
         return order;
     }
 
-    public void setOrder(int order)
+    public void setOrder(double order)
     {
         this.order = order;
     }
 
-    public int getOrderInGroup()
+    public double getOrderInGroup()
     {
         return orderInGroup;
     }
 
-    public void setOrderInGroup(int orderInGroup)
+    public void setOrderInGroup(double orderInGroup)
     {
         this.orderInGroup = orderInGroup;
     }
