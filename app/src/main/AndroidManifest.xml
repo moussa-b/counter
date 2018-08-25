@@ -33,7 +33,7 @@
 
         <activity android:name=".countersettings.CounterSettingsActivity"/>
 
-        <activity android:name=".countergrouplist.CounterGroupListActivity"/>
+        <activity android:name=".folderlist.CounterGroupListActivity"/>
 
         <activity android:name=".about.AboutActivity"/>
 

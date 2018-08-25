@@ -1,4 +1,4 @@
-package com.mbo.counter.countergrouplist;
+package com.mbo.counter.folderlist;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -136,6 +136,7 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
     {
         super.onCreate(savedInstanceState);
         mExpandableAdapter = new CounterExpandableListAdapter(new ArrayList<CounterGroup>(0), mCounterGroupListener);
+        setHasOptionsMenu(true); // The fragment handle the menu
     }
 
     @Override
@@ -153,6 +154,27 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
     {
         super.onResume();
         mPresenter.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_add:
+                CounterGroupUtils.showAddCounterGroup(getContext(), new CallBack()
+                {
+                    @Override
+                    public void execute(Object data)
+                    {
+                        CounterGroup counterGroup = new CounterGroup((String) data);
+                        mPresenter.saveCounterGroup(counterGroup);
+                        mExpandableAdapter.notifyDataSetChanged();
+                    }
+                });
+                return true;
+        }
+        return false;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.mbo.counter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,16 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.mbo.commons.utils.Utils;
+import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.counter.CounterFragment;
 import com.mbo.counter.counter.CounterPresenter;
-import com.mbo.counter.countergrouplist.CounterGroupListFragment;
-import com.mbo.counter.countergrouplist.CounterGroupListPresenter;
 import com.mbo.counter.counterlist.CounterListFragment;
 import com.mbo.counter.counterlist.CounterListPresenter;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
+import com.mbo.counter.folderlist.CounterGroupListFragment;
+import com.mbo.counter.folderlist.CounterGroupListPresenter;
 import com.mbo.counter.settings.SettingsFragment;
 import com.mbo.counter.settings.SettingsPresenter;
+import com.mbo.counter.utils.Utils;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
@@ -35,6 +37,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
         BottomNavigationView navigation = findViewById(R.id.navigation);
+        Utils.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
         mCounterFragment = (CounterFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
@@ -160,5 +163,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         transaction.commit();
         invalidateOptionsMenu();
         return true;
+    }
+
+    private void showAddCounter()
+    {
+        Intent intent = new Intent(this, AddEditCounterActivity.class);
+        startActivityForResult(intent, AddEditCounterActivity.REQUEST_ADD_COUNTER);
     }
 }

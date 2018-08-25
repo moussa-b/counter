@@ -105,6 +105,7 @@ public class CounterListFragment extends Fragment implements CounterListContract
     { // Lifecycle : called first, for doing any non-graphical initialisations
         super.onCreate(savedInstanceState);
         mRecyclerAdapter = new CounterListAdapter(new ArrayList<Counter>(0), mCounterListener);
+        setHasOptionsMenu(true); // The fragment handle the menu
     }
 
     public CounterListFragment()
@@ -192,10 +193,11 @@ public class CounterListFragment extends Fragment implements CounterListContract
     {
         switch (item.getItemId())
         {
-            case R.id.action_edit:
-                break;
+            case R.id.action_add:
+                showAddCounter();
+                return true;
         }
-        return true;
+        return false;
     }
 
     @Override

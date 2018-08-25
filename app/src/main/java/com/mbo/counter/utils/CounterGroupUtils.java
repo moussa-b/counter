@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 
 import com.mbo.counter.R;
 
-import static com.mbo.commons.utils.Utils.convertDpToPixel;
+import static com.mbo.counter.utils.Utils.convertDpToPixel;
 
 public class CounterGroupUtils
 {
