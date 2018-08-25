@@ -11,6 +11,8 @@
     <string name="ascending">Ascending</string>
     <string name="communicate">Communicate</string>
     <string name="contact_us">Contact us</string>
+    <string name="counter">Counter</string>
+    <string name="counters">Counters</string>
     <string name="direction">Direction</string>
     <string name="duplicate">Duplicate</string>
     <string name="edit">Edit</string>
@@ -26,7 +28,10 @@
     <string name="delete">Delete</string>
     <string name="delete_all_counters">Delete all counters</string>
     <string name="evaluate">Evaluate</string>
+    <string name="folder">Folder</string>
+    <string name="folders">Folders</string>
     <string name="groups">Groups</string>
+    <string name="home">Home</string>
     <string name="increasing">Increasing</string>
     <string name="limit">Limit</string>
     <string name="name">Name</string>
