@@ -1,4 +1,4 @@
-package com.mbo.counter.utils;
+package com.mbo.counter.commons;
 
 import android.content.Context;
 import android.content.res.AssetManager;

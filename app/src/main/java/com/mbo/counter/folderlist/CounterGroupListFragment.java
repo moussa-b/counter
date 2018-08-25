@@ -19,8 +19,8 @@ import com.mbo.counter.counter.CounterActivity;
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.model.CounterGroup;
 import com.mbo.counter.statistics.StatisticsActivity;
-import com.mbo.counter.utils.CallBack;
-import com.mbo.counter.utils.CounterGroupUtils;
+import com.mbo.counter.commons.CallBack;
+import com.mbo.counter.commons.CounterGroupUtils;
 
 import java.util.ArrayList;
 import java.util.List;

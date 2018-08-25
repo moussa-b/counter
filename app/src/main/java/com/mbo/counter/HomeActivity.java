@@ -19,7 +19,7 @@ import com.mbo.counter.folderlist.CounterGroupListFragment;
 import com.mbo.counter.folderlist.CounterGroupListPresenter;
 import com.mbo.counter.settings.SettingsFragment;
 import com.mbo.counter.settings.SettingsPresenter;
-import com.mbo.counter.utils.Utils;
+import com.mbo.counter.commons.Utils;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {

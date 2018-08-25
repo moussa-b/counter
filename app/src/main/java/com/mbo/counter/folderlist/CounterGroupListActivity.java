@@ -3,7 +3,7 @@ package com.mbo.counter.folderlist;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.mbo.counter.utils.Utils;
+import com.mbo.counter.commons.Utils;
 import com.mbo.counter.R;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 

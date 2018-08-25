@@ -1,4 +1,4 @@
-package com.mbo.counter.utils;
+package com.mbo.counter.commons;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
