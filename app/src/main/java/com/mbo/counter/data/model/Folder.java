@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable
-public class CounterGroup
+public class Folder
 {
     @DatabaseField(generatedId = true)
     private int id;
@@ -29,16 +29,16 @@ public class CounterGroup
     @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
     private Date lastModificationDate;
 
-    public CounterGroup()
+    public Folder()
     {
     }
 
-    public CounterGroup(String name)
+    public Folder(String name)
     {
         this(name, null);
     }
 
-    public CounterGroup(String name, ForeignCollection<Counter> counters)
+    public Folder(String name, ForeignCollection<Counter> counters)
     {
         this.name = name;
         this.counters = counters;

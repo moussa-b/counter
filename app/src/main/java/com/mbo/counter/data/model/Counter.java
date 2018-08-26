@@ -37,7 +37,7 @@ public class Counter
     private double orderInGroup;
 
     @DatabaseField(foreign = true)
-    private CounterGroup counterGroup;
+    private Folder folder;
 
     @DatabaseField
     private int step;
@@ -165,14 +165,14 @@ public class Counter
         this.orderInGroup = orderInGroup;
     }
 
-    public CounterGroup getCounterGroup()
+    public Folder getFolder()
     {
-        return counterGroup;
+        return folder;
     }
 
-    public void setCounterGroup(CounterGroup counterGroup)
+    public void setFolder(Folder folder)
     {
-        this.counterGroup = counterGroup;
+        this.folder = folder;
     }
 
     public int getStep()

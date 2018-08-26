@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.mbo.counter.R;
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 
 import java.util.List;
 
@@ -21,36 +21,36 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
 {
     private CounterGroupItemListener mCounterGroupListener;
 
-    private List<CounterGroup> mCounterGroups;
+    private List<Folder> mFolders;
 
-    CounterExpandableListAdapter(List<CounterGroup> counterGroups, CounterGroupItemListener counterGroupListener)
+    CounterExpandableListAdapter(List<Folder> folders, CounterGroupItemListener counterGroupListener)
     {
-        this.mCounterGroups = counterGroups;
+        this.mFolders = folders;
         this.mCounterGroupListener = counterGroupListener;
     }
 
     @Override
     public int getGroupCount()
     {
-        return mCounterGroups.size();
+        return mFolders.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition)
     {
-        return mCounterGroups.get(groupPosition).getCounters().size();
+        return mFolders.get(groupPosition).getCounters().size();
     }
 
     @Override
     public Object getGroup(int groupPosition)
     {
-        return mCounterGroups.get(groupPosition);
+        return mFolders.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition)
     {
-        return mCounterGroups.get(groupPosition).getCounters().toArray()[childPosition];
+        return mFolders.get(groupPosition).getCounters().toArray()[childPosition];
     }
 
     @Override
@@ -74,7 +74,7 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
     {
-        final CounterGroup counterGroup = (CounterGroup) getGroup(groupPosition);
+        final Folder folder = (Folder) getGroup(groupPosition);
         if (convertView == null)
         {
             LayoutInflater layoutInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,7 +85,7 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
         {
             TextView counterGroupNameTextView = convertView.findViewById(R.id.name_text_view);
             counterGroupNameTextView.setTypeface(null, Typeface.BOLD);
-            counterGroupNameTextView.setText(counterGroup.getName());
+            counterGroupNameTextView.setText(folder.getName());
 
             ImageView editCounterImageView = convertView.findViewById(R.id.edit_counter_image_view);
             editCounterImageView.setOnClickListener(new View.OnClickListener()
@@ -93,7 +93,7 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
                 @Override
                 public void onClick(View v)
                 {
-                    mCounterGroupListener.onCounterGroupShowMenu(v, counterGroup, groupPosition);
+                    mCounterGroupListener.onCounterGroupShowMenu(v, folder, groupPosition);
                 }
             });
         }
@@ -159,9 +159,9 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
         return true;
     }
 
-    public void replaceData(List<CounterGroup> counterGroups)
+    public void replaceData(List<Folder> folders)
     {
-        this.mCounterGroups = counterGroups;
+        this.mFolders = folders;
         notifyDataSetChanged();
     }
 }

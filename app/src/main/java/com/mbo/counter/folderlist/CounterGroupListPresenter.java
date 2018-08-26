@@ -2,7 +2,7 @@ package com.mbo.counter.folderlist;
 
 import android.support.annotation.NonNull;
 
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.data.source.CounterDataSource;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 
@@ -82,9 +82,9 @@ public class CounterGroupListPresenter implements CounterGroupListContract.Prese
         mCounterDataSource.getCounterGroups(new CounterDataSource.LoadCounterGroupsCallback()
         {
             @Override
-            public void onCounterGroupsLoaded(List<CounterGroup> counterGroups)
+            public void onCounterGroupsLoaded(List<Folder> folders)
             {
-                processCounterGroups(counterGroups);
+                processCounterGroups(folders);
             }
 
             @Override
@@ -110,14 +110,14 @@ public class CounterGroupListPresenter implements CounterGroupListContract.Prese
     }
 
     @Override
-    public void saveCounterGroup(CounterGroup counterGroup)
+    public void saveCounterGroup(Folder folder)
     {
-        mCounterDataSource.saveCounterGroup(counterGroup);
+        mCounterDataSource.saveCounterGroup(folder);
     }
 
-    private void processCounterGroups(List<CounterGroup> counterGroups)
+    private void processCounterGroups(List<Folder> folders)
     {
-        if (counterGroups.isEmpty())
+        if (folders.isEmpty())
         {
             // Show a message indicating there are no counter groups
             processEmptyCounters();
@@ -125,7 +125,7 @@ public class CounterGroupListPresenter implements CounterGroupListContract.Prese
         else
         {
             // Show the list of counter groups
-            mCounterGroupListView.showCounterGroups(counterGroups);
+            mCounterGroupListView.showCounterGroups(folders);
         }
     }
 

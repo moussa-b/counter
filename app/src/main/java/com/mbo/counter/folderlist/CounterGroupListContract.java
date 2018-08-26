@@ -2,7 +2,7 @@ package com.mbo.counter.folderlist;
 
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface CounterGroupListContract
     {
         void setCount(int groupPosition, int childPosition, int count);
 
-        void showCounterGroups(List<CounterGroup> counters);
+        void showCounterGroups(List<Folder> counters);
 
         void showCounterUi(int counterId);
 
@@ -47,6 +47,6 @@ public interface CounterGroupListContract
 
         void resetCountersInGroup(int counterGroupId);
 
-        void saveCounterGroup(CounterGroup counterGroup);
+        void saveCounterGroup(Folder folder);
     }
 }

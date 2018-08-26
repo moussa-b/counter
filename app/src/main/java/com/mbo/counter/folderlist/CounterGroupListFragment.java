@@ -17,7 +17,7 @@ import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.counter.CounterActivity;
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.statistics.StatisticsActivity;
 import com.mbo.counter.commons.CallBack;
 import com.mbo.counter.commons.CounterGroupUtils;
@@ -91,7 +91,7 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
         }
 
         @Override
-        public void onCounterGroupShowMenu(View view, final CounterGroup clickedCounterGroup, final int groupPosition)
+        public void onCounterGroupShowMenu(View view, final Folder clickedFolder, final int groupPosition)
         {
             if (getActivity() != null)
             {
@@ -106,16 +106,16 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
                                 renameCounterGroup(groupPosition);
                                 return true;
                             case R.id.action_reset_all:
-                                mPresenter.resetCountersInGroup(clickedCounterGroup.getId());
+                                mPresenter.resetCountersInGroup(clickedFolder.getId());
                                 return true;
                             case R.id.action_delete_all:
-                                mPresenter.deleteCountersInGroup(clickedCounterGroup.getId());
+                                mPresenter.deleteCountersInGroup(clickedFolder.getId());
                                 return true;
                             case R.id.action_duplicate:
-                                mPresenter.duplicateCounterGroup(clickedCounterGroup.getId());
+                                mPresenter.duplicateCounterGroup(clickedFolder.getId());
                                 return true;
                             case R.id.action_delete:
-                                mPresenter.deleteCounterGroup(clickedCounterGroup.getId());
+                                mPresenter.deleteCounterGroup(clickedFolder.getId());
                                 return true;
                             case R.id.action_statistics:
                                 // TODO faire les statistics par groupe
@@ -135,7 +135,7 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mExpandableAdapter = new CounterExpandableListAdapter(new ArrayList<CounterGroup>(0), mCounterGroupListener);
+        mExpandableAdapter = new CounterExpandableListAdapter(new ArrayList<Folder>(0), mCounterGroupListener);
         setHasOptionsMenu(true); // The fragment handle the menu
     }
 
@@ -167,8 +167,8 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
                     @Override
                     public void execute(Object data)
                     {
-                        CounterGroup counterGroup = new CounterGroup((String) data);
-                        mPresenter.saveCounterGroup(counterGroup);
+                        Folder folder = new Folder((String) data);
+                        mPresenter.saveCounterGroup(folder);
                         mExpandableAdapter.notifyDataSetChanged();
                     }
                 });
@@ -204,11 +204,11 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
     }
 
     @Override
-    public void showCounterGroups(List<CounterGroup> counterGroups)
+    public void showCounterGroups(List<Folder> folders)
     {
         mCounterExpandableListView.setVisibility(View.VISIBLE);
         mNoCounterTextView.setVisibility(View.GONE);
-        mExpandableAdapter.replaceData(counterGroups);
+        mExpandableAdapter.replaceData(folders);
     }
 
     @Override
@@ -245,14 +245,14 @@ public class CounterGroupListFragment extends Fragment implements CounterGroupLi
     @Override
     public void renameCounterGroup(final int groupPosition)
     {
-        final CounterGroup counterGroup = ((CounterGroup) mExpandableAdapter.getGroup(groupPosition));
-        CounterGroupUtils.showAddCounterGroup(getContext(), counterGroup.getName(), new CallBack()
+        final Folder folder = ((Folder) mExpandableAdapter.getGroup(groupPosition));
+        CounterGroupUtils.showAddCounterGroup(getContext(), folder.getName(), new CallBack()
         {
             @Override
             public void execute(Object data)
             {
-                counterGroup.setName((String) data);
-                mPresenter.saveCounterGroup(counterGroup);
+                folder.setName((String) data);
+                mPresenter.saveCounterGroup(folder);
                 mExpandableAdapter.notifyDataSetChanged();
             }
         });

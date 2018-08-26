@@ -6,7 +6,7 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_item_horizontal_margin">16dp</dimen>
-    <dimen name="list_item_vertical_margin">8dp</dimen>
+    <dimen name="list_item_vertical_margin">16dp</dimen>
     <dimen name="fab_first_menu_item">65dp</dimen>
     <dimen name="fab_second_menu_item">130dp</dimen>
     <dimen name="material_button_min_width">64dp</dimen>

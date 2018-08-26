@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.mbo.counter.R;
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.commons.CallBack;
 import com.mbo.counter.commons.CounterGroupUtils;
 
@@ -44,7 +44,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     private ArrayAdapter<String> mAutoCompleteAdapter;
 
     private List<String> mCounterGroupsName = new ArrayList<>();
-    private List<CounterGroup> mCounterGroups = new ArrayList<>();
+    private List<Folder> mFolders = new ArrayList<>();
 
     public AddEditCounterFragment()
     {
@@ -103,12 +103,12 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
                             @Override
                             public void execute(Object data)
                             {
-                                CounterGroup counterGroup = new CounterGroup((String) data);
-                                mPresenter.saveCounterGroup(counterGroup);
+                                Folder folder = new Folder((String) data);
+                                mPresenter.saveCounterGroup(folder);
 
-                                mCounterGroupsName.add(counterGroup.getName());
-                                mCounterGroups.add(counterGroup);
-                                mPresenter.getCounter().setCounterGroup(counterGroup);
+                                mCounterGroupsName.add(folder.getName());
+                                mFolders.add(folder);
+                                mPresenter.getCounter().setFolder(folder);
 
                                 mAutoCompleteAdapter.notifyDataSetChanged();
                                 mGroup.setSelection(mCounterGroupsName.size() - 1);
@@ -117,8 +117,8 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
                     }
                     else if (position != 0)
                     {
-                        CounterGroup counterGroup = mCounterGroups.get(position - 2);
-                        mPresenter.getCounter().setCounterGroup(counterGroup);
+                        Folder folder = mFolders.get(position - 2);
+                        mPresenter.getCounter().setFolder(folder);
                     }
                 }
 
@@ -147,15 +147,15 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
-    public void processCounterGroups(List<CounterGroup> counterGroups)
+    public void processCounterGroups(List<Folder> folders)
     {
-        if (getActivity() != null && counterGroups != null && counterGroups.size() > 0)
+        if (getActivity() != null && folders != null && folders.size() > 0)
         {
-            for (CounterGroup counterGroup : counterGroups)
+            for (Folder folder : folders)
             {
                 // Add data in mCounterGroups and mCounterGroupsName to be sure that order is exactly the same
-                mCounterGroups.add(counterGroup);
-                mCounterGroupsName.add(counterGroup.getName());
+                mFolders.add(folder);
+                mCounterGroupsName.add(folder.getName());
             }
 
             mAutoCompleteAdapter.notifyDataSetChanged();
@@ -194,13 +194,13 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
-    public void setGroup(CounterGroup counterGroup)
+    public void setGroup(Folder folder)
     {
-        if (counterGroup != null)
+        if (folder != null)
         {
-            for (int i = 0; i < mCounterGroups.size(); i++)
+            for (int i = 0; i < mFolders.size(); i++)
             {
-                if (mCounterGroups.get(i).getId() == counterGroup.getId())
+                if (mFolders.get(i).getId() == folder.getId())
                     mGroup.setSelection(i + 2); // + 2 because spinner has 2 extra entries "Select Group" and "Create Groupe"
             }
         }

@@ -3,7 +3,7 @@ package com.mbo.counter.folderlist;
 import android.view.View;
 
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 
 public interface CounterGroupItemListener
 {
@@ -13,5 +13,5 @@ public interface CounterGroupItemListener
 
     void onCounterShowMenu(View view, Counter clickedCounter, int groupPosition, int childPosition);
 
-    void onCounterGroupShowMenu(View view, CounterGroup clickedCounterGroup, int groupPosition);
+    void onCounterGroupShowMenu(View view, Folder clickedFolder, int groupPosition);
 }
