@@ -37,8 +37,8 @@ public class FolderUtils
             String positiveButtonLabel = folderName == null ? context.getString(R.string.add) : context.getString(R.string.validate);
 
             final AlertDialog dialog = new AlertDialog.Builder(context)
-                    .setTitle(context.getString(R.string.add_counter_group_dialog_title))
-                    .setMessage(context.getString(R.string.add_counter_group_dialog_message))
+                    .setTitle(context.getString(R.string.add_folder_dialog_title))
+                    .setMessage(context.getString(R.string.add_folder_dialog_message))
                     .setView(container)
                     .setPositiveButton(positiveButtonLabel, new DialogInterface.OnClickListener()
                     {
