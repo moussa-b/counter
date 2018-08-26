@@ -91,6 +91,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId())
         {
             case R.id.navigation_home:
+                setTitle(getString(R.string.counter));
                 mHideMenu = true;
                 if (mCounterFragment.isAdded())
                     transaction.show(mCounterFragment);
@@ -108,6 +109,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
                 break;
             case R.id.navigation_counters:
+                setTitle(getString(R.string.counter_list));
                 mHideMenu = false;
                 if (mCounterListFragment.isAdded())
                     transaction.show(mCounterListFragment);
@@ -125,6 +127,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
                 break;
             case R.id.navigation_folders:
+                setTitle(getString(R.string.folder_list));
                 mHideMenu = false;
                 if (mFolderListFragment.isAdded())
                     transaction.show(mFolderListFragment);
@@ -142,6 +145,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
                 break;
             case R.id.navigation_settings:
+                setTitle(getString(R.string.settings));
                 mHideMenu = true;
                 if (mSettingsFragment.isAdded())
                     transaction.show(mSettingsFragment);

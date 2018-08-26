@@ -12,11 +12,13 @@
     <string name="communicate">Communicate</string>
     <string name="contact_us">Contact us</string>
     <string name="counter">Counter</string>
+    <string name="counter_list">List of counters</string>
     <string name="counters">Counters</string>
     <string name="direction">Direction</string>
     <string name="duplicate">Duplicate</string>
     <string name="edit">Edit</string>
     <string name="email_warning">Please install an email application to contact us</string>
+    <string name="folder_list">List of folders</string>
     <string name="full_screen">Full screen</string>
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
