@@ -6,9 +6,9 @@ import com.mbo.counter.data.model.Folder;
 
 import java.sql.SQLException;
 
-public class DaoCounterGroup extends BaseDaoImpl<Folder, Long>
+public class DaoFolder extends BaseDaoImpl<Folder, Long>
 {
-    protected DaoCounterGroup(ConnectionSource connectionSource, Class<Folder> dataClass) throws SQLException
+    protected DaoFolder(ConnectionSource connectionSource, Class<Folder> dataClass) throws SQLException
     {
         super(connectionSource, dataClass);
     }

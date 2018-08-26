@@ -24,7 +24,7 @@ public class OrmLiteDataSource implements CounterDataSource
 
     private DaoStatistics mDaoStatistics;
 
-    private DaoCounterGroup mDaoCounterGroup;
+    private DaoFolder mDaoFolder;
 
     // Prevent direct instantiation.
     private OrmLiteDataSource(@NonNull OrmLiteSqliteOpenHelper helper)
@@ -33,7 +33,7 @@ public class OrmLiteDataSource implements CounterDataSource
         {
             mDaoCounter = new DaoCounter(helper.getConnectionSource(), Counter.class);
             mDaoStatistics = new DaoStatistics(helper.getConnectionSource(), Statistics.class);
-            mDaoCounterGroup = new DaoCounterGroup(helper.getConnectionSource(), Folder.class);
+            mDaoFolder = new DaoFolder(helper.getConnectionSource(), Folder.class);
         }
         catch (SQLException e)
         {
@@ -114,12 +114,12 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void deleteAllCounterGroups()
+    public void deleteAllFolders()
     {
         try
         {
-            mDaoCounterGroup.deleteBuilder().where().ne("id", 1);
-            mDaoCounterGroup.deleteBuilder().delete();
+            mDaoFolder.deleteBuilder().where().ne("id", 1);
+            mDaoFolder.deleteBuilder().delete();
         }
         catch (SQLException e)
         {
@@ -141,16 +141,16 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void deleteCounterGroup(int counterGroupId)
+    public void deleteFolder(int folderId)
     {
         try
         {
-            Folder folder = mDaoCounterGroup.queryForId((long) counterGroupId);
+            Folder folder = mDaoFolder.queryForId((long) folderId);
             if (folder != null && folder.getCounters() != null && folder.getCounters().size() > 0)
             {
                 folder.getCounters().clear();
             }
-            mDaoCounterGroup.deleteById((long) counterGroupId);
+            mDaoFolder.deleteById((long) folderId);
         }
         catch (SQLException e)
         {
@@ -159,11 +159,11 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void deleteCountersInGroup(int counterGroupId)
+    public void deleteCountersInGroup(int folderId)
     {
         try
         {
-            Folder folder = mDaoCounterGroup.queryForId((long) counterGroupId);
+            Folder folder = mDaoFolder.queryForId((long) folderId);
             if (folder != null && folder.getCounters() != null && folder.getCounters().size() > 0)
             {
                 folder.getCounters().clear();
@@ -196,17 +196,17 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void duplicateCounterGroup(int counterGroupId)
+    public void duplicateFolder(int folderId)
     {
         try
         {
-            Folder folder = mDaoCounterGroup.queryForId((long) counterGroupId);
+            Folder folder = mDaoFolder.queryForId((long) folderId);
             if (folder != null)
             {
                 folder.setId(0);
                 folder.setCreationDate(new Date());
                 folder.setLastModificationDate(new Date());
-                mDaoCounterGroup.create(folder);
+                mDaoFolder.create(folder);
             }
         }
         catch (SQLException e)
@@ -260,14 +260,14 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void getCounterGroup(int counterGroupId, @NonNull GetCounterGroupCallback callback)
+    public void getFolderGroup(int folderId, @NonNull GetFolderCallback callback)
     {
         try
         {
-            final Folder folder = mDaoCounterGroup.queryForId((long) counterGroupId);
+            final Folder folder = mDaoFolder.queryForId((long) folderId);
             if (folder != null)
             {
-                callback.onCounterGroupLoaded(folder);
+                callback.onFolderLoaded(folder);
             }
             else
             {
@@ -281,16 +281,16 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void getCounterGroups(@NonNull LoadCounterGroupsCallback callback)
+    public void getFolders(@NonNull LoadFoldersCallback callback)
     {
         try
         {
-            final List<Folder> counters = mDaoCounterGroup.queryBuilder()
+            final List<Folder> counters = mDaoFolder.queryBuilder()
                     .orderBy("order", true)
                     .where().ne("id", 1).query();
             if (counters != null)
             {
-                callback.onCounterGroupsLoaded(counters);
+                callback.onFoldersLoaded(counters);
             }
             else
             {
@@ -400,11 +400,11 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void resetCountersInGroup(int counterGroupId)
+    public void resetCountersInGroup(int folderId)
     {
         try
         {
-            final Folder folder = mDaoCounterGroup.queryForId((long) counterGroupId);
+            final Folder folder = mDaoFolder.queryForId((long) folderId);
             if (folder != null && folder.getCounters() != null && folder.getCounters().size() > 0)
             {
                 for (Counter counter : folder.getCounters())
@@ -424,7 +424,7 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void saveCounterGroup(@NonNull Folder folder)
+    public void saveFolder(@NonNull Folder folder)
     {
         try
         {
@@ -435,12 +435,12 @@ public class OrmLiteDataSource implements CounterDataSource
 
             if (folder.getId() == 0)
             {
-                mDaoCounterGroup.create(folder);
+                mDaoFolder.create(folder);
                 folder.setOrder(10000 * folder.getId());
-                mDaoCounterGroup.update(folder);
+                mDaoFolder.update(folder);
             }
             else
-                mDaoCounterGroup.update(folder);
+                mDaoFolder.update(folder);
         }
         catch (SQLException e)
         {

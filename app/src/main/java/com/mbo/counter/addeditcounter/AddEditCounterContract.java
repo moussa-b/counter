@@ -14,7 +14,7 @@ public interface AddEditCounterContract
 {
     interface View extends BaseView<Presenter>
     {
-        void processCounterGroups(List<Folder> folders);
+        void processFolders(List<Folder> folders);
 
         void saveCounter();
 
@@ -37,11 +37,11 @@ public interface AddEditCounterContract
     {
         Counter getCounter();
 
-        void loadCounterGroups();
+        void loadFolders();
 
         void saveCounter();
 
-        void saveCounterGroup(Folder folder);
+        void saveFolder(Folder folder);
 
         void populateCounter();
     }

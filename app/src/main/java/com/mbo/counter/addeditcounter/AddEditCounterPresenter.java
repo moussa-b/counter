@@ -33,7 +33,7 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     @Override
     public void start()
     {
-        loadCounterGroups();
+        loadFolders();
         populateCounter();
     }
 
@@ -44,14 +44,14 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     }
 
     @Override
-    public void loadCounterGroups()
+    public void loadFolders()
     {
-        mCounterDataSource.getCounterGroups(new CounterDataSource.LoadCounterGroupsCallback()
+        mCounterDataSource.getFolders(new CounterDataSource.LoadFoldersCallback()
         {
             @Override
-            public void onCounterGroupsLoaded(List<Folder> folders)
+            public void onFoldersLoaded(List<Folder> folders)
             {
-                mAddCounterView.processCounterGroups(folders);
+                mAddCounterView.processFolders(folders);
             }
 
             @Override
@@ -70,9 +70,9 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     }
 
     @Override
-    public void saveCounterGroup(Folder folder)
+    public void saveFolder(Folder folder)
     {
-        mCounterDataSource.saveCounterGroup(folder);
+        mCounterDataSource.saveFolder(folder);
     }
 
     @Override

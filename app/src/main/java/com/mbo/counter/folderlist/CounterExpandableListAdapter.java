@@ -19,14 +19,14 @@ import java.util.List;
 
 public class CounterExpandableListAdapter extends BaseExpandableListAdapter
 {
-    private CounterGroupItemListener mCounterGroupListener;
+    private FolderItemListener mFolderListener;
 
     private List<Folder> mFolders;
 
-    CounterExpandableListAdapter(List<Folder> folders, CounterGroupItemListener counterGroupListener)
+    CounterExpandableListAdapter(List<Folder> folders, FolderItemListener folderListener)
     {
         this.mFolders = folders;
-        this.mCounterGroupListener = counterGroupListener;
+        this.mFolderListener = folderListener;
     }
 
     @Override
@@ -83,9 +83,9 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
         }
         if (convertView != null)
         {
-            TextView counterGroupNameTextView = convertView.findViewById(R.id.name_text_view);
-            counterGroupNameTextView.setTypeface(null, Typeface.BOLD);
-            counterGroupNameTextView.setText(folder.getName());
+            TextView folderNameTextView = convertView.findViewById(R.id.name_text_view);
+            folderNameTextView.setTypeface(null, Typeface.BOLD);
+            folderNameTextView.setText(folder.getName());
 
             ImageView editCounterImageView = convertView.findViewById(R.id.edit_counter_image_view);
             editCounterImageView.setOnClickListener(new View.OnClickListener()
@@ -93,7 +93,7 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
                 @Override
                 public void onClick(View v)
                 {
-                    mCounterGroupListener.onCounterGroupShowMenu(v, folder, groupPosition);
+                    mFolderListener.onFolderShowMenu(v, folder, groupPosition);
                 }
             });
         }
@@ -130,7 +130,7 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
                 @Override
                 public void onClick(View v)
                 {
-                    mCounterGroupListener.onCounterDecrement(groupPosition, childPosition, counter.getId());
+                    mFolderListener.onCounterDecrement(groupPosition, childPosition, counter.getId());
                 }
             });
             increaseCounterImageButton.setOnClickListener(new View.OnClickListener()
@@ -138,7 +138,7 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
                 @Override
                 public void onClick(View v)
                 {
-                    mCounterGroupListener.onCounterIncrement(groupPosition, childPosition, counter.getId());
+                    mFolderListener.onCounterIncrement(groupPosition, childPosition, counter.getId());
                 }
             });
             editCounterImageView.setOnClickListener(new View.OnClickListener()
@@ -146,7 +146,7 @@ public class CounterExpandableListAdapter extends BaseExpandableListAdapter
                 @Override
                 public void onClick(View v)
                 {
-                    mCounterGroupListener.onCounterShowMenu(v, counter, groupPosition, childPosition);
+                    mFolderListener.onCounterShowMenu(v, counter, groupPosition, childPosition);
                 }
             });
         }

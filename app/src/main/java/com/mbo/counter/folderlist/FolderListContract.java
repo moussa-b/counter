@@ -6,23 +6,23 @@ import com.mbo.counter.data.model.Folder;
 
 import java.util.List;
 
-public interface CounterGroupListContract
+public interface FolderListContract
 {
-    interface View extends BaseView<CounterGroupListContract.Presenter>
+    interface View extends BaseView<FolderListContract.Presenter>
     {
         void setCount(int groupPosition, int childPosition, int count);
 
-        void showCounterGroups(List<Folder> counters);
+        void showFolders(List<Folder> counters);
 
         void showCounterUi(int counterId);
 
         void showEditCounterUi(int counterId);
 
-        void showNoCounterGroups();
+        void showNoFolders();
 
         void showCounterStatisticsUi(int counterId);
 
-        void renameCounterGroup(int groupPosition);
+        void renameFolder(int groupPosition);
     }
 
     interface Presenter extends BasePresenter
@@ -31,22 +31,22 @@ public interface CounterGroupListContract
 
         void deleteCounter(int counterId);
 
-        void deleteCounterGroup(int counterGroupId);
+        void deleteFolder(int folderId);
 
-        void deleteCountersInGroup(int counterGroupId);
+        void deleteCountersInGroup(int folderId);
 
         void duplicateCounter(int counterId);
 
-        void duplicateCounterGroup(int counterGroupId);
+        void duplicateFolder(int folderId);
 
         void incrementCounter(final int groupPosition, final int childPosition, final int counterId);
 
-        void loadCounterGroups();
+        void loadFolders();
 
         void resetCounter(int groupPosition, int childPosition, int counterId);
 
-        void resetCountersInGroup(int counterGroupId);
+        void resetCountersInGroup(int folderId);
 
-        void saveCounterGroup(Folder folder);
+        void saveFolder(Folder folder);
     }
 }

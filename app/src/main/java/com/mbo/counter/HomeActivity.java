@@ -15,8 +15,8 @@ import com.mbo.counter.counter.CounterPresenter;
 import com.mbo.counter.counterlist.CounterListFragment;
 import com.mbo.counter.counterlist.CounterListPresenter;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
-import com.mbo.counter.folderlist.CounterGroupListFragment;
-import com.mbo.counter.folderlist.CounterGroupListPresenter;
+import com.mbo.counter.folderlist.FolderListFragment;
+import com.mbo.counter.folderlist.FolderListPresenter;
 import com.mbo.counter.settings.SettingsFragment;
 import com.mbo.counter.settings.SettingsPresenter;
 import com.mbo.counter.commons.Utils;
@@ -26,7 +26,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
     // https://medium.com/mindorks/essential-guide-for-designing-your-android-app-architecture-mvp-part-1-74efaf1cda40
     CounterListFragment mCounterListFragment;
-    CounterGroupListFragment mCounterGroupListFragment;
+    FolderListFragment mFolderListFragment;
     CounterFragment mCounterFragment;
     SettingsFragment mSettingsFragment;
     boolean mHideMenu = true;
@@ -53,8 +53,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         mCounterListFragment = CounterListFragment.newInstance();
         new CounterListPresenter(OrmLiteDataSource.getInstance(), mCounterListFragment);
 
-        mCounterGroupListFragment = CounterGroupListFragment.newInstance();
-        new CounterGroupListPresenter(OrmLiteDataSource.getInstance(), mCounterGroupListFragment);
+        mFolderListFragment = FolderListFragment.newInstance();
+        new FolderListPresenter(OrmLiteDataSource.getInstance(), mFolderListFragment);
 
         mSettingsFragment = SettingsFragment.newInstance();
         new SettingsPresenter(mSettingsFragment);
@@ -100,8 +100,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 if (mCounterListFragment.isAdded())
                     transaction.hide(mCounterListFragment);
 
-                if (mCounterGroupListFragment.isAdded())
-                    transaction.hide(mCounterGroupListFragment);
+                if (mFolderListFragment.isAdded())
+                    transaction.hide(mFolderListFragment);
 
                 if (mSettingsFragment.isAdded())
                     transaction.hide(mSettingsFragment);
@@ -117,8 +117,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 if (mCounterFragment.isAdded())
                     transaction.hide(mCounterFragment);
 
-                if (mCounterGroupListFragment.isAdded())
-                    transaction.hide(mCounterGroupListFragment);
+                if (mFolderListFragment.isAdded())
+                    transaction.hide(mFolderListFragment);
 
                 if (mSettingsFragment.isAdded())
                     transaction.hide(mSettingsFragment);
@@ -126,10 +126,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.navigation_folders:
                 mHideMenu = false;
-                if (mCounterGroupListFragment.isAdded())
-                    transaction.show(mCounterGroupListFragment);
+                if (mFolderListFragment.isAdded())
+                    transaction.show(mFolderListFragment);
                 else
-                    Utils.addFragmentToActivity(getSupportFragmentManager(), mCounterGroupListFragment, R.id.contentFrame);
+                    Utils.addFragmentToActivity(getSupportFragmentManager(), mFolderListFragment, R.id.contentFrame);
 
                 if (mCounterFragment.isAdded())
                     transaction.hide(mCounterFragment);
@@ -154,8 +154,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 if (mCounterListFragment.isAdded())
                     transaction.hide(mCounterListFragment);
 
-                if (mCounterGroupListFragment.isAdded())
-                    transaction.hide(mCounterGroupListFragment);
+                if (mFolderListFragment.isAdded())
+                    transaction.hide(mFolderListFragment);
 
                 break;
         }

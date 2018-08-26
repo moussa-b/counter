@@ -16,25 +16,25 @@ import com.mbo.counter.R;
 
 import static com.mbo.counter.commons.Utils.convertDpToPixel;
 
-public class CounterGroupUtils
+public class FolderUtils
 {
-    public static void showAddCounterGroup(Context context, String counterGroupName, final CallBack callBack)
+    public static void showAddFolder(Context context, String folderName, final CallBack callBack)
     {
         if (context != null)
         {
-            final EditText addCounterGroupEditText = new EditText(context);
-            if (counterGroupName != null)
-                addCounterGroupEditText.setText(counterGroupName);
-            addCounterGroupEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-            addCounterGroupEditText.setSingleLine();
+            final EditText addFolderEditText = new EditText(context);
+            if (folderName != null)
+                addFolderEditText.setText(folderName);
+            addFolderEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+            addFolderEditText.setSingleLine();
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             int margin = (int) convertDpToPixel(10, context);
             params.leftMargin = margin;
             params.rightMargin = margin;
-            addCounterGroupEditText.setLayoutParams(params);
+            addFolderEditText.setLayoutParams(params);
             FrameLayout container = new FrameLayout(context);
-            container.addView(addCounterGroupEditText);
-            String positiveButtonLabel = counterGroupName == null ? context.getString(R.string.add) : context.getString(R.string.validate);
+            container.addView(addFolderEditText);
+            String positiveButtonLabel = folderName == null ? context.getString(R.string.add) : context.getString(R.string.validate);
 
             final AlertDialog dialog = new AlertDialog.Builder(context)
                     .setTitle(context.getString(R.string.add_counter_group_dialog_title))
@@ -46,7 +46,7 @@ public class CounterGroupUtils
                         public void onClick(DialogInterface dialog, int which)
                         {
                             if (callBack != null)
-                                callBack.execute(addCounterGroupEditText.getText().toString());
+                                callBack.execute(addFolderEditText.getText().toString());
                         }
                     })
                     .setNegativeButton(context.getString(R.string.cancel), null)
@@ -58,7 +58,7 @@ public class CounterGroupUtils
             if (positiveButton != null)
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
-            addCounterGroupEditText.addTextChangedListener(new TextWatcher()
+            addFolderEditText.addTextChangedListener(new TextWatcher()
             {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count)
@@ -85,8 +85,8 @@ public class CounterGroupUtils
         }
     }
 
-    public static void showAddCounterGroup(Context context, final CallBack callBack)
+    public static void showAddFolder(Context context, final CallBack callBack)
     {
-        showAddCounterGroup(context, null, callBack);
+        showAddFolder(context, null, callBack);
     }
 }
