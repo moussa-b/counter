@@ -14,9 +14,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".HomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -33,7 +33,7 @@
 
         <activity android:name=".countersettings.CounterSettingsActivity"/>
 
-        <activity android:name=".countergrouplist.CounterGroupListActivity"/>
+        <activity android:name=".folderlist.CounterGroupListActivity"/>
 
         <activity android:name=".about.AboutActivity"/>
 

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.mbo.counter.R;
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.utils.ItemTouchHelperAdapter;
+import com.mbo.counter.commons.ItemTouchHelperAdapter;
 
 import java.util.Collections;
 import java.util.List;

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
+import com.mbo.counter.commons.ItemOffsetDecoration;
 import com.mbo.counter.counter.CounterActivity;
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.statistics.StatisticsActivity;
@@ -105,6 +106,7 @@ public class CounterListFragment extends Fragment implements CounterListContract
     { // Lifecycle : called first, for doing any non-graphical initialisations
         super.onCreate(savedInstanceState);
         mRecyclerAdapter = new CounterListAdapter(new ArrayList<Counter>(0), mCounterListener);
+        setHasOptionsMenu(true); // The fragment handle the menu
     }
 
     public CounterListFragment()
@@ -124,8 +126,8 @@ public class CounterListFragment extends Fragment implements CounterListContract
         // Set up counters view
         mCounterRecyclerView = root.findViewById(R.id.counter_recycler_view);
         mCounterRecyclerView.setAdapter(mRecyclerAdapter);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(container.getContext(), DividerItemDecoration.VERTICAL);
-        mCounterRecyclerView.addItemDecoration(itemDecoration);
+        // RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(container.getContext(), DividerItemDecoration.VERTICAL);
+        mCounterRecyclerView.addItemDecoration(new ItemOffsetDecoration(container.getContext(), R.dimen.recycler_view_item_offset));
         mCounterRecyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
 
         // Set up drag and drop
@@ -192,10 +194,11 @@ public class CounterListFragment extends Fragment implements CounterListContract
     {
         switch (item.getItemId())
         {
-            case R.id.action_edit:
-                break;
+            case R.id.action_add:
+                showAddCounter();
+                return true;
         }
-        return true;
+        return false;
     }
 
     @Override

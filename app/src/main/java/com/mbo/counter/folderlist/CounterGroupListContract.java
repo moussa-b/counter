@@ -1,4 +1,4 @@
-package com.mbo.counter.countergrouplist;
+package com.mbo.counter.folderlist;
 
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;

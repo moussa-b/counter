@@ -1,4 +1,4 @@
-package com.mbo.counter.countergrouplist;
+package com.mbo.counter.folderlist;
 
 import android.content.Context;
 import android.graphics.Typeface;
