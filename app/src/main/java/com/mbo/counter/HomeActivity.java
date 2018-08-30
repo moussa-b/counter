@@ -1,6 +1,5 @@
 package com.mbo.counter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,26 +8,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.mbo.counter.addeditcounter.AddEditCounterActivity;
+import com.mbo.counter.commons.Utils;
 import com.mbo.counter.counter.CounterFragment;
 import com.mbo.counter.counter.CounterPresenter;
 import com.mbo.counter.counterlist.CounterListFragment;
 import com.mbo.counter.counterlist.CounterListPresenter;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
-import com.mbo.counter.folderlist.CounterGroupListFragment;
-import com.mbo.counter.folderlist.CounterGroupListPresenter;
+import com.mbo.counter.folderlist.FolderListFragment;
+import com.mbo.counter.folderlist.FolderListPresenter;
 import com.mbo.counter.settings.SettingsFragment;
 import com.mbo.counter.settings.SettingsPresenter;
-import com.mbo.counter.commons.Utils;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
 
     // https://medium.com/mindorks/essential-guide-for-designing-your-android-app-architecture-mvp-part-1-74efaf1cda40
     CounterListFragment mCounterListFragment;
-    CounterGroupListFragment mCounterGroupListFragment;
+    FolderListFragment mFolderListFragment;
     CounterFragment mCounterFragment;
     SettingsFragment mSettingsFragment;
+    BottomNavigationView mBottomNavigationView;
     boolean mHideMenu = true;
 
     @Override
@@ -36,9 +35,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        Utils.removeShiftMode(navigation);
-        navigation.setOnNavigationItemSelectedListener(this);
+        mBottomNavigationView = findViewById(R.id.navigation);
+        Utils.removeShiftMode(mBottomNavigationView);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         mCounterFragment = (CounterFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (mCounterFragment == null)
@@ -53,8 +52,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         mCounterListFragment = CounterListFragment.newInstance();
         new CounterListPresenter(OrmLiteDataSource.getInstance(), mCounterListFragment);
 
-        mCounterGroupListFragment = CounterGroupListFragment.newInstance();
-        new CounterGroupListPresenter(OrmLiteDataSource.getInstance(), mCounterGroupListFragment);
+        mFolderListFragment = FolderListFragment.newInstance();
+        new FolderListPresenter(OrmLiteDataSource.getInstance(), mFolderListFragment);
 
         mSettingsFragment = SettingsFragment.newInstance();
         new SettingsPresenter(mSettingsFragment);
@@ -86,11 +85,31 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
+        loadFragment(item.getItemId());
+        invalidateOptionsMenu();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (mCounterFragment.isHidden())
+        {
+            mBottomNavigationView.setSelectedItemId(R.id.navigation_home);
+            loadFragment(R.id.navigation_home);
+        }
+        else
+            finish();
+    }
+
+    private void loadFragment(int itemId)
+    {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        switch (item.getItemId())
+        switch (itemId)
         {
             case R.id.navigation_home:
+                setTitle(getString(R.string.counter));
                 mHideMenu = true;
                 if (mCounterFragment.isAdded())
                     transaction.show(mCounterFragment);
@@ -100,14 +119,15 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 if (mCounterListFragment.isAdded())
                     transaction.hide(mCounterListFragment);
 
-                if (mCounterGroupListFragment.isAdded())
-                    transaction.hide(mCounterGroupListFragment);
+                if (mFolderListFragment.isAdded())
+                    transaction.hide(mFolderListFragment);
 
                 if (mSettingsFragment.isAdded())
                     transaction.hide(mSettingsFragment);
 
                 break;
             case R.id.navigation_counters:
+                setTitle(getString(R.string.counter_list));
                 mHideMenu = false;
                 if (mCounterListFragment.isAdded())
                     transaction.show(mCounterListFragment);
@@ -117,19 +137,20 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 if (mCounterFragment.isAdded())
                     transaction.hide(mCounterFragment);
 
-                if (mCounterGroupListFragment.isAdded())
-                    transaction.hide(mCounterGroupListFragment);
+                if (mFolderListFragment.isAdded())
+                    transaction.hide(mFolderListFragment);
 
                 if (mSettingsFragment.isAdded())
                     transaction.hide(mSettingsFragment);
 
                 break;
             case R.id.navigation_folders:
+                setTitle(getString(R.string.folder_list));
                 mHideMenu = false;
-                if (mCounterGroupListFragment.isAdded())
-                    transaction.show(mCounterGroupListFragment);
+                if (mFolderListFragment.isAdded())
+                    transaction.show(mFolderListFragment);
                 else
-                    Utils.addFragmentToActivity(getSupportFragmentManager(), mCounterGroupListFragment, R.id.contentFrame);
+                    Utils.addFragmentToActivity(getSupportFragmentManager(), mFolderListFragment, R.id.contentFrame);
 
                 if (mCounterFragment.isAdded())
                     transaction.hide(mCounterFragment);
@@ -142,6 +163,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
                 break;
             case R.id.navigation_settings:
+                setTitle(getString(R.string.settings));
                 mHideMenu = true;
                 if (mSettingsFragment.isAdded())
                     transaction.show(mSettingsFragment);
@@ -154,20 +176,12 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 if (mCounterListFragment.isAdded())
                     transaction.hide(mCounterListFragment);
 
-                if (mCounterGroupListFragment.isAdded())
-                    transaction.hide(mCounterGroupListFragment);
+                if (mFolderListFragment.isAdded())
+                    transaction.hide(mFolderListFragment);
 
                 break;
         }
 
         transaction.commit();
-        invalidateOptionsMenu();
-        return true;
-    }
-
-    private void showAddCounter()
-    {
-        Intent intent = new Intent(this, AddEditCounterActivity.class);
-        startActivityForResult(intent, AddEditCounterActivity.REQUEST_ADD_COUNTER);
     }
 }

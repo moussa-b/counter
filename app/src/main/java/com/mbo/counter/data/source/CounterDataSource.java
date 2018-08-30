@@ -3,7 +3,7 @@ package com.mbo.counter.data.source;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.data.model.Statistics;
 
 import java.util.List;
@@ -16,17 +16,17 @@ public interface CounterDataSource
 
     void deleteAllCounters();
 
-    void deleteAllCounterGroups();
+    void deleteAllFolders();
 
     void deleteCounter(int counterId);
 
-    void deleteCounterGroup(int counterGroupId);
+    void deleteFolder(int folderId);
 
-    void deleteCountersInGroup(int counterGroupId);
+    void deleteCountersInGroup(int folderId);
 
     void duplicateCounter(int counterId);
 
-    void duplicateCounterGroup(int counterGroupId);
+    void duplicateFolder(int folderId);
 
     void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback);
 
@@ -34,19 +34,19 @@ public interface CounterDataSource
 
     void getCounter(int counterId, @NonNull GetCounterCallback callback);
 
-    void getCounterGroups(@NonNull LoadCounterGroupsCallback callback);
+    void getFolders(@NonNull LoadFoldersCallback callback);
 
-    void getCounterGroup(int counterId, @NonNull GetCounterGroupCallback callback);
+    void getFolder(int counterId, @NonNull GetFolderCallback callback);
 
     int incrementCounter(int counterId);
 
     void saveCounter(@NonNull Counter counter);
 
-    void saveCounterGroup(@NonNull CounterGroup counterGroup);
+    void saveFolder(@NonNull Folder folder);
 
     void resetCounter(int counterId);
 
-    void resetCountersInGroup(int counterGroupId);
+    void resetCountersInGroup(int folderId);
 
     interface LoadCountersCallback
     {
@@ -55,9 +55,9 @@ public interface CounterDataSource
         void onDataNotAvailable();
     }
 
-    interface LoadCounterGroupsCallback
+    interface LoadFoldersCallback
     {
-        void onCounterGroupsLoaded(List<CounterGroup> counterGroups);
+        void onFoldersLoaded(List<Folder> folders);
 
         void onDataNotAvailable();
     }
@@ -76,9 +76,9 @@ public interface CounterDataSource
         void onDataNotAvailable();
     }
 
-    interface GetCounterGroupCallback
+    interface GetFolderCallback
     {
-        void onCounterGroupLoaded(CounterGroup counterGroup);
+        void onFolderLoaded(Folder folder);
 
         void onDataNotAvailable();
     }

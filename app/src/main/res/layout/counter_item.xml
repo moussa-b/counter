@@ -8,7 +8,8 @@
     android:paddingBottom="@dimen/list_item_vertical_margin"
     android:background="@android:color/white"
     android:paddingTop="@dimen/list_item_vertical_margin"
-    android:paddingStart="8dp">
+    android:paddingEnd="@dimen/list_item_horizontal_margin"
+    android:paddingStart="@dimen/list_item_horizontal_margin">
 
     <ProgressBar
         android:id="@+id/counter_item_progress_bar"

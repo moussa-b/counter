@@ -7,7 +7,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.data.model.Statistics;
 import com.mbo.counter.data.source.CounterDataSource;
 
@@ -29,14 +29,14 @@ public class OrmLiteHelper extends OrmLiteSqliteOpenHelper
         try
         {
             TableUtils.createTable(connectionSource, Counter.class);
-            TableUtils.createTable(connectionSource, CounterGroup.class);
+            TableUtils.createTable(connectionSource, Folder.class);
             TableUtils.createTable(connectionSource, Statistics.class);
 
             CounterDataSource dataSource = OrmLiteDataSource.getInstance();
-            CounterGroup defaultCounterGroup = new CounterGroup("");
+            Folder defaultFolder = new Folder("");
             Counter defaultCounter = new Counter("");
-            dataSource.saveCounterGroup(defaultCounterGroup);
-            defaultCounter.setCounterGroup(defaultCounterGroup);
+            dataSource.saveFolder(defaultFolder);
+            defaultCounter.setFolder(defaultFolder);
             dataSource.saveCounter(defaultCounter);
         }
         catch (SQLException e)

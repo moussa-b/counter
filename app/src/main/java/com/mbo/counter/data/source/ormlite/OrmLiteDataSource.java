@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.data.model.Statistics;
 import com.mbo.counter.data.source.CounterDataSource;
 
@@ -24,7 +24,7 @@ public class OrmLiteDataSource implements CounterDataSource
 
     private DaoStatistics mDaoStatistics;
 
-    private DaoCounterGroup mDaoCounterGroup;
+    private DaoFolder mDaoFolder;
 
     // Prevent direct instantiation.
     private OrmLiteDataSource(@NonNull OrmLiteSqliteOpenHelper helper)
@@ -33,7 +33,7 @@ public class OrmLiteDataSource implements CounterDataSource
         {
             mDaoCounter = new DaoCounter(helper.getConnectionSource(), Counter.class);
             mDaoStatistics = new DaoStatistics(helper.getConnectionSource(), Statistics.class);
-            mDaoCounterGroup = new DaoCounterGroup(helper.getConnectionSource(), CounterGroup.class);
+            mDaoFolder = new DaoFolder(helper.getConnectionSource(), Folder.class);
         }
         catch (SQLException e)
         {
@@ -114,12 +114,12 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void deleteAllCounterGroups()
+    public void deleteAllFolders()
     {
         try
         {
-            mDaoCounterGroup.deleteBuilder().where().ne("id", 1);
-            mDaoCounterGroup.deleteBuilder().delete();
+            mDaoFolder.deleteBuilder().where().ne("id", 1);
+            mDaoFolder.deleteBuilder().delete();
         }
         catch (SQLException e)
         {
@@ -141,16 +141,16 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void deleteCounterGroup(int counterGroupId)
+    public void deleteFolder(int folderId)
     {
         try
         {
-            CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
-            if (counterGroup != null && counterGroup.getCounters() != null && counterGroup.getCounters().size() > 0)
+            Folder folder = mDaoFolder.queryForId((long) folderId);
+            if (folder != null && folder.getCounters() != null && folder.getCounters().size() > 0)
             {
-                counterGroup.getCounters().clear();
+                folder.getCounters().clear();
             }
-            mDaoCounterGroup.deleteById((long) counterGroupId);
+            mDaoFolder.deleteById((long) folderId);
         }
         catch (SQLException e)
         {
@@ -159,14 +159,14 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void deleteCountersInGroup(int counterGroupId)
+    public void deleteCountersInGroup(int folderId)
     {
         try
         {
-            CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
-            if (counterGroup != null && counterGroup.getCounters() != null && counterGroup.getCounters().size() > 0)
+            Folder folder = mDaoFolder.queryForId((long) folderId);
+            if (folder != null && folder.getCounters() != null && folder.getCounters().size() > 0)
             {
-                counterGroup.getCounters().clear();
+                folder.getCounters().clear();
             }
         }
         catch (SQLException e)
@@ -196,17 +196,17 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void duplicateCounterGroup(int counterGroupId)
+    public void duplicateFolder(int folderId)
     {
         try
         {
-            CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
-            if (counterGroup != null)
+            Folder folder = mDaoFolder.queryForId((long) folderId);
+            if (folder != null)
             {
-                counterGroup.setId(0);
-                counterGroup.setCreationDate(new Date());
-                counterGroup.setLastModificationDate(new Date());
-                mDaoCounterGroup.create(counterGroup);
+                folder.setId(0);
+                folder.setCreationDate(new Date());
+                folder.setLastModificationDate(new Date());
+                mDaoFolder.create(folder);
             }
         }
         catch (SQLException e)
@@ -260,14 +260,14 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void getCounterGroup(int counterGroupId, @NonNull GetCounterGroupCallback callback)
+    public void getFolder(int folderId, @NonNull GetFolderCallback callback)
     {
         try
         {
-            final CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
-            if (counterGroup != null)
+            final Folder folder = mDaoFolder.queryForId((long) folderId);
+            if (folder != null)
             {
-                callback.onCounterGroupLoaded(counterGroup);
+                callback.onFolderLoaded(folder);
             }
             else
             {
@@ -281,16 +281,16 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void getCounterGroups(@NonNull LoadCounterGroupsCallback callback)
+    public void getFolders(@NonNull LoadFoldersCallback callback)
     {
         try
         {
-            final List<CounterGroup> counters = mDaoCounterGroup.queryBuilder()
+            final List<Folder> counters = mDaoFolder.queryBuilder()
                     .orderBy("order", true)
                     .where().ne("id", 1).query();
             if (counters != null)
             {
-                callback.onCounterGroupsLoaded(counters);
+                callback.onFoldersLoaded(counters);
             }
             else
             {
@@ -400,14 +400,14 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void resetCountersInGroup(int counterGroupId)
+    public void resetCountersInGroup(int folderId)
     {
         try
         {
-            final CounterGroup counterGroup = mDaoCounterGroup.queryForId((long) counterGroupId);
-            if (counterGroup != null && counterGroup.getCounters() != null && counterGroup.getCounters().size() > 0)
+            final Folder folder = mDaoFolder.queryForId((long) folderId);
+            if (folder != null && folder.getCounters() != null && folder.getCounters().size() > 0)
             {
-                for (Counter counter : counterGroup.getCounters())
+                for (Counter counter : folder.getCounters())
                 {
                     Date today = new Date();
                     counter.setCount(0);
@@ -424,23 +424,23 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void saveCounterGroup(@NonNull CounterGroup counterGroup)
+    public void saveFolder(@NonNull Folder folder)
     {
         try
         {
-            if (counterGroup.getCreationDate() == null)
-                counterGroup.setCreationDate(new Date());
+            if (folder.getCreationDate() == null)
+                folder.setCreationDate(new Date());
 
-            counterGroup.setLastModificationDate(new Date());
+            folder.setLastModificationDate(new Date());
 
-            if (counterGroup.getId() == 0)
+            if (folder.getId() == 0)
             {
-                mDaoCounterGroup.create(counterGroup);
-                counterGroup.setOrder(10000 * counterGroup.getId());
-                mDaoCounterGroup.update(counterGroup);
+                mDaoFolder.create(folder);
+                folder.setOrder(10000 * folder.getId());
+                mDaoFolder.update(folder);
             }
             else
-                mDaoCounterGroup.update(counterGroup);
+                mDaoFolder.update(folder);
         }
         catch (SQLException e)
         {

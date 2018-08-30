@@ -3,7 +3,7 @@ package com.mbo.counter.addeditcounter;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.CounterGroup;
+import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.data.source.CounterDataSource;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     @Override
     public void start()
     {
-        loadCounterGroups();
+        loadFolders();
         populateCounter();
     }
 
@@ -44,14 +44,14 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     }
 
     @Override
-    public void loadCounterGroups()
+    public void loadFolders()
     {
-        mCounterDataSource.getCounterGroups(new CounterDataSource.LoadCounterGroupsCallback()
+        mCounterDataSource.getFolders(new CounterDataSource.LoadFoldersCallback()
         {
             @Override
-            public void onCounterGroupsLoaded(List<CounterGroup> counterGroups)
+            public void onFoldersLoaded(List<Folder> folders)
             {
-                mAddCounterView.processCounterGroups(counterGroups);
+                mAddCounterView.processFolders(folders);
             }
 
             @Override
@@ -70,9 +70,9 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
     }
 
     @Override
-    public void saveCounterGroup(CounterGroup counterGroup)
+    public void saveFolder(Folder folder)
     {
-        mCounterDataSource.saveCounterGroup(counterGroup);
+        mCounterDataSource.saveFolder(folder);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
                     mCounter = counter;
                     mAddCounterView.setName(mCounter.getName());
                     mAddCounterView.setColor(mCounter.getColor());
-                    mAddCounterView.setGroup(mCounter.getCounterGroup());
+                    mAddCounterView.setGroup(mCounter.getFolder());
                     mAddCounterView.setLimit(mCounter.getLimit());
                     mAddCounterView.setStep(mCounter.getStep());
                     mAddCounterView.setNote(mCounter.getNote());
