@@ -260,7 +260,7 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void getFolderGroup(int folderId, @NonNull GetFolderCallback callback)
+    public void getFolder(int folderId, @NonNull GetFolderCallback callback)
     {
         try
         {

@@ -3,9 +3,11 @@ package com.mbo.counter.counterlist;
 import android.support.annotation.NonNull;
 
 import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.data.source.CounterDataSource;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CounterListPresenter implements CounterListContract.Presenter
@@ -16,11 +18,19 @@ public class CounterListPresenter implements CounterListContract.Presenter
     @NonNull
     private final CounterListContract.View mCounterListView;
 
-    public CounterListPresenter(@NonNull OrmLiteDataSource counterDataSource, @NonNull CounterListContract.View counterListView)
+    private final int mFolderId;
+
+    public CounterListPresenter(@NonNull OrmLiteDataSource counterDataSource, @NonNull CounterListContract.View counterListView, int folderId)
     {
         this.mCounterDataSource = counterDataSource;
         this.mCounterListView = counterListView;
+        this.mFolderId = folderId;
         mCounterListView.setPresenter(this);
+    }
+
+    public CounterListPresenter(@NonNull OrmLiteDataSource counterDataSource, @NonNull CounterListContract.View counterListView)
+    {
+        this(counterDataSource, counterListView, 0);
     }
 
     @Override
@@ -64,20 +74,41 @@ public class CounterListPresenter implements CounterListContract.Presenter
     @Override
     public void loadCounters()
     {
-        mCounterDataSource.getCounters(new CounterDataSource.LoadCountersCallback()
+        if (mFolderId == 0)
         {
-            @Override
-            public void onCountersLoaded(List<Counter> counters)
+            mCounterDataSource.getCounters(new CounterDataSource.LoadCountersCallback()
             {
-                processCounters(counters);
-            }
+                @Override
+                public void onCountersLoaded(List<Counter> counters)
+                {
+                    processCounters(counters);
+                }
 
-            @Override
-            public void onDataNotAvailable()
+                @Override
+                public void onDataNotAvailable()
+                {
+
+                }
+            });
+        }
+        else
+        {
+            mCounterDataSource.getFolder(mFolderId, new CounterDataSource.GetFolderCallback()
             {
+                @Override
+                public void onFolderLoaded(Folder folder)
+                {
+                    processCounters(new ArrayList<>(folder.getCounters()));
+                }
 
-            }
-        });
+                @Override
+                public void onDataNotAvailable()
+                {
+
+                }
+            });
+        }
+
     }
 
     @Override

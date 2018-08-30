@@ -5,93 +5,45 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.mbo.counter.R;
-import com.mbo.counter.addeditcounter.AddEditCounterActivity;
-import com.mbo.counter.counter.CounterActivity;
-import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.Folder;
-import com.mbo.counter.statistics.StatisticsActivity;
 import com.mbo.counter.commons.CallBack;
 import com.mbo.counter.commons.FolderUtils;
+import com.mbo.counter.commons.ItemOffsetDecoration;
+import com.mbo.counter.counterlist.CounterListActivity;
+import com.mbo.counter.data.model.Folder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
-import static com.mbo.counter.counter.CounterFragment.ARGUMENT_COUNTER_ID;
-import static com.mbo.counter.statistics.StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
+import static com.mbo.counter.counterlist.CounterListFragment.ARGUMENT_FOLDER_ID;
+import static com.mbo.counter.counterlist.CounterListFragment.ARGUMENT_FOLDER_NAME;
 
 public class FolderListFragment extends Fragment implements FolderListContract.View
 {
-    private static final int REQUEST_COUNTER = 100;
-    private ExpandableListView mCounterExpandableListView;
+    private RecyclerView mFolderRecyclerView;
+    private FolderListAdapter mRecyclerAdapter;
     private TextView mNoCounterTextView;
     private FolderListContract.Presenter mPresenter;
-    private CounterExpandableListAdapter mExpandableAdapter;
     private FolderItemListener mFolderListener = new FolderItemListener()
     {
         @Override
-        public void onCounterDecrement(int groupPosition, int childPosition, int counterId)
+        public void onClick(Folder clickedFolder)
         {
-            mPresenter.decrementCounter(groupPosition, childPosition, counterId);
+            showCountersInFolder(clickedFolder);
         }
 
         @Override
-        public void onCounterIncrement(int groupPosition, int childPosition, int counterId)
-        {
-            mPresenter.incrementCounter(groupPosition, childPosition, counterId);
-        }
-
-        @Override
-        public void onCounterShowMenu(View view, final Counter clickedCounter, final int groupPosition, final int childPosition)
-        {
-            if (getActivity() != null)
-            {
-                PopupMenu popup = new PopupMenu(getActivity(), view);
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
-                {
-                    public boolean onMenuItemClick(MenuItem item)
-                    {
-                        switch (item.getItemId())
-                        {
-                            case R.id.action_full_screen:
-                                showCounterUi(clickedCounter.getId());
-                                return true;
-                            case R.id.action_reset:
-                                mPresenter.resetCounter(groupPosition, childPosition, clickedCounter.getId());
-                                return true;
-                            case R.id.action_edit:
-                                showEditCounterUi(clickedCounter.getId());
-                                return true;
-                            case R.id.action_duplicate:
-                                mPresenter.duplicateCounter(clickedCounter.getId());
-                                return true;
-                            case R.id.action_delete:
-                                mPresenter.deleteCounter(clickedCounter.getId());
-                                return true;
-                            case R.id.action_statistics:
-                                showCounterStatisticsUi(clickedCounter.getId());
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                popup.inflate(R.menu.popup_menu_counter);
-                popup.show();
-            }
-        }
-
-        @Override
-        public void onFolderShowMenu(View view, final Folder clickedFolder, final int groupPosition)
+        public void onFolderShowMenu(View view, final Folder clickedFolder, final int folderPosition)
         {
             if (getActivity() != null)
             {
@@ -103,7 +55,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                         switch (item.getItemId())
                         {
                             case R.id.action_rename:
-                                renameFolder(groupPosition);
+                                renameFolder(folderPosition);
                                 return true;
                             case R.id.action_reset_all:
                                 mPresenter.resetCountersInGroup(clickedFolder.getId());
@@ -129,23 +81,37 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                 popup.show();
             }
         }
+
+        @Override
+        public void onItemMove(Folder folder)
+        {
+
+        }
     };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mExpandableAdapter = new CounterExpandableListAdapter(new ArrayList<Folder>(0), mFolderListener);
+        mRecyclerAdapter = new FolderListAdapter(new ArrayList<Folder>(0), mFolderListener);
         setHasOptionsMenu(true); // The fragment handle the menu
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View root = inflater.inflate(R.layout.counter_group_list_fragment, container, false);
-        mCounterExpandableListView = root.findViewById(R.id.counter_expandable_list_view);
-        mCounterExpandableListView.setAdapter(mExpandableAdapter);
+        View root = inflater.inflate(R.layout.folder_list_fragment, container, false);
         mNoCounterTextView = root.findViewById(R.id.no_counter_text_view);
+        // Set up counters view
+        mFolderRecyclerView = root.findViewById(R.id.counter_recycler_view);
+        mFolderRecyclerView.setAdapter(mRecyclerAdapter);
+        mFolderRecyclerView.addItemDecoration(new ItemOffsetDecoration(container.getContext(), R.dimen.recycler_view_item_offset));
+        mFolderRecyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
+
+        // Set up drag and drop
+        ItemTouchHelper.Callback callback = new FolderListItemTouchHelperCallback(mRecyclerAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mFolderRecyclerView);
         return root;
     }
 
@@ -169,7 +135,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                     {
                         Folder folder = new Folder((String) data);
                         mPresenter.saveFolder(folder);
-                        mExpandableAdapter.notifyDataSetChanged();
+                        mRecyclerAdapter.notifyDataSetChanged();
                     }
                 });
                 return true;
@@ -196,56 +162,33 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
     }
 
     @Override
-    public void setCount(int groupPosition, int childPosition, int count)
+    public void showCountersInFolder(Folder folder)
     {
-        Counter counter = ((Counter) mExpandableAdapter.getChild(groupPosition, childPosition));
-        counter.setCount(count);
-        mExpandableAdapter.notifyDataSetChanged();
+        Intent intent = new Intent(getContext(), CounterListActivity.class);
+        intent.putExtra(ARGUMENT_FOLDER_ID, folder.getId());
+        intent.putExtra(ARGUMENT_FOLDER_NAME, folder.getName());
+        startActivity(intent);
     }
 
     @Override
     public void showFolders(List<Folder> folders)
     {
-        mCounterExpandableListView.setVisibility(View.VISIBLE);
+        mFolderRecyclerView.setVisibility(View.VISIBLE);
         mNoCounterTextView.setVisibility(View.GONE);
-        mExpandableAdapter.replaceData(folders);
-    }
-
-    @Override
-    public void showCounterUi(int counterId)
-    {
-        Intent intent = new Intent(getContext(), CounterActivity.class);
-        intent.putExtra(ARGUMENT_COUNTER_ID, counterId);
-        startActivityForResult(intent, REQUEST_COUNTER);
-    }
-
-    @Override
-    public void showEditCounterUi(int counterId)
-    {
-        Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
-        intent.putExtra(ARGUMENT_EDIT_COUNTER_ID, counterId);
-        startActivityForResult(intent, REQUEST_COUNTER);
+        mRecyclerAdapter.replaceData(folders);
     }
 
     @Override
     public void showNoFolders()
     {
-        mCounterExpandableListView.setVisibility(View.GONE);
+        mFolderRecyclerView.setVisibility(View.GONE);
         mNoCounterTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showCounterStatisticsUi(int counterId)
+    public void renameFolder(final int folderPosition)
     {
-        Intent intent = new Intent(getContext(), StatisticsActivity.class);
-        intent.putExtra(ARGUMENT_STATISTICS_COUNTER_ID, counterId);
-        startActivityForResult(intent, REQUEST_COUNTER);
-    }
-
-    @Override
-    public void renameFolder(final int groupPosition)
-    {
-        final Folder folder = ((Folder) mExpandableAdapter.getGroup(groupPosition));
+        final Folder folder = ((Folder) mRecyclerAdapter.getFolder(folderPosition));
         FolderUtils.showAddFolder(getContext(), folder.getName(), new CallBack()
         {
             @Override
@@ -253,7 +196,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
             {
                 folder.setName((String) data);
                 mPresenter.saveFolder(folder);
-                mExpandableAdapter.notifyDataSetChanged();
+                mRecyclerAdapter.notifyDataSetChanged();
             }
         });
     }

@@ -1,6 +1,5 @@
 package com.mbo.counter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.mbo.counter.addeditcounter.AddEditCounterActivity;
+import com.mbo.counter.commons.Utils;
 import com.mbo.counter.counter.CounterFragment;
 import com.mbo.counter.counter.CounterPresenter;
 import com.mbo.counter.counterlist.CounterListFragment;
@@ -19,7 +18,6 @@ import com.mbo.counter.folderlist.FolderListFragment;
 import com.mbo.counter.folderlist.FolderListPresenter;
 import com.mbo.counter.settings.SettingsFragment;
 import com.mbo.counter.settings.SettingsPresenter;
-import com.mbo.counter.commons.Utils;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
@@ -29,6 +27,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     FolderListFragment mFolderListFragment;
     CounterFragment mCounterFragment;
     SettingsFragment mSettingsFragment;
+    BottomNavigationView mBottomNavigationView;
     boolean mHideMenu = true;
 
     @Override
@@ -36,9 +35,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        Utils.removeShiftMode(navigation);
-        navigation.setOnNavigationItemSelectedListener(this);
+        mBottomNavigationView = findViewById(R.id.navigation);
+        Utils.removeShiftMode(mBottomNavigationView);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         mCounterFragment = (CounterFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (mCounterFragment == null)
@@ -86,9 +85,28 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
+        loadFragment(item.getItemId());
+        invalidateOptionsMenu();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (mCounterFragment.isHidden())
+        {
+            mBottomNavigationView.setSelectedItemId(R.id.navigation_home);
+            loadFragment(R.id.navigation_home);
+        }
+        else
+            finish();
+    }
+
+    private void loadFragment(int itemId)
+    {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        switch (item.getItemId())
+        switch (itemId)
         {
             case R.id.navigation_home:
                 setTitle(getString(R.string.counter));
@@ -165,13 +183,5 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         transaction.commit();
-        invalidateOptionsMenu();
-        return true;
-    }
-
-    private void showAddCounter()
-    {
-        Intent intent = new Intent(this, AddEditCounterActivity.class);
-        startActivityForResult(intent, AddEditCounterActivity.REQUEST_ADD_COUNTER);
     }
 }

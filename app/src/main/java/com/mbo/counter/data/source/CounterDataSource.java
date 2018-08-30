@@ -36,7 +36,7 @@ public interface CounterDataSource
 
     void getFolders(@NonNull LoadFoldersCallback callback);
 
-    void getFolderGroup(int counterId, @NonNull GetFolderCallback callback);
+    void getFolder(int counterId, @NonNull GetFolderCallback callback);
 
     int incrementCounter(int counterId);
 

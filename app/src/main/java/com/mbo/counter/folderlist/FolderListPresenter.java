@@ -30,19 +30,6 @@ public class FolderListPresenter implements FolderListContract.Presenter
     }
 
     @Override
-    public void decrementCounter(final int groupPosition, final int childPosition, final int counterId)
-    {
-        mFolderListView.setCount(groupPosition, childPosition, mCounterDataSource.decrementCounter(counterId));
-    }
-
-    @Override
-    public void deleteCounter(int counterId)
-    {
-        mCounterDataSource.deleteCounter(counterId);
-        loadFolders();
-    }
-
-    @Override
     public void deleteFolder(int folderId)
     {
         mCounterDataSource.deleteFolder(folderId);
@@ -57,23 +44,10 @@ public class FolderListPresenter implements FolderListContract.Presenter
     }
 
     @Override
-    public void duplicateCounter(int counterId)
-    {
-        mCounterDataSource.duplicateCounter(counterId);
-        loadFolders();
-    }
-
-    @Override
     public void duplicateFolder(int folderId)
     {
         mCounterDataSource.duplicateFolder(folderId);
         loadFolders();
-    }
-
-    @Override
-    public void incrementCounter(final int groupPosition, final int childPosition, final int counterId)
-    {
-        mFolderListView.setCount(groupPosition, childPosition, mCounterDataSource.incrementCounter(counterId));
     }
 
     @Override
@@ -93,13 +67,6 @@ public class FolderListPresenter implements FolderListContract.Presenter
 
             }
         });
-    }
-
-    @Override
-    public void resetCounter(final int groupPosition, final int childPosition, final int counterId)
-    {
-        mCounterDataSource.resetCounter(counterId);
-        mFolderListView.setCount(groupPosition, childPosition, 0);
     }
 
     @Override

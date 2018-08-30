@@ -9,13 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <ExpandableListView
-        android:id="@+id/counter_expandable_list_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/counter_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
 
     <!--TODO : replace by real no counter icon-->
     <TextView
