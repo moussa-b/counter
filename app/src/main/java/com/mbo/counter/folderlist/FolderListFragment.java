@@ -85,7 +85,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
         @Override
         public void onItemMove(Folder folder)
         {
-
+            mPresenter.saveFolder(folder);
         }
     };
 
@@ -135,7 +135,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                     {
                         Folder folder = new Folder((String) data);
                         mPresenter.saveFolder(folder);
-                        mRecyclerAdapter.notifyDataSetChanged();
+                        mRecyclerAdapter.addData(folder);
                     }
                 });
                 return true;

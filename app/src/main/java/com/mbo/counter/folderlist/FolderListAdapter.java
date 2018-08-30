@@ -119,6 +119,12 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Fo
         notifyDataSetChanged();
     }
 
+    public void addData(Folder folder)
+    {
+        this.mFolders.add(folder);
+        notifyDataSetChanged();
+    }
+
     public Folder getFolder(int position)
     {
         return mFolders.get(position);
