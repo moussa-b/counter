@@ -2,6 +2,7 @@ package com.mbo.counter.commons;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -96,6 +98,41 @@ public class Utils
     public static MediaPlayer getDecreaseMediaPlayer(Context context)
     {
         return MediaPlayer.create(context, R.raw.decrease);
+    }
+
+    public static void showWarningDialog(final Context context, boolean isCancellable, int title, int message, final CallBack confirmCallBack, final CallBack cancelCallBack)
+    {
+        if (context != null)
+        {
+            final AlertDialog.Builder materialDialog = new AlertDialog.Builder(context)
+                    .setCancelable(false)
+                    .setMessage(message)
+                    .setTitle(title);
+
+            materialDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    if (confirmCallBack != null)
+                        confirmCallBack.execute(null);
+                    dialog.dismiss();
+                }
+            });
+
+            materialDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    if (cancelCallBack != null)
+                        cancelCallBack.execute(null);
+                    dialog.dismiss();
+                }
+            });
+
+            materialDialog.show();
+        }
     }
 
     @SuppressLint("RestrictedApi")

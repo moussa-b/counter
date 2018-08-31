@@ -115,13 +115,13 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Fo
 
     public void replaceData(List<Folder> folders)
     {
-        this.mFolders = folders;
+        mFolders = folders;
         notifyDataSetChanged();
     }
 
     public void addData(Folder folder)
     {
-        this.mFolders.add(folder);
+        mFolders.add(folder);
         notifyDataSetChanged();
     }
 

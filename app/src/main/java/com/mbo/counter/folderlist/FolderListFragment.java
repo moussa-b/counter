@@ -19,6 +19,7 @@ import com.mbo.counter.R;
 import com.mbo.counter.commons.CallBack;
 import com.mbo.counter.commons.FolderUtils;
 import com.mbo.counter.commons.ItemOffsetDecoration;
+import com.mbo.counter.commons.Utils;
 import com.mbo.counter.counterlist.CounterListActivity;
 import com.mbo.counter.data.model.Folder;
 
@@ -58,16 +59,43 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                                 renameFolder(folderPosition);
                                 return true;
                             case R.id.action_reset_all:
-                                mPresenter.resetCountersInGroup(clickedFolder.getId());
+                                Utils.showWarningDialog(getContext(), true,
+                                        R.string.information, R.string.reset_all_counters_warning,
+                                        new CallBack()
+                                        {
+                                            @Override
+                                            public void execute(Object data)
+                                            {
+                                                mPresenter.resetCountersInGroup(clickedFolder.getId());
+                                            }
+                                        }, null);
                                 return true;
                             case R.id.action_delete_all:
-                                mPresenter.deleteCountersInGroup(clickedFolder.getId());
+                                Utils.showWarningDialog(getContext(), true,
+                                        R.string.warning, R.string.delete_all_counters_warning,
+                                        new CallBack()
+                                        {
+                                            @Override
+                                            public void execute(Object data)
+                                            {
+                                                mPresenter.deleteCountersInGroup(clickedFolder.getId());
+                                            }
+                                        }, null);
                                 return true;
                             case R.id.action_duplicate:
                                 mPresenter.duplicateFolder(clickedFolder.getId());
                                 return true;
                             case R.id.action_delete:
-                                mPresenter.deleteFolder(clickedFolder.getId());
+                                Utils.showWarningDialog(getContext(), true,
+                                        R.string.warning, R.string.delete_folder_warning,
+                                        new CallBack()
+                                        {
+                                            @Override
+                                            public void execute(Object data)
+                                            {
+                                                mPresenter.deleteFolder(clickedFolder.getId());
+                                            }
+                                        }, null);
                                 return true;
                             case R.id.action_statistics:
                                 // TODO faire les statistics par groupe
