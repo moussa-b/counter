@@ -1,5 +1,7 @@
 package com.mbo.counter.counterlist;
 
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mbo.counter.R;
+import com.mbo.counter.commons.Utils;
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.commons.ItemTouchHelperAdapter;
 
@@ -115,6 +118,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
     public void onBindViewHolder(@NonNull CounterViewHolder counterViewHolder, final int position)
     {
         final Counter counter = mCounters.get(position);
+        final Context context = counterViewHolder.countTextView.getContext();
         counterViewHolder.countTextView.setText(String.valueOf(counter.getCount()));
         counterViewHolder.nameTextView.setText(String.format("%s %s", counter.getName(), String.format("(%d)", counter.getLimit())));
         int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
@@ -126,6 +130,8 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             public void onClick(View v)
             {
                 mCounterListener.onCounterDecrement(position, counter.getId(), counter.getLimit());
+                MediaPlayer decreaseSound = Utils.getDecreaseMediaPlayer(context);
+                decreaseSound.start();
             }
         });
         counterViewHolder.increaseCounterImageButton.setOnClickListener(new View.OnClickListener()
@@ -134,6 +140,8 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             public void onClick(View v)
             {
                 mCounterListener.onCounterIncrement(position, counter.getId(), counter.getLimit());
+                MediaPlayer increaseSound = Utils.getIncreaseMediaPlayer(context);
+                increaseSound.start();
             }
         });
         counterViewHolder.editCounterImageView.setOnClickListener(new View.OnClickListener()

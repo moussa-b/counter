@@ -3,6 +3,7 @@ package com.mbo.counter.commons;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -13,6 +14,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+
+import com.mbo.counter.R;
 
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -83,6 +86,16 @@ public class Utils
         Resources r = context.getResources();
         DisplayMetrics metrics = r.getDisplayMetrics();
         return px / (metrics.densityDpi / 160f);
+    }
+
+    public static MediaPlayer getIncreaseMediaPlayer(Context context)
+    {
+        return MediaPlayer.create(context, R.raw.increase);
+    }
+
+    public static MediaPlayer getDecreaseMediaPlayer(Context context)
+    {
+        return MediaPlayer.create(context, R.raw.decrease);
     }
 
     @SuppressLint("RestrictedApi")

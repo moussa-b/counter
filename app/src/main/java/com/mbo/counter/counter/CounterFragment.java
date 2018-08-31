@@ -2,6 +2,7 @@ package com.mbo.counter.counter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
+import com.mbo.counter.commons.Utils;
 import com.mbo.counter.statistics.StatisticsActivity;
 
 import static android.text.TextUtils.isEmpty;
@@ -70,6 +72,9 @@ public class CounterFragment extends Fragment implements CounterContract.View
                     setProgression(limit, count);
                 else
                     rotateProgressBar(-ROTATION_ANGLE);
+
+                MediaPlayer increaseSound = Utils.getIncreaseMediaPlayer(getContext());
+                increaseSound.start();
             }
         });
 
@@ -85,6 +90,9 @@ public class CounterFragment extends Fragment implements CounterContract.View
                     setProgression(limit, count);
                 else
                     rotateProgressBar(ROTATION_ANGLE);
+
+                MediaPlayer decreaseSound = Utils.getDecreaseMediaPlayer(getContext());
+                decreaseSound.start();
             }
         });
 
