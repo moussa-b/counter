@@ -1,10 +1,7 @@
 package com.mbo.counter.data.model;
 
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.util.Date;
 
 @DatabaseTable
 public class Statistics
@@ -12,8 +9,8 @@ public class Statistics
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd")
-    private Date date;
+    @DatabaseField
+    private long dateTimeStamp;
 
     @DatabaseField(index = true)
     private int counterId;
@@ -26,7 +23,7 @@ public class Statistics
 
     public static class Row
     {
-        private String date;
+        private long dateTimeStamp;
 
         private int value;
 
@@ -34,20 +31,20 @@ public class Statistics
         {
         }
 
-        public Row(String date, int value)
+        public Row(long dateTimeStamp, int value)
         {
-            this.date = date;
+            this.dateTimeStamp = dateTimeStamp;
             this.value = value;
         }
 
-        public String getDate()
+        public long getDateTimeStamp()
         {
-            return date;
+            return dateTimeStamp;
         }
 
-        public void setDate(String date)
+        public void setDateTimeStamp(long dateTimeStamp)
         {
-            this.date = date;
+            this.dateTimeStamp = dateTimeStamp;
         }
 
         public int getValue()
@@ -65,31 +62,26 @@ public class Statistics
     {
     }
 
-    public Statistics(Date date, int counterId)
+    public Statistics(long dateTimeStamp, int counterId)
     {
-        this.date = date;
+        this.dateTimeStamp = dateTimeStamp;
         this.counterId = counterId;
         this.value = 1;
     }
 
-    public Statistics(Date date, int counterId, int value)
+    public Statistics(long dateTimeStamp, int counterId, int value)
     {
-        this.date = date;
+        this.dateTimeStamp = dateTimeStamp;
         this.counterId = counterId;
         this.value = value;
     }
 
-    public Statistics(Date date, int counterId, int value, StatisticsType type)
+    public Statistics(long dateTimeStamp, int counterId, int value, StatisticsType type)
     {
-        this.date = date;
+        this.dateTimeStamp = dateTimeStamp;
         this.counterId = counterId;
         this.value = value;
         this.type = type;
-    }
-
-    public Date getDate()
-    {
-        return date;
     }
 
     public int getId()
@@ -100,11 +92,6 @@ public class Statistics
     public void setId(int id)
     {
         this.id = id;
-    }
-
-    public void setDate(Date date)
-    {
-        this.date = date;
     }
 
     public int getCounterId()
@@ -135,5 +122,15 @@ public class Statistics
     public void setType(StatisticsType type)
     {
         this.type = type;
+    }
+
+    public long getDateTimeStamp()
+    {
+        return dateTimeStamp;
+    }
+
+    public void setDateTimeStamp(long dateTimeStamp)
+    {
+        this.dateTimeStamp = dateTimeStamp;
     }
 }

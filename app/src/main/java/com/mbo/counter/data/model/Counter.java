@@ -42,11 +42,11 @@ public class Counter
     @DatabaseField
     private int step;
 
-    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
-    private Date creationDate;
+    @DatabaseField
+    private long creationTimeStamp;
 
-    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
-    private Date lastModificationDate;
+    @DatabaseField
+    private long lastModificationTimeStamp;
 
     public Counter()
     {
@@ -185,23 +185,23 @@ public class Counter
         this.step = step;
     }
 
-    public Date getCreationDate()
+    public long getCreationTimeStamp()
     {
-        return creationDate;
+        return creationTimeStamp;
     }
 
-    public void setCreationDate(Date creationDate)
+    public void setCreationTimeStamp(long creationTimeStamp)
     {
-        this.creationDate = creationDate;
+        this.creationTimeStamp = creationTimeStamp;
     }
 
-    public Date getLastModificationDate()
+    public long getLastModificationTimeStamp()
     {
-        return lastModificationDate;
+        return lastModificationTimeStamp;
     }
 
-    public void setLastModificationDate(Date lastModificationDate)
+    public void setLastModificationTimeStamp(long lastModificationTimeStamp)
     {
-        this.lastModificationDate = lastModificationDate;
+        this.lastModificationTimeStamp = lastModificationTimeStamp;
     }
 }

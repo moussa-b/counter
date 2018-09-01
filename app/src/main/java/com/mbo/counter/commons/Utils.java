@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
@@ -59,6 +60,13 @@ public class Utils
         }
 
         return outputDate;
+    }
+
+    public static String formatDateForDisplay(long dateTimeStamp, Locale locale)
+    {
+        Date date = new Date(dateTimeStamp);
+        DateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yy", locale);
+        return outputDateFormat.format(date);
     }
 
     // getDisplayWidth(context) => (display width in pixels)

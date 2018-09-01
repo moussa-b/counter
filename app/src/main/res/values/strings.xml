@@ -14,7 +14,7 @@
     <string name="counter">Counter</string>
     <string name="counter_list">List of counters</string>
     <string name="counters">Counters</string>
-    <string name="delete_all_counters_warning">This action will delete all counters in folder. Are you sure?</string>
+    <string name="delete_all_counters_warning">This action will delete all counters in this folder. Are you sure?</string>
     <string name="delete_folder_warning">This action will delete this folder and all its counters. Are you sure?</string>
     <string name="direction">Direction</string>
     <string name="duplicate">Duplicate</string>
@@ -42,6 +42,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="no_counters">You have no counters</string>
     <string name="no_counters_add">Add a counter item +</string>
+    <string name="no_folders">You have not folders</string>
     <string name="no_statistics">You have no statistics</string>
     <string name="notes">Notes</string>
     <string name="objective">Objective</string>
@@ -49,7 +50,7 @@
     <string name="rename">Rename</string>
     <string name="reset">Reset</string>
     <string name="reset_all_counters">Reset all counters</string>
-    <string name="reset_all_counters_warning">This action will reset all counters in folder. Are you sure?</string>
+    <string name="reset_all_counters_warning">This action will reset all counters in this folder. Are you sure?</string>
     <string name="settings">Settings</string>
     <string name="share">Share</string>
     <string name="simple_counter">Simple counter</string>

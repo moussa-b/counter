@@ -79,7 +79,7 @@ public class OrmLiteDataSource implements CounterDataSource
             if (counter != null)
             {
                 Date today = new Date();
-                counter.setLastModificationDate(today);
+                counter.setLastModificationTimeStamp(today.getTime());
 
                 if (counter.getLimit() == 0 || (counter.getCount() - counter.getStep()) >= 0)
                     counter.setCount(counter.getCount() - counter.getStep());
@@ -87,7 +87,7 @@ public class OrmLiteDataSource implements CounterDataSource
                     counter.setCount(counter.getLimit() + counter.getCount() - counter.getStep());
 
                 mDaoCounter.update(counter);
-                mDaoStatistics.create(new Statistics(today, counter.getId(), 0, DECREMENT));
+                mDaoStatistics.create(new Statistics(today.getTime(), counter.getId(), 0, DECREMENT));
                 return counter.getCount();
             }
         }
@@ -184,8 +184,8 @@ public class OrmLiteDataSource implements CounterDataSource
             if (counter != null)
             {
                 counter.setId(0);
-                counter.setCreationDate(new Date());
-                counter.setLastModificationDate(new Date());
+                counter.setCreationTimeStamp(new Date().getTime());
+                counter.setLastModificationTimeStamp(new Date().getTime());
                 mDaoCounter.create(counter);
             }
         }
@@ -203,9 +203,10 @@ public class OrmLiteDataSource implements CounterDataSource
             Folder folder = mDaoFolder.queryForId((long) folderId);
             if (folder != null)
             {
+                Date today = new Date();
                 folder.setId(0);
-                folder.setCreationDate(new Date());
-                folder.setLastModificationDate(new Date());
+                folder.setCreationTimeStamp(today.getTime());
+                folder.setLastModificationTimeStamp(today.getTime());
                 mDaoFolder.create(folder);
             }
         }
@@ -333,7 +334,7 @@ public class OrmLiteDataSource implements CounterDataSource
             if (counter != null)
             {
                 Date today = new Date();
-                counter.setLastModificationDate(today);
+                counter.setLastModificationTimeStamp(today.getTime());
 
                 if (counter.getLimit() == 0 || (counter.getCount() + counter.getStep()) <= counter.getLimit())
                     counter.setCount(counter.getCount() + counter.getStep());
@@ -341,7 +342,7 @@ public class OrmLiteDataSource implements CounterDataSource
                     counter.setCount((counter.getCount() + counter.getStep()) - counter.getLimit());
 
                 mDaoCounter.update(counter);
-                mDaoStatistics.create(new Statistics(today, counter.getId(), 0, INCREMENT));
+                mDaoStatistics.create(new Statistics(today.getTime(), counter.getId(), 0, INCREMENT));
                 return counter.getCount();
             }
         }
@@ -357,10 +358,11 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            if (counter.getCreationDate() == null)
-                counter.setCreationDate(new Date());
+            Date today = new Date();
+            if (counter.getCreationTimeStamp() == 0)
+                counter.setCreationTimeStamp(today.getTime());
 
-            counter.setLastModificationDate(new Date());
+            counter.setLastModificationTimeStamp(today.getTime());
 
             if (counter.getId() == 0)
             {
@@ -387,10 +389,10 @@ public class OrmLiteDataSource implements CounterDataSource
             if (counter != null)
             {
                 Date today = new Date();
-                counter.setLastModificationDate(today);
+                counter.setLastModificationTimeStamp(today.getTime());
                 counter.setCount(0);
                 mDaoCounter.update(counter);
-                mDaoStatistics.create(new Statistics(today, counter.getId(), 0, RESET));
+                mDaoStatistics.create(new Statistics(today.getTime(), counter.getId(), 0, RESET));
             }
         }
         catch (SQLException e)
@@ -411,9 +413,9 @@ public class OrmLiteDataSource implements CounterDataSource
                 {
                     Date today = new Date();
                     counter.setCount(0);
-                    counter.setLastModificationDate(today);
+                    counter.setLastModificationTimeStamp(today.getTime());
                     mDaoCounter.update(counter);
-                    mDaoStatistics.create(new Statistics(today, counter.getId(), 0, RESET));
+                    mDaoStatistics.create(new Statistics(today.getTime(), counter.getId(), 0, RESET));
                 }
             }
         }
@@ -428,10 +430,11 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            if (folder.getCreationDate() == null)
-                folder.setCreationDate(new Date());
+            Date today = new Date();
+            if (folder.getCreationTimeStamp() == 0)
+                folder.setCreationTimeStamp(today.getTime());
 
-            folder.setLastModificationDate(new Date());
+            folder.setLastModificationTimeStamp(today.getTime());
 
             if (folder.getId() == 0)
             {

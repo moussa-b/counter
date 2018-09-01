@@ -86,7 +86,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
         mGroup = root.findViewById(R.id.group_spinner);
         mChangeColor = root.findViewById(R.id.change_color_button);
         mFolderNames.add(getString(R.string.select_folder));
-        mFolderNames.add("+ " + getString(R.string.add_folder));
+        mFolderNames.add(getString(R.string.add_folder) + " +");
         if (getActivity() != null)
         {
             mAutoCompleteAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, mFolderNames);

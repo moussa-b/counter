@@ -23,11 +23,11 @@ public class Folder
     @DatabaseField
     private int order;
 
-    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
-    private Date creationDate;
+    @DatabaseField
+    private long creationTimeStamp;
 
-    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
-    private Date lastModificationDate;
+    @DatabaseField
+    private long lastModificationTimeStamp;
 
     public Folder()
     {
@@ -74,26 +74,6 @@ public class Folder
         this.name = name;
     }
 
-    public Date getCreationDate()
-    {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate)
-    {
-        this.creationDate = creationDate;
-    }
-
-    public Date getLastModificationDate()
-    {
-        return lastModificationDate;
-    }
-
-    public void setLastModificationDate(Date lastModificationDate)
-    {
-        this.lastModificationDate = lastModificationDate;
-    }
-
     public int getOrder()
     {
         return order;
@@ -102,5 +82,25 @@ public class Folder
     public void setOrder(int order)
     {
         this.order = order;
+    }
+
+    public long getCreationTimeStamp()
+    {
+        return creationTimeStamp;
+    }
+
+    public void setCreationTimeStamp(long creationTimeStamp)
+    {
+        this.creationTimeStamp = creationTimeStamp;
+    }
+
+    public long getLastModificationTimeStamp()
+    {
+        return lastModificationTimeStamp;
+    }
+
+    public void setLastModificationTimeStamp(long lastModificationTimeStamp)
+    {
+        this.lastModificationTimeStamp = lastModificationTimeStamp;
     }
 }
