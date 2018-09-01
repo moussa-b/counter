@@ -21,43 +21,6 @@ public class Statistics
     @DatabaseField
     private StatisticsType type;
 
-    public static class Row
-    {
-        private long dateTimeStamp;
-
-        private int value;
-
-        public Row()
-        {
-        }
-
-        public Row(long dateTimeStamp, int value)
-        {
-            this.dateTimeStamp = dateTimeStamp;
-            this.value = value;
-        }
-
-        public long getDateTimeStamp()
-        {
-            return dateTimeStamp;
-        }
-
-        public void setDateTimeStamp(long dateTimeStamp)
-        {
-            this.dateTimeStamp = dateTimeStamp;
-        }
-
-        public int getValue()
-        {
-            return value;
-        }
-
-        public void setValue(int value)
-        {
-            this.value = value;
-        }
-    }
-
     public Statistics()
     {
     }

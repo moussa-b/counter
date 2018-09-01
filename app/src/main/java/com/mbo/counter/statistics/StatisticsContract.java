@@ -13,7 +13,7 @@ public interface StatisticsContract
 {
     interface View extends BaseView<Presenter>
     {
-        void showStatistics(List<Statistics.Row> statistics);
+        void showStatistics(List<Statistics> statistics);
 
         void showNoStatistics();
     }

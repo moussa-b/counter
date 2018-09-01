@@ -38,7 +38,7 @@ public class StatisticsPresenter implements StatisticsContract.Presenter
         mCounterDataSource.getStatistics(mCounterId, new CounterDataSource.LoadStatisticsCallback()
         {
             @Override
-            public void onStatisticsLoaded(List<Statistics.Row> statistics)
+            public void onStatisticsLoaded(List<Statistics> statistics)
             {
                 processStatistics(statistics);
             }
@@ -50,7 +50,7 @@ public class StatisticsPresenter implements StatisticsContract.Presenter
         });
     }
 
-    private void processStatistics(List<Statistics.Row> statistics)
+    private void processStatistics(List<Statistics> statistics)
     {
         if (statistics.isEmpty())
         {

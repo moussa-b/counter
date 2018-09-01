@@ -14,21 +14,4 @@ public class DaoStatistics extends BaseDaoImpl<Statistics, Long>
     {
         super(connectionSource, dataClass);
     }
-
-    public List<Statistics.Row> getCounterStatisticsById(int counterId) throws SQLException
-    {
-        return queryRaw(
-                "select s.date, count (s.counterId) as stats, sum (value) as val" +
-                        " from statistics s" +
-                        " where counterId = " + counterId +
-                        " group by s.date" +
-                        " order by count (s.counterId) desc",
-                new RawRowMapper<Statistics.Row>()
-                {
-                    public Statistics.Row mapRow(String[] columnNames, String[] resultColumns)
-                    {
-                        return new Statistics.Row(resultColumns[0], Integer.parseInt(resultColumns[1]));
-                    }
-                }).getResults();
-    }
 }

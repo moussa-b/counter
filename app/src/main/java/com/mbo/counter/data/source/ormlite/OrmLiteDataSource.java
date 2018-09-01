@@ -309,7 +309,9 @@ public class OrmLiteDataSource implements CounterDataSource
     {
         try
         {
-            final List<Statistics.Row> statistics = mDaoStatistics.getCounterStatisticsById(counterId);
+            final List<Statistics> statistics = mDaoStatistics
+                    .queryBuilder().where()
+                    .eq("counterId", counterId).query();
             if (statistics != null)
             {
                 callback.onStatisticsLoaded(statistics);

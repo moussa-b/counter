@@ -64,7 +64,7 @@ public interface CounterDataSource
 
     interface LoadStatisticsCallback
     {
-        void onStatisticsLoaded(List<Statistics.Row> counters);
+        void onStatisticsLoaded(List<Statistics> counters);
 
         void onDataNotAvailable();
     }
