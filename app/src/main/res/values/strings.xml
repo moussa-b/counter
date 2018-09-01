@@ -26,6 +26,7 @@
     <string name="change_color">Change color</string>
     <string name="count">Count</string>
     <string name="decreasing">Decreasing</string>
+    <string name="decrement">Decrement</string>
     <string name="decrement_statistics">Decrement statistics</string>
     <string name="delete">Delete</string>
     <string name="descending">Descending</string>
@@ -35,6 +36,7 @@
     <string name="folders">Folders</string>
     <string name="home">Home</string>
     <string name="increasing">Increasing</string>
+    <string name="increment">Increment</string>
     <string name="increment_statistics">Increment statistics</string>
     <string name="information">Information</string>
     <string name="limit">Limit</string>

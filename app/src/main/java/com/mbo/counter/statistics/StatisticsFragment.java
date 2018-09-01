@@ -1,5 +1,6 @@
 package com.mbo.counter.statistics;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.mbo.counter.R;
 import com.mbo.counter.commons.AndroidChartDateAxisFormatter;
 import com.mbo.counter.commons.Utils;
 import com.mbo.counter.data.model.Statistics;
+import com.mbo.counter.data.model.StatisticsType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +38,8 @@ import java.util.Map;
 public class StatisticsFragment extends Fragment implements StatisticsContract.View
 {
     public static final String ARGUMENT_STATISTICS_COUNTER_ID = "STATISTICS_COUNTER_ID";
+
+    private static final long ONE_DAY_MILLIS = 86400000L;
 
     private StatisticsContract.Presenter mPresenter;
 
@@ -61,7 +65,7 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
     public void onCreate(@Nullable Bundle savedInstanceState)
     { // Lifecycle : called first, for doing any non-graphical initialisations
         super.onCreate(savedInstanceState);
-        mListAdapter = new StatisticsAdapter(new ArrayList<Statistics>(0));
+        mListAdapter = new StatisticsAdapter(new ArrayList<StatisticsAdapter.Row>(0));
     }
 
     @Override
@@ -97,12 +101,16 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
     @Override
     public void showStatistics(List<Statistics> statistics)
     {
-        mListAdapter.replaceData(statistics);
-        mStatisticsListView.setVisibility(View.VISIBLE);
-        mNoStatisticsTextView.setVisibility(View.GONE);
-
-        if (statistics != null && statistics.size() > 0)
+        if (statistics == null || statistics.size() == 0)
         {
+            mStatisticsListView.setVisibility(View.VISIBLE);
+            mNoStatisticsTextView.setVisibility(View.GONE);
+            mChart.setVisibility(View.GONE);
+        }
+        else
+        {
+            mStatisticsListView.setVisibility(View.VISIBLE);
+            mNoStatisticsTextView.setVisibility(View.GONE);
             Map<Integer, Integer> decrementStatistics = new HashMap<>();
             Map<Integer, Integer> incrementStatistics = new HashMap<>();
             Map<Integer, Integer> resetStatistics = new HashMap<>();
@@ -111,9 +119,9 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
             for (Statistics stat : statistics)
             {
                 if (startYear == 0)
-                    startYear = (int) (stat.getDateTimeStamp() / 86400000);
+                    startYear = (int) (stat.getDateTimeStamp() / ONE_DAY_MILLIS);
 
-                Integer dayNumber = (int) (stat.getDateTimeStamp() / 86400000);
+                Integer dayNumber = (int) (stat.getDateTimeStamp() / ONE_DAY_MILLIS);
                 switch (stat.getType())
                 {
                     case DECREMENT:
@@ -137,10 +145,15 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
                 }
             }
 
+            List<StatisticsAdapter.Row> statisticsRows = new ArrayList<>();
+
             List<BarEntry> incrementEntries = new ArrayList<>();
 
             for (Integer day : incrementStatistics.keySet())
+            {
                 incrementEntries.add(new BarEntry(day, incrementStatistics.get(day)));
+                statisticsRows.add(new StatisticsAdapter.Row(day * ONE_DAY_MILLIS, StatisticsType.INCREMENT, incrementStatistics.get(day)));
+            }
 
             BarDataSet incrementDataSet = new BarDataSet(incrementEntries, getString(R.string.increment_statistics));
             incrementDataSet.setColor(Color.GREEN);
@@ -148,7 +161,10 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
             List<BarEntry> decrementEntries = new ArrayList<>();
 
             for (Integer day : decrementStatistics.keySet())
+            {
                 decrementEntries.add(new BarEntry(day, decrementStatistics.get(day)));
+                statisticsRows.add(new StatisticsAdapter.Row(day * ONE_DAY_MILLIS, StatisticsType.DECREMENT, decrementStatistics.get(day)));
+            }
 
             BarDataSet decrementDataSet = new BarDataSet(decrementEntries, getString(R.string.decrement_statistics));
             decrementDataSet.setColor(Color.YELLOW);
@@ -156,7 +172,13 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
             List<BarEntry> resetEntries = new ArrayList<>();
 
             for (Integer day : resetStatistics.keySet())
+            {
                 resetEntries.add(new BarEntry(day, resetStatistics.get(day)));
+                statisticsRows.add(new StatisticsAdapter.Row(day * ONE_DAY_MILLIS, StatisticsType.RESET, resetStatistics.get(day)));
+            }
+
+            // TODO : sort statisticsRows by date then increment/decrement/reset
+            mListAdapter.replaceData(statisticsRows);
 
             BarDataSet resetDataSet = new BarDataSet(resetEntries, getString(R.string.reset_statistics));
             resetDataSet.setColor(Color.RED);
@@ -165,7 +187,9 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
             float barSpace = 0.02f; // x2 dataset
             float barWidth = 0.1f; // x2 dataset
 
-            Locale locale = ConfigurationCompat.getLocales(getContext().getResources().getConfiguration()).get(0);
+            Locale locale = new Locale.Builder().setLanguage("en").setRegion("GB").build();
+            if (getContext() != null)
+                locale = ConfigurationCompat.getLocales(getContext().getResources().getConfiguration()).get(0);
 
             IAxisValueFormatter xAxisFormatter = new AndroidChartDateAxisFormatter(locale);
 
@@ -182,7 +206,6 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
             mChart.invalidate(); // refresh
         }
 
-
     }
 
     @Override
@@ -194,9 +217,38 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
 
     private static class StatisticsAdapter extends BaseAdapter
     {
-        private List<Statistics> mStatistics;
+        private List<StatisticsAdapter.Row> mStatistics;
 
-        public StatisticsAdapter(List<Statistics> statistics)
+        public static class Row
+        {
+            private long timeStamp;
+            private StatisticsType type;
+            private int value;
+
+            public Row(long timeStamp, StatisticsType type, int value)
+            {
+                this.timeStamp = timeStamp;
+                this.type = type;
+                this.value = value;
+            }
+
+            public long getTimeStamp()
+            {
+                return timeStamp;
+            }
+
+            public StatisticsType getType()
+            {
+                return type;
+            }
+
+            public int getValue()
+            {
+                return value;
+            }
+        }
+
+        public StatisticsAdapter(List<StatisticsAdapter.Row> statistics)
         {
             this.mStatistics = statistics;
         }
@@ -208,7 +260,7 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
         }
 
         @Override
-        public Statistics getItem(int position)
+        public StatisticsAdapter.Row getItem(int position)
         {
             return mStatistics.get(position);
         }
@@ -223,6 +275,7 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
         public View getView(int position, View convertView, ViewGroup parent)
         {
             View rowView = convertView;
+            Context context = parent.getContext();
 
             if (rowView == null)
             {
@@ -230,11 +283,28 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
                 rowView = inflater.inflate(R.layout.statistics_item, parent, false);
             }
 
-            final Statistics statistics = getItem(position);
+            final StatisticsAdapter.Row statistics = getItem(position);
 
             TextView dateTextView = rowView.findViewById(R.id.date_text_view);
-            Locale locale = ConfigurationCompat.getLocales(dateTextView.getContext().getResources().getConfiguration()).get(0);
-            dateTextView.setText(Utils.formatDateForDisplay(statistics.getDateTimeStamp(), locale));
+            Locale locale = ConfigurationCompat.getLocales(context.getResources().getConfiguration()).get(0);
+            String date = Utils.formatDateForDisplay(statistics.getTimeStamp(), locale);
+            dateTextView.setText(date);
+
+            TextView typeTextView = rowView.findViewById(R.id.type_text_view);
+            String label = "";
+            switch (statistics.getType())
+            {
+                case DECREMENT:
+                    label = context.getString(R.string.decrement);
+                    break;
+                case INCREMENT:
+                    label = context.getString(R.string.increment);
+                    break;
+                case RESET:
+                    label = context.getString(R.string.reset);
+                    break;
+            }
+            typeTextView.setText(label);
 
             TextView valueTextView = rowView.findViewById(R.id.value_text_view);
             valueTextView.setText(String.valueOf(statistics.getValue()));
@@ -242,7 +312,7 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
             return rowView;
         }
 
-        private void replaceData(List<Statistics> statistics)
+        private void replaceData(List<StatisticsAdapter.Row> statistics)
         {
             this.mStatistics = statistics;
             notifyDataSetChanged();
