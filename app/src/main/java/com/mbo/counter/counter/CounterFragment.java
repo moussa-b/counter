@@ -17,11 +17,11 @@ import android.widget.TextView;
 import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.commons.Utils;
-import com.mbo.counter.statistics.StatisticsActivity;
+import com.mbo.counter.counterstatistics.CounterStatisticsActivity;
 
 import static android.text.TextUtils.isEmpty;
 import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
-import static com.mbo.counter.statistics.StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
+import static com.mbo.counter.counterstatistics.CounterStatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -198,7 +198,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
     @Override
     public void showCounterStatistics()
     {
-        Intent intent = new Intent(getContext(), StatisticsActivity.class);
+        Intent intent = new Intent(getContext(), CounterStatisticsActivity.class);
         intent.putExtra(ARGUMENT_STATISTICS_COUNTER_ID, mPresenter.getCounterId());
         startActivity(intent);
     }

@@ -1,4 +1,4 @@
-package com.mbo.counter.statistics;
+package com.mbo.counter.counterstatistics;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -35,13 +35,13 @@ import java.util.Map;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StatisticsFragment extends Fragment implements StatisticsContract.View
+public class CounterStatisticsFragment extends Fragment implements CounterStatisticsContract.View
 {
     public static final String ARGUMENT_STATISTICS_COUNTER_ID = "STATISTICS_COUNTER_ID";
 
     private static final long ONE_DAY_MILLIS = 86400000L;
 
-    private StatisticsContract.Presenter mPresenter;
+    private CounterStatisticsContract.Presenter mPresenter;
 
     private StatisticsAdapter mListAdapter;
 
@@ -51,13 +51,13 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
 
     private BarChart mChart;
 
-    public StatisticsFragment()
+    public CounterStatisticsFragment()
     {
     }
 
-    public static StatisticsFragment newInstance()
+    public static CounterStatisticsFragment newInstance()
     {
-        return new StatisticsFragment();
+        return new CounterStatisticsFragment();
     }
 
 
@@ -93,7 +93,7 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
     }
 
     @Override
-    public void setPresenter(StatisticsContract.Presenter presenter)
+    public void setPresenter(CounterStatisticsContract.Presenter presenter)
     {
         mPresenter = presenter;
     }
@@ -212,6 +212,7 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
     public void showNoStatistics()
     {
         mStatisticsListView.setVisibility(View.GONE);
+        mChart.setVisibility(View.GONE);
         mNoStatisticsTextView.setVisibility(View.VISIBLE);
     }
 

@@ -1,4 +1,4 @@
-package com.mbo.counter.statistics;
+package com.mbo.counter.counterstatistics;
 
 import android.support.annotation.NonNull;
 
@@ -7,17 +7,17 @@ import com.mbo.counter.data.source.CounterDataSource;
 
 import java.util.List;
 
-public class StatisticsPresenter implements StatisticsContract.Presenter
+public class CounterStatisticsPresenter implements CounterStatisticsContract.Presenter
 {
     @NonNull
-    private final StatisticsContract.View mStatisticsView;
+    private final CounterStatisticsContract.View mStatisticsView;
 
     @NonNull
     private final CounterDataSource mCounterDataSource;
 
     private int mCounterId;
 
-    public StatisticsPresenter(int counterId, @NonNull CounterDataSource counterDataSource, @NonNull StatisticsContract.View statisticsView)
+    public CounterStatisticsPresenter(int counterId, @NonNull CounterDataSource counterDataSource, @NonNull CounterStatisticsContract.View statisticsView)
     {
         this.mCounterId = counterId;
         this.mStatisticsView = statisticsView;

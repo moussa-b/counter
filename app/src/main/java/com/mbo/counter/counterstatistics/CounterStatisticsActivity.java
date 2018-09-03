@@ -1,4 +1,4 @@
-package com.mbo.counter.statistics;
+package com.mbo.counter.counterstatistics;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -8,11 +8,11 @@ import com.mbo.counter.commons.Utils;
 import com.mbo.counter.R;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 
-public class StatisticsActivity extends AppCompatActivity
+public class CounterStatisticsActivity extends AppCompatActivity
 {
     private ActionBar mActionBar;
 
-    private StatisticsPresenter mStatisticsPresenter;
+    private CounterStatisticsPresenter mStatisticsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,19 +29,19 @@ public class StatisticsActivity extends AppCompatActivity
             mActionBar.setTitle("Statistics");
         }
 
-        StatisticsFragment statisticsFragment = (StatisticsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (statisticsFragment == null)
+        CounterStatisticsFragment counterStatisticsFragment = (CounterStatisticsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (counterStatisticsFragment == null)
         {
             // Create the fragment
-            statisticsFragment = StatisticsFragment.newInstance();
+            counterStatisticsFragment = CounterStatisticsFragment.newInstance();
 
             int counterId = 0;
-            if (getIntent().hasExtra(StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID))
-                counterId = getIntent().getIntExtra(StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID, 0);
+            if (getIntent().hasExtra(CounterStatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID))
+                counterId = getIntent().getIntExtra(CounterStatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID, 0);
 
-            Utils.addFragmentToActivity(getSupportFragmentManager(), statisticsFragment, R.id.contentFrame);
+            Utils.addFragmentToActivity(getSupportFragmentManager(), counterStatisticsFragment, R.id.contentFrame);
 
-            mStatisticsPresenter = new StatisticsPresenter(counterId, OrmLiteDataSource.getInstance(), statisticsFragment);
+            mStatisticsPresenter = new CounterStatisticsPresenter(counterId, OrmLiteDataSource.getInstance(), counterStatisticsFragment);
         }
     }
 

@@ -29,7 +29,7 @@
 
         <activity android:name=".settings.SettingsActivity"/>
 
-        <activity android:name=".statistics.StatisticsActivity"/>
+        <activity android:name=".counterstatistics.CounterStatisticsActivity"/>
 
         <activity android:name=".countersettings.CounterSettingsActivity"/>
 

@@ -1,4 +1,4 @@
-package com.mbo.counter.statistics;
+package com.mbo.counter.counterstatistics;
 
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * This specifies the contract between the view and the presenter.
  */
-public interface StatisticsContract
+public interface CounterStatisticsContract
 {
     interface View extends BaseView<Presenter>
     {

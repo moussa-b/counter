@@ -22,14 +22,14 @@ import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.commons.ItemOffsetDecoration;
 import com.mbo.counter.counter.CounterActivity;
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.statistics.StatisticsActivity;
+import com.mbo.counter.counterstatistics.CounterStatisticsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.mbo.counter.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
 import static com.mbo.counter.counter.CounterFragment.ARGUMENT_COUNTER_ID;
-import static com.mbo.counter.statistics.StatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
+import static com.mbo.counter.counterstatistics.CounterStatisticsFragment.ARGUMENT_STATISTICS_COUNTER_ID;
 
 public class CounterListFragment extends Fragment implements CounterListContract.View
 {
@@ -241,7 +241,7 @@ public class CounterListFragment extends Fragment implements CounterListContract
     @Override
     public void showCounterStatisticsUi(int counterId)
     {
-        Intent intent = new Intent(getContext(), StatisticsActivity.class);
+        Intent intent = new Intent(getContext(), CounterStatisticsActivity.class);
         intent.putExtra(ARGUMENT_STATISTICS_COUNTER_ID, counterId);
         startActivityForResult(intent, REQUEST_COUNTER);
     }
