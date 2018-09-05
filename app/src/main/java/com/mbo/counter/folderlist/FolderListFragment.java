@@ -66,7 +66,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                                             @Override
                                             public void execute(Object data)
                                             {
-                                                mPresenter.resetCountersInGroup(clickedFolder.getId());
+                                                mPresenter.resetCountersInFolder(clickedFolder.getId());
                                             }
                                         }, null);
                                 return true;

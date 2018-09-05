@@ -70,9 +70,9 @@ public class FolderListPresenter implements FolderListContract.Presenter
     }
 
     @Override
-    public void resetCountersInGroup(int folderId)
+    public void resetCountersInFolder(int folderId)
     {
-        mCounterDataSource.resetCountersInGroup(folderId);
+        mCounterDataSource.resetCountersInFolder(folderId);
         loadFolders();
     }
 

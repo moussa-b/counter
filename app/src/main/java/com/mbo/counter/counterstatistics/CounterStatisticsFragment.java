@@ -27,6 +27,8 @@ import com.mbo.counter.data.model.Statistics;
 import com.mbo.counter.data.model.StatisticsType;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -177,7 +179,19 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
                 statisticsRows.add(new StatisticsAdapter.Row(day * ONE_DAY_MILLIS, StatisticsType.RESET, resetStatistics.get(day)));
             }
 
-            // TODO : sort statisticsRows by date then increment/decrement/reset
+            Collections.sort(statisticsRows, new Comparator<StatisticsAdapter.Row>()
+            {
+                @Override
+                public int compare(StatisticsAdapter.Row row1, StatisticsAdapter.Row row2)
+                {
+                    if (row1.getTimeStamp() - row2.getTimeStamp() < 0)
+                        return -1;
+                    else if (row1.getTimeStamp() - row2.getTimeStamp() > 0)
+                        return 1;
+                    else
+                        return row1.getType().ordinal() - row2.getType().ordinal();
+                }
+            });
             mListAdapter.replaceData(statisticsRows);
 
             BarDataSet resetDataSet = new BarDataSet(resetEntries, getString(R.string.reset_statistics));

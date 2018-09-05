@@ -29,7 +29,7 @@ public interface FolderListContract
 
         void loadFolders();
 
-        void resetCountersInGroup(int folderId);
+        void resetCountersInFolder(int folderId);
 
         void saveFolder(Folder folder);
     }

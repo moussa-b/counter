@@ -404,7 +404,7 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
-    public void resetCountersInGroup(int folderId)
+    public void resetCountersInFolder(int folderId)
     {
         try
         {

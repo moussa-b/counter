@@ -46,7 +46,7 @@ public interface CounterDataSource
 
     void resetCounter(int counterId);
 
-    void resetCountersInGroup(int folderId);
+    void resetCountersInFolder(int folderId);
 
     interface LoadCountersCallback
     {
