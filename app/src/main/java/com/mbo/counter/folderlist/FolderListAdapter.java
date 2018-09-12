@@ -1,5 +1,6 @@
 package com.mbo.counter.folderlist;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -89,6 +90,18 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Fo
     {
         final Folder folder = mFolders.get(position);
         folderViewHolder.nameTextView.setText(folder.getName());
+        Context context = folderViewHolder.nameTextView.getContext();
+        if (context != null) {
+            String countLabel;
+            if (folder.getCounters() == null || folder.getCounters().size() == 0)
+                countLabel = context.getString(R.string.no_counters);
+            else if (folder.getCounters().size() == 1)
+                countLabel = "1 " + context.getString(R.string.counter);
+            else
+                countLabel = String.valueOf(folder.getCounters().size()) + " " + context.getString(R.string.counters);
+            folderViewHolder.countTextView.setText(countLabel);
+        }
+
         folderViewHolder.editCounterImageView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -133,6 +146,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Fo
     class FolderViewHolder extends RecyclerView.ViewHolder
     {
         TextView nameTextView;
+        TextView countTextView;
         ImageView editCounterImageView;
         View row;
 
@@ -142,6 +156,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Fo
 
             row = itemView;
             nameTextView = itemView.findViewById(R.id.name_text_view);
+            countTextView = itemView.findViewById(R.id.count_text_view);
             editCounterImageView = itemView.findViewById(R.id.edit_counter_image_view);
         }
     }

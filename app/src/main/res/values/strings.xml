@@ -44,10 +44,10 @@
     <string name="name_required_warning">Name is required</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="no_counters">You have no counters</string>
+    <string name="no_counters">No counters</string>
     <string name="no_counters_add">Add a counter item +</string>
-    <string name="no_folders">You have not folders</string>
-    <string name="no_statistics">You have no statistics</string>
+    <string name="no_folders">No folders</string>
+    <string name="no_statistics">No statistics</string>
     <string name="notes">Notes</string>
     <string name="objective">Objective</string>
     <string name="ok">OK</string>
