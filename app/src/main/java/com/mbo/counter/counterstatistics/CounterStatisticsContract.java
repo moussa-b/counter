@@ -15,7 +15,7 @@ public interface CounterStatisticsContract
     {
         String getStringById(int id);
 
-        void showStatistics(BarData barData, List<Long> timeStampGroups, List<StatisticsAdapter.Row> statisticsRows);
+        void showStatistics(BarData barData, List<Long> timeStampGroups, List<CounterStatisticsAdapter.Row> statisticsRows);
 
         void showNoStatistics();
     }

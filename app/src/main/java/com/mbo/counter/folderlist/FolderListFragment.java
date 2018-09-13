@@ -51,6 +51,14 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
             if (getActivity() != null)
             {
                 PopupMenu popup = new PopupMenu(getActivity(), view);
+                popup.inflate(R.menu.popup_menu_counter_group);
+                if (clickedFolder.getCounters() == null || clickedFolder.getCounters().size() == 0)
+                {
+                    popup.getMenu().findItem(R.id.action_reset_all).setVisible(false);
+                    popup.getMenu().findItem(R.id.action_delete_all).setVisible(false);
+                    popup.getMenu().findItem(R.id.action_statistics).setVisible(false);
+                }
+
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
                 {
                     public boolean onMenuItemClick(MenuItem item)
@@ -107,7 +115,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                         }
                     }
                 });
-                popup.inflate(R.menu.popup_menu_counter_group);
+
                 popup.show();
             }
         }

@@ -32,7 +32,7 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
 
     private CounterStatisticsContract.Presenter mPresenter;
 
-    private StatisticsAdapter mListAdapter;
+    private CounterStatisticsAdapter mListAdapter;
 
     private TextView mNoStatisticsTextView;
 
@@ -49,12 +49,11 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
         return new CounterStatisticsFragment();
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     { // Lifecycle : called first, for doing any non-graphical initialisations
         super.onCreate(savedInstanceState);
-        mListAdapter = new StatisticsAdapter(new ArrayList<StatisticsAdapter.Row>(0));
+        mListAdapter = new CounterStatisticsAdapter(new ArrayList<CounterStatisticsAdapter.Row>(0));
     }
 
     @Override
@@ -97,7 +96,7 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
     }
 
     @Override
-    public void showStatistics(BarData barData, List<Long> timeStampGroups, List<StatisticsAdapter.Row> statisticsRows)
+    public void showStatistics(BarData barData, List<Long> timeStampGroups, List<CounterStatisticsAdapter.Row> statisticsRows)
     {
         if (barData == null)
         {
@@ -110,7 +109,7 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
             mNoStatisticsTextView.setVisibility(View.GONE);
             mStatisticsListView.setVisibility(View.VISIBLE);
             LayoutInflater inflaterHeader = getLayoutInflater();
-            ViewGroup header = (ViewGroup) inflaterHeader.inflate(R.layout.statistics_list_header, mStatisticsListView, false);
+            ViewGroup header = (ViewGroup) inflaterHeader.inflate(R.layout.counter_statistics_list_header, mStatisticsListView, false);
             mStatisticsListView.addHeaderView(header);
 
             // Configure X axis
@@ -127,6 +126,7 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
             mChart.getAxisRight().setEnabled(false);
 
             // Customize the look of the graph
+            mChart.animateY(1000);
             mChart.setDrawBorders(true);
             mChart.setBackgroundColor(getResources().getColor(R.color.white));
             mChart.setBorderWidth(1);

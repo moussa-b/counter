@@ -15,9 +15,9 @@ import com.mbo.counter.data.model.StatisticsType;
 import java.util.List;
 import java.util.Locale;
 
-public class StatisticsAdapter extends BaseAdapter
+public class CounterStatisticsAdapter extends BaseAdapter
 {
-    private List<StatisticsAdapter.Row> mStatistics;
+    private List<CounterStatisticsAdapter.Row> mStatistics;
 
     public static class Row
     {
@@ -48,7 +48,7 @@ public class StatisticsAdapter extends BaseAdapter
         }
     }
 
-    public StatisticsAdapter(List<StatisticsAdapter.Row> statistics)
+    public CounterStatisticsAdapter(List<CounterStatisticsAdapter.Row> statistics)
     {
         this.mStatistics = statistics;
     }
@@ -60,7 +60,7 @@ public class StatisticsAdapter extends BaseAdapter
     }
 
     @Override
-    public StatisticsAdapter.Row getItem(int position)
+    public CounterStatisticsAdapter.Row getItem(int position)
     {
         return mStatistics.get(position);
     }
@@ -80,10 +80,10 @@ public class StatisticsAdapter extends BaseAdapter
         if (rowView == null)
         {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            rowView = inflater.inflate(R.layout.statistics_item, parent, false);
+            rowView = inflater.inflate(R.layout.counter_statistics_item, parent, false);
         }
 
-        final StatisticsAdapter.Row statistics = getItem(position);
+        final CounterStatisticsAdapter.Row statistics = getItem(position);
 
         TextView dateTextView = rowView.findViewById(R.id.date_text_view);
         Locale locale = ConfigurationCompat.getLocales(context.getResources().getConfiguration()).get(0);
@@ -112,7 +112,7 @@ public class StatisticsAdapter extends BaseAdapter
         return rowView;
     }
 
-    public void replaceData(List<StatisticsAdapter.Row> statistics)
+    public void replaceData(List<CounterStatisticsAdapter.Row> statistics)
     {
         this.mStatistics = statistics;
         notifyDataSetChanged();

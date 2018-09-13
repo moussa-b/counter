@@ -137,22 +137,22 @@ public class CounterStatisticsPresenter implements CounterStatisticsContract.Pre
         BarDataSet resetDataSet = new BarDataSet(resetEntries, mStatisticsView.getStringById(R.string.reset));
         resetDataSet.setColor(Color.RED);
 
-        List<StatisticsAdapter.Row> statisticsRows = new ArrayList<>();
+        List<CounterStatisticsAdapter.Row> statisticsRows = new ArrayList<>();
 
         for (Long timeStamp : timeStampGroups)
         {
             if (incrementStatistics.get(timeStamp) != 0)
-                statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.INCREMENT, incrementStatistics.get(timeStamp)));
+                statisticsRows.add(new CounterStatisticsAdapter.Row(timeStamp, StatisticsType.INCREMENT, incrementStatistics.get(timeStamp)));
             if (decrementStatistics.get(timeStamp) != 0)
-                statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.DECREMENT, decrementStatistics.get(timeStamp)));
+                statisticsRows.add(new CounterStatisticsAdapter.Row(timeStamp, StatisticsType.DECREMENT, decrementStatistics.get(timeStamp)));
             if (resetStatistics.get(timeStamp) != 0)
-                statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.RESET, resetStatistics.get(timeStamp)));
+                statisticsRows.add(new CounterStatisticsAdapter.Row(timeStamp, StatisticsType.RESET, resetStatistics.get(timeStamp)));
         }
 
-        Collections.sort(statisticsRows, new Comparator<StatisticsAdapter.Row>()
+        Collections.sort(statisticsRows, new Comparator<CounterStatisticsAdapter.Row>()
         {
             @Override
-            public int compare(StatisticsAdapter.Row row1, StatisticsAdapter.Row row2)
+            public int compare(CounterStatisticsAdapter.Row row1, CounterStatisticsAdapter.Row row2)
             {
                 if (row1.getTimeStamp() - row2.getTimeStamp() < 0)
                     return -1;

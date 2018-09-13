@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mbo.counter.R;
 import com.mbo.counter.commons.Utils;
+import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 
 public class FolderStatisticsActivity extends AppCompatActivity
 {
     private ActionBar mActionBar;
+
+    private FolderStatisticsPresenter mStatisticsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,12 +29,19 @@ public class FolderStatisticsActivity extends AppCompatActivity
             mActionBar.setTitle(getResources().getString(R.string.statistics));
         }
 
-        FolderStatisticsFragment settingsFragment = (FolderStatisticsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (settingsFragment == null)
+        FolderStatisticsFragment folderStatisticsFragment = (FolderStatisticsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (folderStatisticsFragment == null)
         {
             // Create the fragment
-            settingsFragment = FolderStatisticsFragment.newInstance();
-            Utils.addFragmentToActivity(getSupportFragmentManager(), settingsFragment, R.id.contentFrame);
+            folderStatisticsFragment = FolderStatisticsFragment.newInstance();
+
+            int folderId = 0;
+            if (getIntent().hasExtra(FolderStatisticsFragment.ARGUMENT_STATISTICS_FOLDER_ID))
+                folderId = getIntent().getIntExtra(FolderStatisticsFragment.ARGUMENT_STATISTICS_FOLDER_ID, 0);
+
+            Utils.addFragmentToActivity(getSupportFragmentManager(), folderStatisticsFragment, R.id.contentFrame);
+
+            mStatisticsPresenter = new FolderStatisticsPresenter(folderId, OrmLiteDataSource.getInstance(), folderStatisticsFragment);
         }
     }
 
