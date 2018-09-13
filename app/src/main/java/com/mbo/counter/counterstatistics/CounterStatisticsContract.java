@@ -1,8 +1,8 @@
 package com.mbo.counter.counterstatistics;
 
+import com.github.mikephil.charting.data.BarData;
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;
-import com.mbo.counter.data.model.Statistics;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface CounterStatisticsContract
 {
     interface View extends BaseView<Presenter>
     {
-        void showStatistics(List<Statistics> statistics);
+        void showStatistics(BarData barData, List<Long> timeStampGroups, List<StatisticsAdapter.Row> statisticsRows);
 
         void showNoStatistics();
     }

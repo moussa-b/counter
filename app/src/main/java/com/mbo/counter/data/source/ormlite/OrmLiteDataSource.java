@@ -184,6 +184,7 @@ public class OrmLiteDataSource implements CounterDataSource
             if (counter != null)
             {
                 counter.setId(0);
+                counter.setCount(0);
                 counter.setCreationTimeStamp(new Date().getTime());
                 counter.setLastModificationTimeStamp(new Date().getTime());
                 mDaoCounter.create(counter);
@@ -312,6 +313,35 @@ public class OrmLiteDataSource implements CounterDataSource
             final List<Statistics> statistics = mDaoStatistics
                     .queryBuilder().where()
                     .eq("counterId", counterId).query();
+            if (statistics != null)
+            {
+                callback.onStatisticsLoaded(statistics);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getStatisticsInInterval(int counterId, long startTimeStamp, long endTimeStamp, @NonNull LoadStatisticsCallback callback)
+    {
+        try
+        {
+            final List<Statistics> statistics = mDaoStatistics
+                    .queryBuilder().where()
+                    .eq("counterId", counterId)
+                    .and()
+                    .ge("dateTimeStamp", startTimeStamp)
+                    .and()
+                    .lt("dateTimeStamp", endTimeStamp)
+                    .query();
+
             if (statistics != null)
             {
                 callback.onStatisticsLoaded(statistics);

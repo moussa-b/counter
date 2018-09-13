@@ -30,6 +30,8 @@ public interface CounterDataSource
 
     void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback);
 
+    void getStatisticsInInterval(int counterId, long startTimeStamp, long endTimeStamp, @NonNull LoadStatisticsCallback callback);
+
     void getCounters(@NonNull LoadCountersCallback callback);
 
     void getCounter(int counterId, @NonNull GetCounterCallback callback);
@@ -64,7 +66,7 @@ public interface CounterDataSource
 
     interface LoadStatisticsCallback
     {
-        void onStatisticsLoaded(List<Statistics> counters);
+        void onStatisticsLoaded(List<Statistics> statistics);
 
         void onDataNotAvailable();
     }

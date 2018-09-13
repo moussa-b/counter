@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -66,6 +67,13 @@ public class Utils
     {
         Date date = new Date(dateTimeStamp);
         DateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yy", locale);
+        return outputDateFormat.format(date);
+    }
+
+    public static String formatDateForGraphs(long dateTimeStamp, Locale locale)
+    {
+        Date date = new Date(dateTimeStamp);
+        DateFormat outputDateFormat = new SimpleDateFormat("dd/MM", locale);
         return outputDateFormat.format(date);
     }
 
@@ -171,5 +179,25 @@ public class Utils
         {
             Log.e("ERROR ILLEGAL ALG", "Unable to change value of shift mode");
         }
+    }
+
+
+
+    public static long atEndOfDay(Calendar calendar)
+    {
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTimeInMillis();
+    }
+
+    public static long atStartOfDay(Calendar calendar)
+    {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
 }

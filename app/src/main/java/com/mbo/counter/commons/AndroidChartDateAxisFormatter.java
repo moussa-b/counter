@@ -3,23 +3,24 @@ package com.mbo.counter.commons;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
+import java.util.List;
 import java.util.Locale;
 
 public class AndroidChartDateAxisFormatter implements IAxisValueFormatter
 {
     private Locale mLocale;
+    private List<Long> mTimeStampGroups;
 
-    private static final long ONE_DAY_MILLIS = 86400000L;
-
-    public AndroidChartDateAxisFormatter(Locale locale)
+    public AndroidChartDateAxisFormatter(Locale locale, List<Long> timeStampGroups)
     {
         this.mLocale = locale;
+        this.mTimeStampGroups = timeStampGroups;
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis)
     {
-        long timeStamp = (long) (value * ONE_DAY_MILLIS);
-        return Utils.formatDateForDisplay(timeStamp, mLocale);
+        long timeStamp = mTimeStampGroups.get((int) value);
+        return Utils.formatDateForGraphs(timeStamp, mLocale);
     }
 }

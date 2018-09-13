@@ -64,4 +64,7 @@
     <string name="select_folder">Select a folder</string>
     <string name="validate">Validate</string>
     <string name="warning">Warning</string>
+    <string name="date">Date</string>
+    <string name="type">Type</string>
+    <string name="amount">Amount</string>
 </resources>
