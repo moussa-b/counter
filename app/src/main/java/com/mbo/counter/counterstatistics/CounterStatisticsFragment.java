@@ -12,11 +12,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.mbo.counter.R;
 import com.mbo.counter.commons.AndroidChartDateAxisFormatter;
+import com.mbo.counter.commons.AndroidChartValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,31 +98,43 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
         }
         else
         {
+            mNoStatisticsTextView.setVisibility(View.GONE);
             mStatisticsListView.setVisibility(View.VISIBLE);
-
             LayoutInflater inflaterHeader = getLayoutInflater();
             ViewGroup header = (ViewGroup) inflaterHeader.inflate(R.layout.statistics_list_header, mStatisticsListView, false);
             mStatisticsListView.addHeaderView(header);
 
-            mNoStatisticsTextView.setVisibility(View.GONE);
+            // Configure X axis
+            Locale locale = new Locale.Builder().setLanguage("en").setRegion("GB").build();
+            if (getContext() != null)
+                locale = ConfigurationCompat.getLocales(getContext().getResources().getConfiguration()).get(0);
+            XAxis xAxis = mChart.getXAxis();
+            xAxis.setValueFormatter(new AndroidChartDateAxisFormatter(locale, timeStampGroups));
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            mChart.getXAxis().setAxisMinimum(0);
+
+            // Configure Y axis
+            mChart.getAxisLeft().setAxisMinimum(0);
+            mChart.getAxisRight().setEnabled(false);
+
+            // Customize the look of the graph
+            mChart.setDrawBorders(true);
+            mChart.setBackgroundColor(getResources().getColor(R.color.white));
+            mChart.setBorderWidth(1);
+            mChart.setBorderColor(getResources().getColor(R.color.black));
+            barData.setValueFormatter(new AndroidChartValueFormatter());
+            mChart.setHighlightPerTapEnabled(false);
+            mChart.getDescription().setEnabled(false);
+            mChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+            mChart.setPinchZoom(false);
+
+            // Add data and display
             // (0.03 + 0.27) * 3 + 0.1 = 1.00 -> interval per "group" / multiply by 3 because 3 dataset
             float groupSpace = 0.1f;
             float barSpace = 0.03f;
             float barWidth = 0.27f;
-
-            Locale locale = new Locale.Builder().setLanguage("en").setRegion("GB").build();
-            if (getContext() != null)
-                locale = ConfigurationCompat.getLocales(getContext().getResources().getConfiguration()).get(0);
-
-            IAxisValueFormatter xAxisFormatter = new AndroidChartDateAxisFormatter(locale, timeStampGroups);
-
-            XAxis xAxis = mChart.getXAxis();
-            xAxis.setValueFormatter(xAxisFormatter);
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
             mChart.setData(barData);
             mChart.getBarData().setBarWidth(barWidth);
-            mChart.getXAxis().setAxisMinimum(0);
             mChart.groupBars(0, groupSpace, barSpace);
             mChart.invalidate(); // refresh
 
