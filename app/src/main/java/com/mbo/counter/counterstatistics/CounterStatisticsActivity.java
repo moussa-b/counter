@@ -26,7 +26,7 @@ public class CounterStatisticsActivity extends AppCompatActivity
         {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setDisplayShowHomeEnabled(true);
-            mActionBar.setTitle("Statistics");
+            mActionBar.setTitle(getResources().getString(R.string.statistics));
         }
 
         CounterStatisticsFragment counterStatisticsFragment = (CounterStatisticsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);

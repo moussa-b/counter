@@ -22,12 +22,14 @@ import com.mbo.counter.commons.ItemOffsetDecoration;
 import com.mbo.counter.commons.Utils;
 import com.mbo.counter.counterlist.CounterListActivity;
 import com.mbo.counter.data.model.Folder;
+import com.mbo.counter.folderstatistics.FolderStatisticsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.mbo.counter.counterlist.CounterListFragment.ARGUMENT_FOLDER_ID;
 import static com.mbo.counter.counterlist.CounterListFragment.ARGUMENT_FOLDER_NAME;
+import static com.mbo.counter.folderstatistics.FolderStatisticsFragment.ARGUMENT_STATISTICS_FOLDER_ID;
 
 public class FolderListFragment extends Fragment implements FolderListContract.View
 {
@@ -98,7 +100,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                                         }, null);
                                 return true;
                             case R.id.action_statistics:
-                                // TODO faire les statistics par groupe
+                                showFolderStatisticsUi(clickedFolder.getId());
                                 return true;
                             default:
                                 return false;
@@ -207,6 +209,14 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
     }
 
     @Override
+    public void showFolderStatisticsUi(int folderId)
+    {
+        Intent intent = new Intent(getContext(), FolderStatisticsActivity.class);
+        intent.putExtra(ARGUMENT_STATISTICS_FOLDER_ID, folderId);
+        startActivity(intent);
+    }
+
+    @Override
     public void showNoFolders()
     {
         mFolderRecyclerView.setVisibility(View.GONE);
@@ -216,7 +226,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
     @Override
     public void renameFolder(final int folderPosition)
     {
-        final Folder folder = ((Folder) mRecyclerAdapter.getFolder(folderPosition));
+        final Folder folder = (mRecyclerAdapter.getFolder(folderPosition));
         FolderUtils.showAddFolder(getContext(), folder.getName(), new CallBack()
         {
             @Override

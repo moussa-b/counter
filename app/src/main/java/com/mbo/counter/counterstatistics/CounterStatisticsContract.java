@@ -13,6 +13,8 @@ public interface CounterStatisticsContract
 {
     interface View extends BaseView<Presenter>
     {
+        String getStringById(int id);
+
         void showStatistics(BarData barData, List<Long> timeStampGroups, List<StatisticsAdapter.Row> statisticsRows);
 
         void showNoStatistics();

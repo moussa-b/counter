@@ -14,6 +14,8 @@ public interface FolderListContract
 
         void showFolders(List<Folder> counters);
 
+        void showFolderStatisticsUi(int folderId);
+
         void showNoFolders();
 
         void renameFolder(int folderPosition);

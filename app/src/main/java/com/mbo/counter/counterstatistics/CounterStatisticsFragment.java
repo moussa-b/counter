@@ -60,7 +60,7 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View root = inflater.inflate(R.layout.statistics_fragment, container, false);
+        View root = inflater.inflate(R.layout.counter_statistics_fragment, container, false);
 
         // Set up tasks view
         mStatisticsListView = root.findViewById(R.id.statistics_list_view);
@@ -85,6 +85,15 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
     public void setPresenter(CounterStatisticsContract.Presenter presenter)
     {
         mPresenter = presenter;
+    }
+
+    @Override
+    public String getStringById(int id)
+    {
+        if (getContext() != null) {
+            return getContext().getResources().getString(id);
+        } else
+            return null;
     }
 
     @Override

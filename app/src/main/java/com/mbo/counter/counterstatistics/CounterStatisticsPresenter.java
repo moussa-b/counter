@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.mbo.counter.R;
 import com.mbo.counter.commons.Utils;
 import com.mbo.counter.data.model.Statistics;
 import com.mbo.counter.data.model.StatisticsType;
@@ -129,20 +130,23 @@ public class CounterStatisticsPresenter implements CounterStatisticsContract.Pre
             resetEntries.add(new BarEntry(i, resetStatistics.get(timeStampGroups.get(i))));
         }
 
-        BarDataSet decrementDataSet = new BarDataSet(decrementEntries, "Decrement");
+        BarDataSet decrementDataSet = new BarDataSet(decrementEntries, mStatisticsView.getStringById(R.string.decrement));
         decrementDataSet.setColor(Color.YELLOW);
-        BarDataSet incrementDataSet = new BarDataSet(incrementEntries, "Increment");
+        BarDataSet incrementDataSet = new BarDataSet(incrementEntries, mStatisticsView.getStringById(R.string.increment));
         incrementDataSet.setColor(Color.GREEN);
-        BarDataSet resetDataSet = new BarDataSet(resetEntries, "Reset");
+        BarDataSet resetDataSet = new BarDataSet(resetEntries, mStatisticsView.getStringById(R.string.reset));
         resetDataSet.setColor(Color.RED);
 
         List<StatisticsAdapter.Row> statisticsRows = new ArrayList<>();
 
         for (Long timeStamp : timeStampGroups)
         {
-            statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.INCREMENT, incrementStatistics.get(timeStamp)));
-            statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.DECREMENT, decrementStatistics.get(timeStamp)));
-            statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.RESET, resetStatistics.get(timeStamp)));
+            if (incrementStatistics.get(timeStamp) != 0)
+                statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.INCREMENT, incrementStatistics.get(timeStamp)));
+            if (decrementStatistics.get(timeStamp) != 0)
+                statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.DECREMENT, decrementStatistics.get(timeStamp)));
+            if (resetStatistics.get(timeStamp) != 0)
+                statisticsRows.add(new StatisticsAdapter.Row(timeStamp, StatisticsType.RESET, resetStatistics.get(timeStamp)));
         }
 
         Collections.sort(statisticsRows, new Comparator<StatisticsAdapter.Row>()

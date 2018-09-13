@@ -243,7 +243,7 @@ public class CounterListFragment extends Fragment implements CounterListContract
     {
         Intent intent = new Intent(getContext(), CounterStatisticsActivity.class);
         intent.putExtra(ARGUMENT_STATISTICS_COUNTER_ID, counterId);
-        startActivityForResult(intent, REQUEST_COUNTER);
+        startActivity(intent);
     }
 
     @Override
