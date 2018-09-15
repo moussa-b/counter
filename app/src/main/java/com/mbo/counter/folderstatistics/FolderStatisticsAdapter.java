@@ -1,9 +1,13 @@
 package com.mbo.counter.folderstatistics;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.mbo.counter.R;
 import com.mbo.counter.data.model.Counter;
 
 import java.util.List;
@@ -38,6 +42,42 @@ public class FolderStatisticsAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        return null;
+        View rowView = convertView;
+
+        if (rowView == null)
+        {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            rowView = inflater.inflate(R.layout.folder_statistics_item, parent, false);
+        }
+
+        final Counter counter = getItem(position);
+
+        TextView nameTextView = rowView.findViewById(R.id.name_text_view);
+        TextView countTextView = rowView.findViewById(R.id.count_text_view);
+        ProgressBar statisticsProgressBar = rowView.findViewById(R.id.statistics_progress_bar);
+        float progression = getTotal() == 0 ? 0 : (100.0F * counter.getCount() / getTotal());
+
+        nameTextView.setText(counter.getName());
+        countTextView.setText(String.format("%s (%.2f%%)", String.valueOf(counter.getCount()), progression));
+        statisticsProgressBar.setProgress((int) progression);
+
+        return rowView;
+    }
+
+    private int getTotal()
+    {
+        int total = 0;
+        if (mCounters != null && mCounters.size() > 0)
+        {
+            for (Counter counter : mCounters)
+                total += counter.getCount();
+        }
+        return total;
+    }
+
+    public void replaceData(List<Counter> counters)
+    {
+        this.mCounters = counters;
+        notifyDataSetChanged();
     }
 }

@@ -1,9 +1,11 @@
 package com.mbo.counter.folderstatistics;
 
-import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;
+import com.mbo.counter.data.model.Counter;
+
+import java.util.List;
 
 public interface FolderStatisticsContract
 {
@@ -11,7 +13,7 @@ public interface FolderStatisticsContract
     {
         void showNoStatistics();
 
-        void showStatistics(PieDataSet dataSet);
+        void showStatistics(PieDataSet dataSet, List<Counter> counters);
     }
 
     interface Presenter extends BasePresenter

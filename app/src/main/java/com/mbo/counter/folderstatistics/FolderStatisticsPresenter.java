@@ -58,9 +58,9 @@ public class FolderStatisticsPresenter implements FolderStatisticsContract.Prese
     {
         ArrayList<PieEntry> yvalues = new ArrayList<>();
         for (int i = 0; i < counters.size(); i++)
-            yvalues.add(new PieEntry(counters.get(i).getCount(), i));
+            yvalues.add(new PieEntry(counters.get(i).getCount(), counters.get(i).getName(), i));
 
-        mStatisticsView.showStatistics(new PieDataSet(yvalues, ""));
+        mStatisticsView.showStatistics(new PieDataSet(yvalues, ""), counters);
     }
 
     private void processEmptyCounters()

@@ -1,6 +1,5 @@
 package com.mbo.counter.folderstatistics;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +18,7 @@ import com.mbo.counter.R;
 import com.mbo.counter.data.model.Counter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class FolderStatisticsFragment extends Fragment implements FolderStatisticsContract.View
@@ -57,6 +57,8 @@ public class FolderStatisticsFragment extends Fragment implements FolderStatisti
         View root = inflater.inflate(R.layout.folder_statistics_fragment, container, false);
         // Set up tasks view
         mStatisticsListView = root.findViewById(R.id.statistics_list_view);
+        mStatisticsListView.setAdapter(mListAdapter);
+
         // Set up  no tasks view
         mNoStatisticsTextView = root.findViewById(R.id.no_statistics_text_view);
         mChart = root.findViewById(R.id.chart);
@@ -86,7 +88,7 @@ public class FolderStatisticsFragment extends Fragment implements FolderStatisti
     }
 
     @Override
-    public void showStatistics(PieDataSet dataSet)
+    public void showStatistics(PieDataSet dataSet, List<Counter> counters)
     {
         if (dataSet == null)
         {
@@ -98,6 +100,10 @@ public class FolderStatisticsFragment extends Fragment implements FolderStatisti
         {
             mNoStatisticsTextView.setVisibility(View.GONE);
             mStatisticsListView.setVisibility(View.VISIBLE);
+            LayoutInflater inflaterHeader = getLayoutInflater();
+            ViewGroup header = (ViewGroup) inflaterHeader.inflate(R.layout.folder_statistics_list_header, mStatisticsListView, false);
+            mStatisticsListView.addHeaderView(header);
+            mListAdapter.replaceData(counters);
 
             ArrayList<Integer> colors = new ArrayList<>();
             for (int i = 0; i < dataSet.getEntryCount(); i++)
@@ -108,6 +114,7 @@ public class FolderStatisticsFragment extends Fragment implements FolderStatisti
             dataSet.setColors(colors);
             PieData pieData = new PieData(dataSet);
             mChart.setUsePercentValues(true);
+            mChart.getDescription().setEnabled(false);
             pieData.setValueFormatter(new PercentFormatter());
             mChart.animateY(1000);
             mChart.setData(pieData);

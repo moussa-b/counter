@@ -13,6 +13,7 @@
     <string name="contact_us">Contact us</string>
     <string name="counter">Counter</string>
     <string name="counter_list">List of counters</string>
+    <string name="counter_name">Counter name</string>
     <string name="counters">Counters</string>
     <string name="delete_all_counters_warning">This action will delete all counters in this folder. Are you sure?</string>
     <string name="delete_folder_warning">This action will delete this folder and all its counters. Are you sure?</string>

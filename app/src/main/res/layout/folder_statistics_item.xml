@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/list_item_vertical_margin"
+    android:paddingLeft="@dimen/list_item_horizontal_margin"
+    android:paddingRight="@dimen/list_item_horizontal_margin"
+    android:paddingTop="@dimen/list_item_vertical_margin">
+
+    <TextView
+        android:id="@+id/name_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Counter #1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.6"
+        tools:ignore="HardcodedText"/>
+
+    <TextView
+        android:id="@+id/count_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="7 (20%)"
+        app:layout_constraintLeft_toRightOf="@id/name_text_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.4"
+        tools:ignore="HardcodedText"/>
+
+    <ProgressBar
+        android:id="@+id/statistics_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="45"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_text_view"/>
+
+</android.support.constraint.ConstraintLayout>
