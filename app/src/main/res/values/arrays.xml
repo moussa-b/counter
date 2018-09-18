@@ -4,25 +4,8 @@
         <item>@color/wild_strawberry</item>
         <item>@color/san_marino</item>
         <item>@color/sapphire</item>
-        <item>@color/white</item>
-        <item>@color/ivory</item>
-        <item>@color/lightyellow</item>
-        <item>@color/yellow</item>
-        <item>@color/snow</item>
-        <item>@color/floralwhite</item>
-        <item>@color/lemonchiffon</item>
-        <item>@color/cornsilk</item>
-        <item>@color/seashell</item>
-        <item>@color/lavenderblush</item>
-        <item>@color/papayawhip</item>
-        <item>@color/blanchedalmond</item>
-        <item>@color/mistyrose</item>
-        <item>@color/bisque</item>
         <item>@color/havelock_blue</item>
         <item>@color/havelock_blue_dark</item>
-        <item>@color/moccasin</item>
-        <item>@color/navajowhite</item>
-        <item>@color/peachpuff</item>
         <item>@color/gold</item>
         <item>@color/pink</item>
         <item>@color/lightpink</item>
@@ -37,42 +20,21 @@
         <item>@color/fuchsia</item>
         <item>@color/magenta</item>
         <item>@color/red</item>
-        <item>@color/old_lace</item>
-        <item>@color/light_golden_rod_yellow</item>
-        <item>@color/linen</item>
-        <item>@color/antique_white</item>
         <item>@color/salmon</item>
-        <item>@color/ghost_white</item>
-        <item>@color/mint_cream</item>
-        <item>@color/white_smoke</item>
-        <item>@color/beige</item>
-        <item>@color/wheat</item>
         <item>@color/sandy_brown</item>
-        <item>@color/azure</item>
-        <item>@color/honeydew</item>
-        <item>@color/alice_blue</item>
-        <item>@color/khaki</item>
         <item>@color/light_coral</item>
-        <item>@color/pale_golden_rod</item>
         <item>@color/violet</item>
         <item>@color/dark_salmon</item>
-        <item>@color/lavender</item>
-        <item>@color/light_cyan</item>
         <item>@color/burlywood</item>
         <item>@color/plum</item>
-        <item>@color/gainsboro</item>
         <item>@color/crimson</item>
         <item>@color/palevioletred</item>
         <item>@color/goldenrod</item>
         <item>@color/orchid</item>
-        <item>@color/thistle</item>
-        <item>@color/lightgrey</item>
-        <item>@color/tan</item>
         <item>@color/chocolate</item>
         <item>@color/peru</item>
         <item>@color/indianred</item>
         <item>@color/mediumvioletred</item>
-        <item>@color/silver</item>
         <item>@color/darkkhaki</item>
         <item>@color/rosybrown</item>
         <item>@color/mediumorchid</item>
@@ -152,13 +114,10 @@
         <item>@color/deep_green</item>
         <item>@color/deep_blue</item>
         <item>@color/light_red</item>
-        <item>@color/light_silver</item>
-        <item>@color/light_grey</item>
         <item>@color/deep_orange</item>
         <item>@color/deep_red</item>
         <item>@color/deep_silver</item>
         <item>@color/light_blue</item>
-        <item>@color/loading_bar_login_bg</item>
         <item>@color/app_color_sky_blue</item>
     </integer-array>
 </resources>

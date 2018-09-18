@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_header_controls">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/key_activate_sound"
+            android:summary="@string/summary_activate_sound"
+            android:title="@string/title_activate_sound"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/key_activate_vibrator"
+            android:summary="@string/summary_activate_vibrator"
+            android:title="@string/title_activate_vibrator"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_count_volume_buttons"
+            android:summary="@string/summary_count_volume_buttons"
+            android:title="@string/title_count_volume_buttons"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_header_display">
+
+        <Preference
+            android:summary="@string/summary_theme_and_color"
+            android:title="@string/title_theme_and_color"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/key_screen_always_on"
+            android:summary="@string/summary_screen_always_on"
+            android:title="@string/title_screen_always_on"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_header_advanced">
+
+        <Preference
+            android:summary="@string/summary_delete_all_counters"
+            android:title="@string/title_delete_all_counters"/>
+
+        <Preference
+            android:summary="@string/summary_export_data"
+            android:title="@string/title_export_data"/>
+
+        <Preference
+            android:summary="@string/summary_import_data"
+            android:title="@string/title_import_data"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_header_about">
+
+        <Preference
+            android:selectable="false"
+            android:summary="@string/summary_about"/>
+
+        <Preference
+            android:summary="@string/versionName"
+            android:title="@string/title_version"/>
+
+        <Preference
+            android:summary="@string/summary_contact_us"
+            android:title="@string/title_contact_us"/>
+
+        <Preference
+            android:summary="@string/summary_tutorial"
+            android:title="@string/title_tutorial"/>
+
+        <!-- preference opens url in browser -->
+
+        <Preference android:title="@string/privacy_policy"/>
+
+        <Preference android:title="@string/title_terms"/>
+
+        <!--<Preference android:title="@string/privacy_policy">-->
+            <!--<intent-->
+                <!--android:action="android.intent.action.VIEW"-->
+                <!--android:data="@string/url_privacy"/>-->
+        <!--</Preference>-->
+
+        <!--<Preference android:title="@string/title_terms">-->
+            <!--<intent-->
+                <!--android:action="android.intent.action.VIEW"-->
+                <!--android:data="@string/url_terms"/>-->
+        <!--</Preference>-->
+
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/fallingsky</item>
         <item name="fontFamily">@font/fallingsky</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
