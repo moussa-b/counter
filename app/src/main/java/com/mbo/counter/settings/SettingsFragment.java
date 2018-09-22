@@ -1,16 +1,20 @@
 package com.mbo.counter.settings;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
 
 import com.mbo.counter.R;
+import com.mbo.counter.colorpicker.ColorPickerFragment;
+import com.mbo.counter.colorpicker.ColorPickerListener;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SettingsFragment extends PreferenceFragmentCompat implements SettingsContract.View
+public class SettingsFragment extends PreferenceFragmentCompat implements SettingsContract.View, ColorPickerListener
 {
-
     public SettingsFragment()
     {
     }
@@ -27,9 +31,33 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     }
 
     @Override
+    public boolean onPreferenceTreeClick(Preference preference)
+    {
+        String key = preference.getKey();
+        if (key.equals(getActivity().getResources().getString(R.string.key_theme_and_color)))
+            showColorPickerUi();
+        return super.onPreferenceTreeClick(preference);
+    }
+
+    @Override
     public void setPresenter(SettingsContract.Presenter presenter)
     {
 
     }
 
+    @Override
+    public void showColorPickerUi()
+    {
+        FragmentManager fm = getFragmentManager();
+        ColorPickerFragment colorPickerFragment = ColorPickerFragment.newInstance();
+        colorPickerFragment.setTargetFragment(this, ColorPickerFragment.REQUEST_COLOR_PICKER);
+        if (fm != null)
+            colorPickerFragment.show(fm, ColorPickerFragment.TAG_COLOR_PICKER);
+    }
+
+    @Override
+    public void onSelectColor(int selectedColor)
+    {
+        Log.e("MBO", String.valueOf(selectedColor));
+    }
 }

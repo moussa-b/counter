@@ -1,5 +1,7 @@
 package com.mbo.counter.folderstatistics;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +62,7 @@ public class FolderStatisticsAdapter extends BaseAdapter
         nameTextView.setText(counter.getName());
         countTextView.setText(String.format("%s (%.2f%%)", String.valueOf(counter.getCount()), progression));
         statisticsProgressBar.setProgress((int) progression);
+        statisticsProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(counter.getColor())));
 
         return rowView;
     }

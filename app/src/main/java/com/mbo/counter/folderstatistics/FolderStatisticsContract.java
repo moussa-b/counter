@@ -13,7 +13,7 @@ public interface FolderStatisticsContract
     {
         void showNoStatistics();
 
-        void showStatistics(PieDataSet dataSet, List<Counter> counters);
+        void showStatistics(PieDataSet dataSet, List<Counter> counters, List<Integer> colors);
     }
 
     interface Presenter extends BasePresenter

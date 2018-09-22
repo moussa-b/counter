@@ -104,6 +104,7 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
         {
             mCounter = new Counter();
             mAddCounterView.setStep(mCounter.getStep());
+            mAddCounterView.setColor(null); // will add a random color to counter
         }
     }
 }

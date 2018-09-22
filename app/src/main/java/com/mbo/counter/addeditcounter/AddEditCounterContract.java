@@ -30,6 +30,8 @@ public interface AddEditCounterContract
 
         void setStep(int step);
 
+        void showColorPickerUi();
+
         void showCountersList();
     }
 

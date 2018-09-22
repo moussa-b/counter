@@ -1,5 +1,6 @@
 package com.mbo.counter.folderstatistics;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 
 import com.github.mikephil.charting.data.PieDataSet;
@@ -57,10 +58,14 @@ public class FolderStatisticsPresenter implements FolderStatisticsContract.Prese
     private void processCounters(List<Counter> counters)
     {
         ArrayList<PieEntry> yvalues = new ArrayList<>();
+        ArrayList<Integer> colors = new ArrayList<>();
         for (int i = 0; i < counters.size(); i++)
+        {
             yvalues.add(new PieEntry(counters.get(i).getCount(), counters.get(i).getName(), i));
+            colors.add(Color.parseColor(counters.get(i).getColor()));
+        }
 
-        mStatisticsView.showStatistics(new PieDataSet(yvalues, ""), counters);
+        mStatisticsView.showStatistics(new PieDataSet(yvalues, ""), counters, colors);
     }
 
     private void processEmptyCounters()

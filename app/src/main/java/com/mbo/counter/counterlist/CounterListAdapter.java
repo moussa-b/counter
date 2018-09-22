@@ -1,6 +1,8 @@
 package com.mbo.counter.counterlist;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +15,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mbo.counter.R;
+import com.mbo.counter.commons.ItemTouchHelperAdapter;
 import com.mbo.counter.commons.Utils;
 import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.commons.ItemTouchHelperAdapter;
 
 import java.util.Collections;
 import java.util.List;
@@ -124,6 +126,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
         int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
         counterViewHolder.progressionTextView.setText(String.format("%s%%", String.valueOf(progression)));
         counterViewHolder.counterItemProgressBar.setProgress(progression);
+        counterViewHolder.counterItemProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(counter.getColor())));
         counterViewHolder.decreaseCounterImageButton.setOnClickListener(new View.OnClickListener()
         {
             @Override

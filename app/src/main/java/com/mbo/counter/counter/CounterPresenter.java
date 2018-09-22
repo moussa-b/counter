@@ -76,6 +76,7 @@ public class CounterPresenter implements CounterContract.Presenter
                 mCounterView.setLimit(counter.getLimit());
                 mCounterView.setProgression(counter.getLimit(), counter.getCount());
                 mCounterView.setCount(counter.getCount());
+                mCounterView.setColor(counter.getColor());
             }
 
             @Override

@@ -2,7 +2,6 @@ package com.mbo.counter.counter;
 
 import com.mbo.counter.BasePresenter;
 import com.mbo.counter.BaseView;
-import com.mbo.counter.data.model.Counter;
 
 /**
  * This specifies the contract between the view and the presenter.
@@ -13,6 +12,8 @@ public interface CounterContract
     interface View extends BaseView<Presenter>
     {
         void rotateProgressBar(int angle);
+
+        void setColor(String color);
 
         void setCount(int count);
 

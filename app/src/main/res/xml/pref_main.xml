@@ -26,6 +26,7 @@
 
         <Preference
             android:summary="@string/summary_theme_and_color"
+            android:key="@string/key_theme_and_color"
             android:title="@string/title_theme_and_color"/>
 
         <CheckBoxPreference
@@ -63,12 +64,16 @@
             android:title="@string/title_version"/>
 
         <Preference
-            android:summary="@string/summary_contact_us"
-            android:title="@string/title_contact_us"/>
-
-        <Preference
             android:summary="@string/summary_tutorial"
             android:title="@string/title_tutorial"/>
+
+        <Preference
+            android:summary="@string/summary_share"
+            android:title="@string/title_share"/>
+
+        <Preference
+            android:summary="@string/summary_contact_us"
+            android:title="@string/title_contact_us"/>
 
         <!-- preference opens url in browser -->
 

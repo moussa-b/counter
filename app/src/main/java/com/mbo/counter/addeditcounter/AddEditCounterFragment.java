@@ -1,11 +1,13 @@
 package com.mbo.counter.addeditcounter;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +18,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mbo.counter.R;
-import com.mbo.counter.data.model.Counter;
-import com.mbo.counter.data.model.Folder;
+import com.mbo.counter.colorpicker.ColorPickerFragment;
+import com.mbo.counter.colorpicker.ColorPickerListener;
 import com.mbo.counter.commons.CallBack;
 import com.mbo.counter.commons.FolderUtils;
+import com.mbo.counter.commons.Utils;
+import com.mbo.counter.data.model.Counter;
+import com.mbo.counter.data.model.Folder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +34,7 @@ import static android.text.TextUtils.isEmpty;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AddEditCounterFragment extends Fragment implements AddEditCounterContract.View
+public class AddEditCounterFragment extends Fragment implements AddEditCounterContract.View, ColorPickerListener
 {
     public static final String ARGUMENT_EDIT_COUNTER_ID = "EDIT_COUNTER_ID";
 
@@ -87,6 +92,14 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
         mChangeColor = root.findViewById(R.id.change_color_button);
         mFolderNames.add(getString(R.string.select_folder));
         mFolderNames.add(getString(R.string.add_folder) + " +");
+        mChangeColor.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                showColorPickerUi();
+            }
+        });
         if (getActivity() != null)
         {
             mAutoCompleteAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, mFolderNames);
@@ -190,7 +203,15 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     @Override
     public void setColor(String color)
     {
-
+        if (color != null)
+            mChangeColor.setBackgroundColor(Color.parseColor(color));
+        else
+        {
+            int randomColor = Utils.getRandomColor(getContext());
+            String hexRandomColor = "#" + Integer.toHexString(randomColor & 0x00ffffff); // 0x00ffffff required to remove transparency
+            mChangeColor.setBackgroundColor(randomColor);
+            mPresenter.getCounter().setColor(hexRandomColor);
+        }
     }
 
     @Override
@@ -232,6 +253,16 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
+    public void showColorPickerUi()
+    {
+        FragmentManager fm = getFragmentManager();
+        ColorPickerFragment colorPickerFragment = ColorPickerFragment.newInstance();
+        colorPickerFragment.setTargetFragment(this, ColorPickerFragment.REQUEST_COLOR_PICKER);
+        if (fm != null)
+            colorPickerFragment.show(fm, ColorPickerFragment.TAG_COLOR_PICKER);
+    }
+
+    @Override
     public void showCountersList()
     {
         Activity activity = getActivity();
@@ -240,5 +271,13 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
             getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();
         }
+    }
+
+    @Override
+    public void onSelectColor(int selectedColor)
+    {
+        mChangeColor.setBackgroundColor(selectedColor);
+        String hexColor = "#" + Integer.toHexString(selectedColor & 0x00ffffff); // 0x00ffffff required to remove transparency
+        mPresenter.getCounter().setColor(hexColor);
     }
 }

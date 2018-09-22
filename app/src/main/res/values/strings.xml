@@ -101,4 +101,11 @@
     <string name="summary_tutorial">See all app\'s features in a quick tutorial</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="title_terms"><![CDATA[Terms & Conditions]]></string>
+    <string name="title_share">@string/share</string>
+    <string name="summary_share">Share this app with your friends!</string>
+    <string name="key_theme_and_color">SHARED_PREF_THEME_AND_COLOR</string>
+    <string name="color_picker_title">Color picker</string>
+    <string name="color_picker_message">Select a color</string>
+    <string name="color_picker_item_description">Select a color by touching</string>
+    <string name="color_picker_selected_color">Selected color</string>
 </resources>

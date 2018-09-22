@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -181,8 +182,6 @@ public class Utils
         }
     }
 
-
-
     public static long atEndOfDay(Calendar calendar)
     {
         calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -199,5 +198,16 @@ public class Utils
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTimeInMillis();
+    }
+
+    public static int getRandomColor(Context context)
+    {
+        if (context != null)
+        {
+            int[] androidColors = context.getResources().getIntArray(R.array.android_colors);
+            return androidColors[new Random().nextInt(androidColors.length)];
+        }
+        else
+            return 0;
     }
 }

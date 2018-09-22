@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <integer-array name="counter_colors">
+        <item>@color/wild_strawberry</item>
+        <item>@color/san_marino</item>
+        <item>@color/sapphire</item>
+        <item>@color/havelock_blue</item>
+        <item>@color/havelock_blue_dark</item>
+        <item>@color/gold</item>
+        <item>@color/pink</item>
+        <item>@color/lightpink</item>
+        <item>@color/orange</item>
+        <item>@color/lightsalmon</item>
+        <item>@color/darkorange</item>
+        <item>@color/coral</item>
+        <item>@color/hotpink</item>
+        <item>@color/tomato</item>
+        <item>@color/orange_red</item>
+        <item>@color/deep_pink</item>
+    </integer-array>
+
+    <integer-array name="theme_colors">
+        <item>@color/wild_strawberry</item>
+        <item>@color/san_marino</item>
+        <item>@color/sapphire</item>
+        <item>@color/havelock_blue</item>
+        <item>@color/havelock_blue_dark</item>
+        <item>@color/gold</item>
+        <item>@color/pink</item>
+        <item>@color/lightpink</item>
+        <item>@color/orange</item>
+        <item>@color/lightsalmon</item>
+        <item>@color/darkorange</item>
+        <item>@color/coral</item>
+        <item>@color/hotpink</item>
+        <item>@color/tomato</item>
+        <item>@color/orange_red</item>
+        <item>@color/deep_pink</item>
+    </integer-array>
+
     <integer-array name="android_colors">
         <item>@color/wild_strawberry</item>
         <item>@color/san_marino</item>

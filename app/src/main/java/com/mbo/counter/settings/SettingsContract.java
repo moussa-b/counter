@@ -10,7 +10,7 @@ public interface SettingsContract
 {
     interface View extends BaseView<Presenter>
     {
-
+        void showColorPickerUi();
     }
 
     interface Presenter extends BasePresenter

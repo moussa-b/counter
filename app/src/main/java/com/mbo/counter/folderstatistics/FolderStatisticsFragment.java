@@ -19,7 +19,6 @@ import com.mbo.counter.data.model.Counter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class FolderStatisticsFragment extends Fragment implements FolderStatisticsContract.View
 {
@@ -88,7 +87,7 @@ public class FolderStatisticsFragment extends Fragment implements FolderStatisti
     }
 
     @Override
-    public void showStatistics(PieDataSet dataSet, List<Counter> counters)
+    public void showStatistics(PieDataSet dataSet, List<Counter> counters, List<Integer> colors)
     {
         if (dataSet == null)
         {
@@ -104,13 +103,6 @@ public class FolderStatisticsFragment extends Fragment implements FolderStatisti
             ViewGroup header = (ViewGroup) inflaterHeader.inflate(R.layout.folder_statistics_list_header, mStatisticsListView, false);
             mStatisticsListView.addHeaderView(header);
             mListAdapter.replaceData(counters);
-
-            ArrayList<Integer> colors = new ArrayList<>();
-            for (int i = 0; i < dataSet.getEntryCount(); i++)
-            {
-                colors.add(getRandomColor());
-            }
-
             dataSet.setColors(colors);
             PieData pieData = new PieData(dataSet);
             mChart.setUsePercentValues(true);
@@ -120,11 +112,5 @@ public class FolderStatisticsFragment extends Fragment implements FolderStatisti
             mChart.setData(pieData);
             mChart.invalidate();
         }
-    }
-
-    private int getRandomColor()
-    {
-        int[] androidColors = getResources().getIntArray(R.array.android_colors);
-        return androidColors[new Random().nextInt(androidColors.length)];
     }
 }

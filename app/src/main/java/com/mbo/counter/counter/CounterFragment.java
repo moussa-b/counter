@@ -2,6 +2,8 @@ package com.mbo.counter.counter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -167,6 +169,13 @@ public class CounterFragment extends Fragment implements CounterContract.View
     {
         progressBarRotation -= angle;
         mProgressBar.setRotation(progressBarRotation);
+    }
+
+    @Override
+    public void setColor(String color)
+    {
+        if (color != null)
+            mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(color)));
     }
 
     @Override
