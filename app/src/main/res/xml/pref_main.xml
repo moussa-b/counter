@@ -41,6 +41,7 @@
 
         <Preference
             android:summary="@string/summary_delete_all_counters"
+            android:key="@string/key_reset_data"
             android:title="@string/title_delete_all_counters"/>
 
         <Preference

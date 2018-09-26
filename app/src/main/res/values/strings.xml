@@ -113,4 +113,8 @@
     <string name="storage_permission_warning">To export data permission to write in external storage is required. Please go to settings and enable write in external storage.</string>
     <string name="export_data_error_message">Error when exporting the data</string>
     <string name="export_data_success_message">The data have been exported to file %s</string>
+    <string name="key_reset_data">SHARED_PREF_RESET_DATA</string>
+    <string name="reset_data_warning">This action will delete all data. Are you sure?</string>
+    <string name="error">Error</string>
+    <string name="reset_all_data_success_message">All data have been successfully reset</string>
 </resources>

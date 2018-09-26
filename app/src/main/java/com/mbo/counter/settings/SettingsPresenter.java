@@ -10,6 +10,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.google.gson.Gson;
 import com.mbo.counter.BuildConfig;
 import com.mbo.counter.R;
+import com.mbo.counter.commons.CallBack;
 import com.mbo.counter.commons.FileUtils;
 import com.mbo.counter.commons.Utils;
 import com.mbo.counter.data.model.Counter;
@@ -116,6 +117,36 @@ public class SettingsPresenter implements SettingsContract.Presenter
                     }
                 });
             }
+        }
+    }
+
+    @Override
+    public void resetData()
+    {
+        final Context context = ((PreferenceFragmentCompat) mSettingsView).getContext();
+        if (context != null)
+        {
+            Utils.showWarningDialog(context, true, R.string.warning, R.string.reset_data_warning, new CallBack()
+            {
+                @Override
+                public void execute(Object data)
+                {
+                    mCounterDataSource.resetAllData(new CounterDataSource.ResetAllDataCallback()
+                    {
+                        @Override
+                        public void onSuccess()
+                        {
+                            Utils.showWarningDialog(context, false, R.string.information, R.string.reset_all_data_success_message, null, null, R.drawable.ic_menu_info);
+                        }
+
+                        @Override
+                        public void onError(String message)
+                        {
+                            Utils.showWarningDialog(context, false, context.getResources().getString(R.string.error), message, null, null, R.drawable.ic_menu_info);
+                        }
+                    });
+                }
+            }, null, R.drawable.ic_menu_info);
         }
     }
 }

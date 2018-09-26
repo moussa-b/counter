@@ -16,5 +16,7 @@ public interface SettingsContract
     interface Presenter extends BasePresenter
     {
         void exportData();
+
+        void resetData();
     }
 }

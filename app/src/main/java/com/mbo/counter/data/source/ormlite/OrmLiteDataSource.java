@@ -3,6 +3,7 @@ package com.mbo.counter.data.source.ormlite;
 import android.support.annotation.NonNull;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.table.TableUtils;
 import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.data.model.Folder;
 import com.mbo.counter.data.model.Statistics;
@@ -517,6 +518,34 @@ public class OrmLiteDataSource implements CounterDataSource
         catch (SQLException e)
         {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void resetAllData(@NonNull ResetAllDataCallback resetAllDataCallback)
+    {
+        try
+        {
+            TableUtils.dropTable(mDaoCounter, true);
+            TableUtils.dropTable(mDaoFolder, true);
+            TableUtils.dropTable(mDaoStatistics, true);
+
+            TableUtils.createTable(mDaoCounter);
+            TableUtils.createTable(mDaoFolder);
+            TableUtils.createTable(mDaoStatistics);
+
+            Folder defaultFolder = new Folder("");
+            Counter defaultCounter = new Counter("");
+            mDaoFolder.create(defaultFolder);
+            defaultCounter.setFolder(defaultFolder);
+            mDaoCounter.create(defaultCounter);
+
+            resetAllDataCallback.onSuccess();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            resetAllDataCallback.onError(e.getLocalizedMessage());
         }
     }
 

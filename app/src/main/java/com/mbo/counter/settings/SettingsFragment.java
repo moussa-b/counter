@@ -45,6 +45,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
                 showColorPickerUi();
             else if (key.equals(resources.getString(R.string.key_export_data)))
                 mPresenter.exportData();
+            else if (key.equals(resources.getString(R.string.key_reset_data)))
+                mPresenter.resetData();
         }
         return super.onPreferenceTreeClick(preference);
     }

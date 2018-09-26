@@ -56,6 +56,8 @@ public interface CounterDataSource
 
     void resetCountersInFolder(int folderId);
 
+    void resetAllData(@NonNull ResetAllDataCallback resetAllDataCallback);
+
     interface LoadCountersCallback
     {
         void onCountersLoaded(List<Counter> counters);
@@ -89,5 +91,12 @@ public interface CounterDataSource
         void onFolderLoaded(Folder folder);
 
         void onDataNotAvailable();
+    }
+
+    interface ResetAllDataCallback
+    {
+        void onSuccess();
+
+        void onError(String message);
     }
 }
