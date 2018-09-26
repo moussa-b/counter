@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class OrmLiteHelper extends OrmLiteSqliteOpenHelper
 {
     private static final String DATABASE_NAME = "counter.db";
-    private static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 1;
 
     public OrmLiteHelper(Context context)
     {

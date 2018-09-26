@@ -1,5 +1,6 @@
 package com.mbo.counter.settings;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.preference.Preference;
@@ -15,6 +16,8 @@ import com.mbo.counter.colorpicker.ColorPickerListener;
  */
 public class SettingsFragment extends PreferenceFragmentCompat implements SettingsContract.View, ColorPickerListener
 {
+    private SettingsContract.Presenter mPresenter;
+
     public SettingsFragment()
     {
     }
@@ -34,15 +37,22 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     public boolean onPreferenceTreeClick(Preference preference)
     {
         String key = preference.getKey();
-        if (key.equals(getActivity().getResources().getString(R.string.key_theme_and_color)))
-            showColorPickerUi();
+
+        if (key != null && getActivity() != null)
+        {
+            Resources resources = getActivity().getResources();
+            if (key.equals(resources.getString(R.string.key_theme_and_color)))
+                showColorPickerUi();
+            else if (key.equals(resources.getString(R.string.key_export_data)))
+                mPresenter.exportData();
+        }
         return super.onPreferenceTreeClick(preference);
     }
 
     @Override
     public void setPresenter(SettingsContract.Presenter presenter)
     {
-
+        this.mPresenter = presenter;
     }
 
     @Override

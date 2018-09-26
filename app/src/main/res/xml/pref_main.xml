@@ -45,10 +45,12 @@
 
         <Preference
             android:summary="@string/summary_export_data"
+            android:key="@string/key_export_data"
             android:title="@string/title_export_data"/>
 
         <Preference
             android:summary="@string/summary_import_data"
+            android:key="@string/key_import_data"
             android:title="@string/title_import_data"/>
 
     </PreferenceCategory>

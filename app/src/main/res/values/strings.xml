@@ -108,4 +108,9 @@
     <string name="color_picker_message">Select a color</string>
     <string name="color_picker_item_description">Select a color by touching</string>
     <string name="color_picker_selected_color">Selected color</string>
+    <string name="key_export_data">SHARED_PREF_EXPORT_DATA</string>
+    <string name="key_import_data">SHARED_PREF_IMPORT_DATA</string>
+    <string name="storage_permission_warning">To export data permission to write in external storage is required. Please go to settings and enable write in external storage.</string>
+    <string name="export_data_error_message">Error when exporting the data</string>
+    <string name="export_data_success_message">The data have been exported to file %s</string>
 </resources>

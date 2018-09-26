@@ -30,13 +30,19 @@ public interface CounterDataSource
 
     void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback);
 
+    void getStatisticsForExport(@NonNull LoadStatisticsCallback callback);
+
     void getStatisticsInInterval(int counterId, long startTimeStamp, long endTimeStamp, @NonNull LoadStatisticsCallback callback);
 
     void getCounters(@NonNull LoadCountersCallback callback);
 
+    void getCountersForExport(@NonNull LoadCountersCallback callback);
+
     void getCounter(int counterId, @NonNull GetCounterCallback callback);
 
     void getFolders(@NonNull LoadFoldersCallback callback);
+
+    void getFoldersForExport(@NonNull LoadFoldersCallback callback);
 
     void getFolder(int counterId, @NonNull GetFolderCallback callback);
 

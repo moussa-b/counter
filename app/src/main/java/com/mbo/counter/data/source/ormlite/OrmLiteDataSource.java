@@ -262,6 +262,27 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
+    public void getCountersForExport(@NonNull LoadCountersCallback callback)
+    {
+        try
+        {
+            final List<Counter> counters = mDaoCounter.queryForAll();
+            if (counters != null)
+            {
+                callback.onCountersLoaded(counters);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void getFolder(int folderId, @NonNull GetFolderCallback callback)
     {
         try
@@ -306,6 +327,27 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
+    public void getFoldersForExport(@NonNull LoadFoldersCallback callback)
+    {
+        try
+        {
+            final List<Folder> counters = mDaoFolder.queryForAll();
+            if (counters != null)
+            {
+                callback.onFoldersLoaded(counters);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback)
     {
         try
@@ -313,6 +355,27 @@ public class OrmLiteDataSource implements CounterDataSource
             final List<Statistics> statistics = mDaoStatistics
                     .queryBuilder().where()
                     .eq("counterId", counterId).query();
+            if (statistics != null)
+            {
+                callback.onStatisticsLoaded(statistics);
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getStatisticsForExport(@NonNull LoadStatisticsCallback callback)
+    {
+        try
+        {
+            final List<Statistics> statistics = mDaoStatistics.queryForAll();
             if (statistics != null)
             {
                 callback.onStatisticsLoaded(statistics);

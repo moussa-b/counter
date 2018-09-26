@@ -32,6 +32,8 @@ import static android.support.v4.util.Preconditions.checkNotNull;
 
 public class Utils
 {
+    public static final int NO_ICON = 0;
+
     /**
      * The {@code fragment} is added to the container view with id {@code frameId}. The operation is
      * performed by the {@code fragmentManager}.
@@ -44,6 +46,13 @@ public class Utils
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
         transaction.commit();
+    }
+
+    public static String getCurrentDateTimeForFileName()
+    {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     public static String formatDateForDisplay(String inputDate, Locale locale)
@@ -117,7 +126,7 @@ public class Utils
         return MediaPlayer.create(context, R.raw.decrease);
     }
 
-    public static void showWarningDialog(final Context context, boolean isCancellable, int title, int message, final CallBack confirmCallBack, final CallBack cancelCallBack)
+    public static void showWarningDialog(final Context context, boolean isCancellable, String title, String message, final CallBack confirmCallBack, final CallBack cancelCallBack, int icon)
     {
         if (context != null)
         {
@@ -137,16 +146,71 @@ public class Utils
                 }
             });
 
-            materialDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+            if (isCancellable)
+            {
+                materialDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if (cancelCallBack != null)
+                            cancelCallBack.execute(null);
+                        dialog.dismiss();
+                    }
+                });
+            }
+            else
+                materialDialog.setCancelable(false);
+
+            if (icon != NO_ICON)
+            {
+                materialDialog.setIcon(icon);
+            }
+
+            materialDialog.show();
+        }
+    }
+
+    public static void showWarningDialog(final Context context, boolean isCancellable, int title, int message, final CallBack confirmCallBack, final CallBack cancelCallBack, int icon)
+    {
+        if (context != null)
+        {
+            final AlertDialog.Builder materialDialog = new AlertDialog.Builder(context)
+                    .setCancelable(false)
+                    .setMessage(message)
+                    .setTitle(title);
+
+            materialDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick(DialogInterface dialog, int which)
                 {
-                    if (cancelCallBack != null)
-                        cancelCallBack.execute(null);
+                    if (confirmCallBack != null)
+                        confirmCallBack.execute(null);
                     dialog.dismiss();
                 }
             });
+
+            if (isCancellable)
+            {
+                materialDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if (cancelCallBack != null)
+                            cancelCallBack.execute(null);
+                        dialog.dismiss();
+                    }
+                });
+            }
+            else
+                materialDialog.setCancelable(false);
+
+            if (icon != NO_ICON)
+            {
+                materialDialog.setIcon(icon);
+            }
 
             materialDialog.show();
         }

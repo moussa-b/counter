@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         new FolderListPresenter(OrmLiteDataSource.getInstance(), mFolderListFragment);
 
         mSettingsFragment = SettingsFragment.newInstance();
-        new SettingsPresenter(mSettingsFragment);
+        new SettingsPresenter(OrmLiteDataSource.getInstance(), mSettingsFragment);
     }
 
     @Override
