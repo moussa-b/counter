@@ -1,10 +1,13 @@
 package com.mbo.counter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -183,5 +186,27 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         transaction.commit();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isVolumeButtonEnabled = sharedPreferences.getBoolean(getString(R.string.key_count_volume_buttons), false);
+        if (isVolumeButtonEnabled && mCounterFragment.isVisible())
+        {
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+            {
+                mCounterFragment.decrementCounter();
+                return true;
+            }
+            else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+            {
+                mCounterFragment.incrementCounter();
+                return true;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

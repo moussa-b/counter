@@ -11,6 +11,10 @@ public interface CounterContract
 
     interface View extends BaseView<Presenter>
     {
+        void decrementCounter();
+
+        void incrementCounter();
+
         void rotateProgressBar(int angle);
 
         void setColor(String color);

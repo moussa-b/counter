@@ -1,13 +1,16 @@
 package com.mbo.counter.counter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,16 +70,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
             @Override
             public void onClick(View v)
             {
-                int count = mPresenter.incrementCounter();
-                setCount(count);
-                int limit = mPresenter.getLimit();
-                if (limit != 0)
-                    setProgression(limit, count);
-                else
-                    rotateProgressBar(-ROTATION_ANGLE);
-
-                MediaPlayer increaseSound = Utils.getIncreaseMediaPlayer(getContext());
-                increaseSound.start();
+                incrementCounter();
             }
         });
 
@@ -85,16 +79,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
             @Override
             public void onClick(View v)
             {
-                int count = mPresenter.decrementCounter();
-                setCount(count);
-                int limit = mPresenter.getLimit();
-                if (limit != 0)
-                    setProgression(limit, count);
-                else
-                    rotateProgressBar(ROTATION_ANGLE);
-
-                MediaPlayer decreaseSound = Utils.getDecreaseMediaPlayer(getContext());
-                decreaseSound.start();
+                decrementCounter();
             }
         });
 
@@ -162,6 +147,54 @@ public class CounterFragment extends Fragment implements CounterContract.View
             mLimit.setText(String.format("%s : %s", getString(R.string.objective), String.valueOf(limit)));
         else
             mLimit.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void decrementCounter()
+    {
+        int count = mPresenter.decrementCounter();
+        setCount(count);
+        int limit = mPresenter.getLimit();
+        if (limit != 0)
+            setProgression(limit, count);
+        else
+            rotateProgressBar(ROTATION_ANGLE);
+
+        Context context = getContext();
+        if (context != null)
+        {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean isSoundEnabled = sharedPreferences.getBoolean(getString(R.string.key_activate_sound), false);
+            if (isSoundEnabled)
+            {
+                MediaPlayer decreaseSound = Utils.getDecreaseMediaPlayer(getContext());
+                decreaseSound.start();
+            }
+        }
+    }
+
+    @Override
+    public void incrementCounter()
+    {
+        int count = mPresenter.incrementCounter();
+        setCount(count);
+        int limit = mPresenter.getLimit();
+        if (limit != 0)
+            setProgression(limit, count);
+        else
+            rotateProgressBar(-ROTATION_ANGLE);
+
+        Context context = getContext();
+        if (context != null)
+        {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean isSoundEnabled = sharedPreferences.getBoolean(getString(R.string.key_activate_sound), false);
+            if (isSoundEnabled)
+            {
+                MediaPlayer increaseSound = Utils.getIncreaseMediaPlayer(getContext());
+                increaseSound.start();
+            }
+        }
     }
 
     @Override
