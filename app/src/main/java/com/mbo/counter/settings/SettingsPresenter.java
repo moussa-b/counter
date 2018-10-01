@@ -3,6 +3,7 @@ package com.mbo.counter.settings;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -118,6 +119,46 @@ public class SettingsPresenter implements SettingsContract.Presenter
                 });
             }
         }
+    }
+
+    @Override
+    public void importData(Uri importDataUri)
+    {
+        String jsonData = FileUtils.readTextFromUri(((PreferenceFragmentCompat) mSettingsView).getContext(), importDataUri);
+        try
+        {
+            Export export = new Gson().fromJson(jsonData, Export.class);
+            final List<Counter> counters = export.getCounters();
+            final List<Folder> folders = export.getFolders();
+            final List<Statistics> statistics = export.getStatistics();
+
+            mCounterDataSource.resetAllData(new CounterDataSource.ResetAllDataCallback()
+            {
+                @Override
+                public void onSuccess()
+                {
+                    if (counters != null && counters.size() != 0)
+                        mCounterDataSource.saveCounters(counters);
+
+                    if (folders != null && folders.size() != 0)
+                        mCounterDataSource.saveFolders(folders);
+
+                    if (statistics != null && statistics.size() != 0)
+                        mCounterDataSource.saveStatistics(statistics);
+                }
+
+                @Override
+                public void onError(String message)
+                {
+
+                }
+            });
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.mbo.counter.data.source.CounterDataSource;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static com.mbo.counter.data.model.StatisticsType.DECREMENT;
 import static com.mbo.counter.data.model.StatisticsType.INCREMENT;
@@ -477,6 +478,28 @@ public class OrmLiteDataSource implements CounterDataSource
     }
 
     @Override
+    public void saveCounters(@NonNull final List<Counter> counters)
+    {
+        try
+        {
+            mDaoCounter.callBatchTasks(new Callable<Object>()
+            {
+                @Override
+                public Object call() throws Exception
+                {
+                    for (Counter counter : counters)
+                        mDaoCounter.createOrUpdate(counter);
+                    return null;
+                }
+            });
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void resetCounter(int counterId)
     {
         try
@@ -568,6 +591,50 @@ public class OrmLiteDataSource implements CounterDataSource
             }
             else
                 mDaoFolder.update(folder);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveFolders(@NonNull final List<Folder> folders)
+    {
+        try
+        {
+            mDaoFolder.callBatchTasks(new Callable<Object>()
+            {
+                @Override
+                public Object call() throws Exception
+                {
+                    for (Folder folder : folders)
+                        mDaoFolder.createOrUpdate(folder);
+                    return null;
+                }
+            });
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveStatistics(@NonNull final List<Statistics> statistics)
+    {
+        try
+        {
+            mDaoStatistics.callBatchTasks(new Callable<Object>()
+            {
+                @Override
+                public Object call() throws Exception
+                {
+                    for (Statistics stat : statistics)
+                        mDaoStatistics.createOrUpdate(stat);
+                    return null;
+                }
+            });
         }
         catch (SQLException e)
         {

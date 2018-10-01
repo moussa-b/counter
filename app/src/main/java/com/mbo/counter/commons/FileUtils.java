@@ -1,11 +1,16 @@
 package com.mbo.counter.commons;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class FileUtils
 {
@@ -48,5 +53,34 @@ public class FileUtils
             Log.e("FileUtils.java", "File write failed: " + e.toString());
             return false;
         }
+    }
+
+    public static String readTextFromUri(Context context, Uri uri)
+    {
+        if (context != null)
+        {
+            InputStream inputStream;
+            BufferedReader reader;
+            try
+            {
+                inputStream = context.getContentResolver().openInputStream(uri);
+                if (inputStream != null)
+                {
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null)
+                        stringBuilder.append(line);
+                    inputStream.close();
+                    reader.close();
+                    return stringBuilder.toString();
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return "{}";
     }
 }

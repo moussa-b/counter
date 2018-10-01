@@ -50,7 +50,13 @@ public interface CounterDataSource
 
     void saveCounter(@NonNull Counter counter);
 
+    void saveCounters(@NonNull List<Counter> counters);
+
     void saveFolder(@NonNull Folder folder);
+
+    void saveFolders(@NonNull List<Folder> folders);
+
+    void saveStatistics(@NonNull List<Statistics> statistics);
 
     void resetCounter(int counterId);
 
