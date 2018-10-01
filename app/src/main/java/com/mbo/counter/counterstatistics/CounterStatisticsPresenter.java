@@ -27,15 +27,12 @@ public class CounterStatisticsPresenter implements CounterStatisticsContract.Pre
     public static final long ONE_WEEK_MILLIS = 7 * ONE_DAY_MILLIS;
     public static final long TWO_WEEK_MILLIS = 2 * 7 * ONE_DAY_MILLIS;
     public static final long ONE_MONTH_MILLIS = 30 * ONE_DAY_MILLIS;
-    private long mStartTimeStamp;
-    private long mEndTimeStamp;
-
     @NonNull
     private final CounterStatisticsContract.View mStatisticsView;
-
     @NonNull
     private final CounterDataSource mCounterDataSource;
-
+    private long mStartTimeStamp;
+    private long mEndTimeStamp;
     private int mCounterId;
 
     public CounterStatisticsPresenter(int counterId, @NonNull CounterDataSource counterDataSource, @NonNull CounterStatisticsContract.View statisticsView)

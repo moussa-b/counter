@@ -93,7 +93,7 @@
     <string name="summary_import_data">Reset the app with data from exported file. Requires storage permission on Android 6+</string>
     <string name="title_import_data">Import data</string>
     <string name="pref_header_about">@string/about</string>
-    <string name="summary_about">This free app is a non private, non-commercial and leisure project.</string>
+    <string name="summary_about">This free app is a non private, non-commercial and leisure project</string>
     <string name="title_version">@string/version</string>
     <string name="title_contact_us">@string/contact_us</string>
     <string name="summary_contact_us">Any suggestion or bug? Please, let us know!</string>
@@ -120,4 +120,11 @@
     <string name="import_data_dialog_message">Data import in progress</string>
     <string name="import_data_success_message">Data has been successfully imported</string>
     <string name="import_data_failure_message">Error when importing data</string>
+    <string name="key_see_tutorial">SHARED_PREF_SEE_TUTORIAL</string>
+    <string name="key_share_app">SHARED_PREF_SHARE_APP</string>
+    <string name="key_contact_us">SHARED_PREF_CONTACT_US</string>
+    <string name="key_privacy_policy">SHARED_PREF_PRIVACY_POLICY</string>
+    <string name="key_rate_app">SHARED_PREF_RATE_APP</string>
+    <string name="summary_rate">Give us your feedback to help improve this app</string>
+    <string name="title_rate">Rate</string>
 </resources>

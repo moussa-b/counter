@@ -19,35 +19,6 @@ public class CounterStatisticsAdapter extends BaseAdapter
 {
     private List<CounterStatisticsAdapter.Row> mStatistics;
 
-    public static class Row
-    {
-        private long timeStamp;
-        private StatisticsType type;
-        private int value;
-
-        public Row(long timeStamp, StatisticsType type, int value)
-        {
-            this.timeStamp = timeStamp;
-            this.type = type;
-            this.value = value;
-        }
-
-        public long getTimeStamp()
-        {
-            return timeStamp;
-        }
-
-        public StatisticsType getType()
-        {
-            return type;
-        }
-
-        public int getValue()
-        {
-            return value;
-        }
-    }
-
     public CounterStatisticsAdapter(List<CounterStatisticsAdapter.Row> statistics)
     {
         this.mStatistics = statistics;
@@ -116,5 +87,34 @@ public class CounterStatisticsAdapter extends BaseAdapter
     {
         this.mStatistics = statistics;
         notifyDataSetChanged();
+    }
+
+    public static class Row
+    {
+        private long timeStamp;
+        private StatisticsType type;
+        private int value;
+
+        public Row(long timeStamp, StatisticsType type, int value)
+        {
+            this.timeStamp = timeStamp;
+            this.type = type;
+            this.value = value;
+        }
+
+        public long getTimeStamp()
+        {
+            return timeStamp;
+        }
+
+        public StatisticsType getType()
+        {
+            return type;
+        }
+
+        public int getValue()
+        {
+            return value;
+        }
     }
 }

@@ -91,7 +91,8 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Fo
         final Folder folder = mFolders.get(position);
         folderViewHolder.nameTextView.setText(folder.getName());
         Context context = folderViewHolder.nameTextView.getContext();
-        if (context != null) {
+        if (context != null)
+        {
             String countLabel;
             if (folder.getCounters() == null || folder.getCounters().size() == 0)
                 countLabel = context.getString(R.string.no_counters);

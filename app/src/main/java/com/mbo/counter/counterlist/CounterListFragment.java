@@ -21,8 +21,8 @@ import com.mbo.counter.R;
 import com.mbo.counter.addeditcounter.AddEditCounterActivity;
 import com.mbo.counter.commons.ItemOffsetDecoration;
 import com.mbo.counter.counter.CounterActivity;
-import com.mbo.counter.data.model.Counter;
 import com.mbo.counter.counterstatistics.CounterStatisticsActivity;
+import com.mbo.counter.data.model.Counter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +33,9 @@ import static com.mbo.counter.counterstatistics.CounterStatisticsFragment.ARGUME
 
 public class CounterListFragment extends Fragment implements CounterListContract.View
 {
-    private static final int REQUEST_COUNTER = 100;
     public static final String ARGUMENT_FOLDER_ID = "FOLDER_ID";
     public static final String ARGUMENT_FOLDER_NAME = "FOLDER_NAME";
+    private static final int REQUEST_COUNTER = 100;
     private RecyclerView mCounterRecyclerView;
     private CounterListAdapter mRecyclerAdapter;
     private TextView mNoCounterTextView;
@@ -101,14 +101,6 @@ public class CounterListFragment extends Fragment implements CounterListContract
         }
     };
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    { // Lifecycle : called first, for doing any non-graphical initialisations
-        super.onCreate(savedInstanceState);
-        mRecyclerAdapter = new CounterListAdapter(new ArrayList<Counter>(0), mCounterListener);
-        setHasOptionsMenu(true); // The fragment handle the menu
-    }
-
     public CounterListFragment()
     {
     }
@@ -116,6 +108,14 @@ public class CounterListFragment extends Fragment implements CounterListContract
     public static CounterListFragment newInstance()
     {
         return new CounterListFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    { // Lifecycle : called first, for doing any non-graphical initialisations
+        super.onCreate(savedInstanceState);
+        mRecyclerAdapter = new CounterListAdapter(new ArrayList<Counter>(0), mCounterListener);
+        setHasOptionsMenu(true); // The fragment handle the menu
     }
 
     @Override

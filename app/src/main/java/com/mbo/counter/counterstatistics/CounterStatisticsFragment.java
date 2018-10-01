@@ -89,9 +89,9 @@ public class CounterStatisticsFragment extends Fragment implements CounterStatis
     @Override
     public String getStringById(int id)
     {
-        if (getContext() != null) {
+        if (getContext() != null)
             return getContext().getResources().getString(id);
-        } else
+        else
             return null;
     }
 

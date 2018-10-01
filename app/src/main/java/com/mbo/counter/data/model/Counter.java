@@ -1,10 +1,7 @@
 package com.mbo.counter.data.model;
 
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.util.Date;
 
 @DatabaseTable
 public class Counter

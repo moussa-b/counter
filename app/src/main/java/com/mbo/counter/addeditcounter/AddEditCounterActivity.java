@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
-import com.mbo.counter.commons.Utils;
 import com.mbo.counter.R;
+import com.mbo.counter.commons.Utils;
 import com.mbo.counter.data.source.ormlite.OrmLiteDataSource;
 
 public class AddEditCounterActivity extends AppCompatActivity

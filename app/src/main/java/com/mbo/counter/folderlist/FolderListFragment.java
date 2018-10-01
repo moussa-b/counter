@@ -127,6 +127,11 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
         }
     };
 
+    public static FolderListFragment newInstance()
+    {
+        return new FolderListFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -186,11 +191,6 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
     {
         if (!hidden)
             mPresenter.loadFolders();
-    }
-
-    public static FolderListFragment newInstance()
-    {
-        return new FolderListFragment();
     }
 
     @Override

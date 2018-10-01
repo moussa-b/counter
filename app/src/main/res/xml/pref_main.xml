@@ -24,10 +24,10 @@
 
     <PreferenceCategory android:title="@string/pref_header_display">
 
-        <Preference
-            android:summary="@string/summary_theme_and_color"
-            android:key="@string/key_theme_and_color"
-            android:title="@string/title_theme_and_color"/>
+        <!--<Preference-->
+            <!--android:summary="@string/summary_theme_and_color"-->
+            <!--android:key="@string/key_theme_and_color"-->
+            <!--android:title="@string/title_theme_and_color"/>-->
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -68,33 +68,30 @@
 
         <Preference
             android:summary="@string/summary_tutorial"
+            android:key="@string/key_see_tutorial"
             android:title="@string/title_tutorial"/>
 
         <Preference
             android:summary="@string/summary_share"
+            android:key="@string/key_share_app"
             android:title="@string/title_share"/>
 
         <Preference
+            android:summary="@string/summary_rate"
+            android:key="@string/key_rate_app"
+            android:title="@string/title_rate"/>
+
+        <Preference
             android:summary="@string/summary_contact_us"
+            android:key="@string/key_contact_us"
             android:title="@string/title_contact_us"/>
 
         <!-- preference opens url in browser -->
 
-        <Preference android:title="@string/privacy_policy"/>
+        <Preference android:title="@string/privacy_policy"
+                    android:key="@string/key_privacy_policy"/>
 
-        <Preference android:title="@string/title_terms"/>
-
-        <!--<Preference android:title="@string/privacy_policy">-->
-            <!--<intent-->
-                <!--android:action="android.intent.action.VIEW"-->
-                <!--android:data="@string/url_privacy"/>-->
-        <!--</Preference>-->
-
-        <!--<Preference android:title="@string/title_terms">-->
-            <!--<intent-->
-                <!--android:action="android.intent.action.VIEW"-->
-                <!--android:data="@string/url_terms"/>-->
-        <!--</Preference>-->
+        <!--<Preference android:title="@string/title_terms"/>-->
 
     </PreferenceCategory>
 </PreferenceScreen>

@@ -7,7 +7,10 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
@@ -34,9 +37,8 @@ import static com.mbo.counter.counterstatistics.CounterStatisticsFragment.ARGUME
 public class CounterFragment extends Fragment implements CounterContract.View
 {
     public static final String ARGUMENT_COUNTER_ID = "COUNTER_ID";
-    public static int progressBarRotation = 90;
     public static final int ROTATION_ANGLE = 10;
-
+    public static int progressBarRotation = 90;
     private TextView mName, mCount, mLimit;
 
     private ProgressBar mProgressBar;
@@ -164,11 +166,27 @@ public class CounterFragment extends Fragment implements CounterContract.View
         if (context != null)
         {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+            // Handle play sound on increment
             boolean isSoundEnabled = sharedPreferences.getBoolean(getString(R.string.key_activate_sound), false);
             if (isSoundEnabled)
             {
                 MediaPlayer decreaseSound = Utils.getDecreaseMediaPlayer(getContext());
                 decreaseSound.start();
+            }
+
+            // Handle vibrate on increment
+            boolean isVibratorEnabled = sharedPreferences.getBoolean(getString(R.string.key_activate_vibrator), false);
+            if (isVibratorEnabled)
+            {
+                Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                if (vibrator != null)
+                {
+                    if (Build.VERSION.SDK_INT >= 26)
+                        vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+                    else
+                        vibrator.vibrate(200);
+                }
             }
         }
     }
@@ -188,11 +206,27 @@ public class CounterFragment extends Fragment implements CounterContract.View
         if (context != null)
         {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+            // Handle play sound on increment
             boolean isSoundEnabled = sharedPreferences.getBoolean(getString(R.string.key_activate_sound), false);
             if (isSoundEnabled)
             {
                 MediaPlayer increaseSound = Utils.getIncreaseMediaPlayer(getContext());
                 increaseSound.start();
+            }
+
+            // Handle vibrate on increment
+            boolean isVibratorEnabled = sharedPreferences.getBoolean(getString(R.string.key_activate_vibrator), false);
+            if (isVibratorEnabled)
+            {
+                Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                if (vibrator != null)
+                {
+                    if (Build.VERSION.SDK_INT >= 26)
+                        vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+                    else
+                        vibrator.vibrate(200);
+                }
             }
         }
     }

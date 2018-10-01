@@ -12,7 +12,13 @@ public interface SettingsContract
 {
     interface View extends BaseView<Presenter>
     {
+        void contactUs();
+
+        void rateApplication();
+
         void selectFileForDataImport();
+
+        void shareApplication();
 
         void showColorPickerUi();
     }
