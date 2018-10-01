@@ -10,6 +10,7 @@ import android.support.v7.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.mbo.counter.commons.Utils;
 import com.mbo.counter.counter.CounterFragment;
@@ -32,6 +33,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     SettingsFragment mSettingsFragment;
     BottomNavigationView mBottomNavigationView;
     boolean mHideMenu = true;
+    private SharedPreferences.OnSharedPreferenceChangeListener listner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,6 +62,29 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         mSettingsFragment = SettingsFragment.newInstance();
         new SettingsPresenter(OrmLiteDataSource.getInstance(), mSettingsFragment);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean isScreenAlwaysOnEnabled = sharedPreferences.getBoolean(getString(R.string.key_screen_always_on), false);
+        if (isScreenAlwaysOnEnabled)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        listner = new SharedPreferences.OnSharedPreferenceChangeListener()
+        {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+            {
+                if (key.equals(getString(R.string.key_screen_always_on)))
+                {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+                    boolean isScreenAlwaysOnEnabled = sharedPreferences.getBoolean(getString(R.string.key_screen_always_on), false);
+                    if (isScreenAlwaysOnEnabled)
+                        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
+            }
+        };
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listner);
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.mbo.counter.addeditcounter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
+import android.view.WindowManager;
 
 import com.mbo.counter.R;
 import com.mbo.counter.commons.Utils;
@@ -45,6 +48,11 @@ public class AddEditCounterActivity extends AppCompatActivity
 
             mAddEditCounterPresenter = new AddEditCounterPresenter(counterId, OrmLiteDataSource.getInstance(), addEditFragment);
         }
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean isScreenAlwaysOnEnabled = sharedPreferences.getBoolean(getString(R.string.key_screen_always_on), false);
+        if (isScreenAlwaysOnEnabled)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override

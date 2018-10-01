@@ -1,8 +1,11 @@
 package com.mbo.counter.counterlist;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
+import android.view.WindowManager;
 
 import com.mbo.counter.R;
 import com.mbo.counter.commons.Utils;
@@ -48,6 +51,11 @@ public class CounterListActivity extends AppCompatActivity
             Utils.addFragmentToActivity(getSupportFragmentManager(), counterListFragment, R.id.contentFrame);
 
             mCounterListPresenter = new CounterListPresenter(OrmLiteDataSource.getInstance(), counterListFragment, folderId);
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            final boolean isScreenAlwaysOnEnabled = sharedPreferences.getBoolean(getString(R.string.key_screen_always_on), false);
+            if (isScreenAlwaysOnEnabled)
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 

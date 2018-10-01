@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.WindowManager;
 
 import com.mbo.counter.R;
 import com.mbo.counter.commons.Utils;
@@ -51,6 +52,11 @@ public class CounterActivity extends AppCompatActivity
 
             mCounterPresenter = new CounterPresenter(counterId, OrmLiteDataSource.getInstance(), mCounterView);
         }
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean isScreenAlwaysOnEnabled = sharedPreferences.getBoolean(getString(R.string.key_screen_always_on), false);
+        if (isScreenAlwaysOnEnabled)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
