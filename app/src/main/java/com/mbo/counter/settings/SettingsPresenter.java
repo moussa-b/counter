@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mbo.counter.BuildConfig;
@@ -124,41 +125,22 @@ public class SettingsPresenter implements SettingsContract.Presenter
     @Override
     public void importData(Uri importDataUri)
     {
-        String jsonData = FileUtils.readTextFromUri(((PreferenceFragmentCompat) mSettingsView).getContext(), importDataUri);
-        try
+        Context context = ((PreferenceFragmentCompat) mSettingsView).getContext();
+        if (context != null)
         {
-            Export export = new Gson().fromJson(jsonData, Export.class);
-            final List<Counter> counters = export.getCounters();
-            final List<Folder> folders = export.getFolders();
-            final List<Statistics> statistics = export.getStatistics();
-
-            mCounterDataSource.resetAllData(new CounterDataSource.ResetAllDataCallback()
+            String jsonData = FileUtils.readTextFromUri(context, importDataUri);
+            try
             {
-                @Override
-                public void onSuccess()
-                {
-                    if (counters != null && counters.size() != 0)
-                        mCounterDataSource.saveCounters(counters);
-
-                    if (folders != null && folders.size() != 0)
-                        mCounterDataSource.saveFolders(folders);
-
-                    if (statistics != null && statistics.size() != 0)
-                        mCounterDataSource.saveStatistics(statistics);
-                }
-
-                @Override
-                public void onError(String message)
-                {
-
-                }
-            });
+                Export export = new Gson().fromJson(jsonData, Export.class);
+                AsyncTaskImportDataFromJson asyncTaskThumbnailCreator = new AsyncTaskImportDataFromJson(context, mCounterDataSource);
+                asyncTaskThumbnailCreator.execute(export);
+            }
+            catch (Exception exception)
+            {
+                Toast.makeText(context, R.string.import_data_failure_message, Toast.LENGTH_LONG).show();
+                exception.printStackTrace();
+            }
         }
-        catch (Exception exception)
-        {
-            exception.printStackTrace();
-        }
-
     }
 
     @Override

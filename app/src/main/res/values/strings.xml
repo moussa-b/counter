@@ -117,4 +117,7 @@
     <string name="reset_data_warning">This action will delete all data. Are you sure?</string>
     <string name="error">Error</string>
     <string name="reset_all_data_success_message">All data have been successfully reset</string>
+    <string name="import_data_dialog_message">Data import in progress</string>
+    <string name="import_data_success_message">Data has been successfully imported</string>
+    <string name="import_data_failure_message">Error when importing data</string>
 </resources>

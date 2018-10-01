@@ -1,6 +1,7 @@
 package com.mbo.counter.commons;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -273,5 +274,23 @@ public class Utils
         }
         else
             return 0;
+    }
+
+    public static ProgressDialog createProgressDialog(Context context, String message)
+    {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        return progressDialog;
+    }
+
+    public static ProgressDialog createProgressDialog(Context context, int stringId)
+    {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(context.getResources().getString(stringId));
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        return progressDialog;
     }
 }

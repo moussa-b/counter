@@ -80,6 +80,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     {
         Intent intent = new Intent()
                 .setType("*/*")
+                .addCategory(Intent.CATEGORY_OPENABLE)
                 .setAction(Intent.ACTION_OPEN_DOCUMENT);
 
         startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_SELECT_FILE);
