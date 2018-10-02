@@ -16,11 +16,13 @@ import android.widget.Toast;
 import com.bdzapps.counterpp.colorpicker.ColorPickerFragment;
 import com.bdzapps.counterpp.colorpicker.ColorPickerListener;
 import com.bdzapps.counterpp.commons.PropertiesReader;
+import com.bdzapps.counterpp.webview.WebViewActivity;
 import com.mbo.counter.R;
 
 import java.util.Properties;
 
 import static android.app.Activity.RESULT_OK;
+import static com.bdzapps.counterpp.webview.WebViewFragment.ARGUMENT_LOAD_URL;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -29,6 +31,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
 {
     private static final int REQUEST_SELECT_FILE = 100;
     private SettingsContract.Presenter mPresenter;
+    private Properties properties;
 
     public SettingsFragment()
     {
@@ -43,6 +46,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
     {
         addPreferencesFromResource(R.xml.pref_main);
+        if (getContext() != null)
+        {
+            PropertiesReader propertiesReader = new PropertiesReader(getContext());
+            properties = propertiesReader.getProperties("configuration.properties");
+        }
     }
 
     @Override
@@ -78,6 +86,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
                 shareApplication();
             else if (key.equals(resources.getString(R.string.key_rate_app)))
                 rateApplication();
+            else if (key.equals(resources.getString(R.string.key_privacy_policy)))
+                showPrivacyPolicy();
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -110,6 +120,21 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     }
 
     @Override
+    public void showPrivacyPolicy()
+    {
+        if (properties != null && getContext() != null)
+        {
+            String url = properties.getProperty("privacy_policy_url");
+            if (url != null)
+            {
+                Intent intent = new Intent(getContext(), WebViewActivity.class);
+                intent.putExtra(ARGUMENT_LOAD_URL, url);
+                startActivity(intent);
+            }
+        }
+    }
+
+    @Override
     public void onSelectColor(int selectedColor)
     {
         Log.e("MBO", String.valueOf(selectedColor));
@@ -119,9 +144,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     public void contactUs()
     {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-
-        PropertiesReader propertiesReader = new PropertiesReader(getContext());
-        Properties properties = propertiesReader.getProperties("configuration.properties");
         if (properties != null)
         {
             String mailTo = "mailto:" + properties.getProperty("contact_email") +

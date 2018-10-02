@@ -21,6 +21,8 @@ public interface SettingsContract
         void shareApplication();
 
         void showColorPickerUi();
+
+        void showPrivacyPolicy();
     }
 
     interface Presenter extends BasePresenter

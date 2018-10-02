@@ -43,5 +43,9 @@
 
         <activity android:name="com.bdzapps.counterpp.folderstatistics.FolderStatisticsActivity"/>
 
+        <activity
+            android:name="com.bdzapps.counterpp.webview.WebViewActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
     </application>
 </manifest>
