@@ -43,9 +43,5 @@
 
         <activity android:name="com.bdzapps.counterpp.folderstatistics.FolderStatisticsActivity"/>
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="7e8a986867a519186bc346db093c31080833293e"/>
-
     </application>
 </manifest>
