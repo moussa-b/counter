@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
-        android:name=".CounterApplication"
+        android:name="com.bdzapps.counterpp.CounterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".HomeActivity"
+            android:name="com.bdzapps.counterpp.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -25,23 +25,23 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".addeditcounter.AddEditCounterActivity"/>
+        <activity android:name="com.bdzapps.counterpp.addeditcounter.AddEditCounterActivity"/>
 
-        <activity android:name=".counter.CounterActivity"/>
+        <activity android:name="com.bdzapps.counterpp.counter.CounterActivity"/>
 
-        <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name="com.bdzapps.counterpp.settings.SettingsActivity"/>
 
-        <activity android:name=".counterstatistics.CounterStatisticsActivity"/>
+        <activity android:name="com.bdzapps.counterpp.counterstatistics.CounterStatisticsActivity"/>
 
-        <activity android:name=".countersettings.CounterSettingsActivity"/>
+        <activity android:name="com.bdzapps.counterpp.countersettings.CounterSettingsActivity"/>
 
-        <activity android:name=".folderlist.FolderListActivity"/>
+        <activity android:name="com.bdzapps.counterpp.folderlist.FolderListActivity"/>
 
-        <activity android:name=".about.AboutActivity"/>
+        <activity android:name="com.bdzapps.counterpp.about.AboutActivity"/>
 
-        <activity android:name=".counterlist.CounterListActivity"/>
+        <activity android:name="com.bdzapps.counterpp.counterlist.CounterListActivity"/>
 
-        <activity android:name=".folderstatistics.FolderStatisticsActivity"/>
+        <activity android:name="com.bdzapps.counterpp.folderstatistics.FolderStatisticsActivity"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
