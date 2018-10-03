@@ -29,6 +29,8 @@ public interface SettingsContract
     {
         void exportData();
 
+        String getProperty(String property);
+
         void importData(Uri importDataUri);
 
         void resetData();

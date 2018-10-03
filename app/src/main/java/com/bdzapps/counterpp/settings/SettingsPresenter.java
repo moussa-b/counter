@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.bdzapps.counterpp.commons.CallBack;
 import com.bdzapps.counterpp.commons.FileUtils;
+import com.bdzapps.counterpp.commons.PropertiesReader;
 import com.bdzapps.counterpp.commons.Utils;
 import com.bdzapps.counterpp.data.model.Counter;
 import com.bdzapps.counterpp.data.model.Export;
@@ -25,9 +26,12 @@ import com.mbo.counter.R;
 
 import java.io.File;
 import java.util.List;
+import java.util.Properties;
 
 public class SettingsPresenter implements SettingsContract.Presenter
 {
+    private Properties properties;
+
     @NonNull
     private final CounterDataSource mCounterDataSource;
 
@@ -44,7 +48,12 @@ public class SettingsPresenter implements SettingsContract.Presenter
     @Override
     public void start()
     {
-
+        Context context = ((PreferenceFragmentCompat) mSettingsView).getContext();
+        if (context != null)
+        {
+            PropertiesReader propertiesReader = new PropertiesReader(context);
+            properties = propertiesReader.getProperties("configuration.properties");
+        }
     }
 
     @Override
@@ -120,6 +129,12 @@ public class SettingsPresenter implements SettingsContract.Presenter
                 });
             }
         }
+    }
+
+    @Override
+    public String getProperty(String property)
+    {
+        return (properties != null) ? properties.getProperty(property) : null;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.bdzapps.counterpp.settings;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -15,11 +16,9 @@ import android.widget.Toast;
 
 import com.bdzapps.counterpp.colorpicker.ColorPickerFragment;
 import com.bdzapps.counterpp.colorpicker.ColorPickerListener;
-import com.bdzapps.counterpp.commons.PropertiesReader;
+import com.bdzapps.counterpp.commons.Utils;
 import com.bdzapps.counterpp.webview.WebViewActivity;
 import com.mbo.counter.R;
-
-import java.util.Properties;
 
 import static android.app.Activity.RESULT_OK;
 import static com.bdzapps.counterpp.webview.WebViewFragment.ARGUMENT_LOAD_URL;
@@ -31,7 +30,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
 {
     private static final int REQUEST_SELECT_FILE = 100;
     private SettingsContract.Presenter mPresenter;
-    private Properties properties;
 
     public SettingsFragment()
     {
@@ -46,11 +44,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
     {
         addPreferencesFromResource(R.xml.pref_main);
-        if (getContext() != null)
-        {
-            PropertiesReader propertiesReader = new PropertiesReader(getContext());
-            properties = propertiesReader.getProperties("configuration.properties");
-        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mPresenter.start();
     }
 
     @Override
@@ -122,9 +122,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     @Override
     public void showPrivacyPolicy()
     {
-        if (properties != null && getContext() != null)
+        Context context = getContext();
+        if (context != null)
         {
-            String url = properties.getProperty("privacy_policy_url");
+            String url;
+            if (Utils.isConnectedToNetwork(context))
+                url = mPresenter.getProperty("privacy_policy_url");
+            else
+                url = mPresenter.getProperty("privacy_policy_asset");
+
             if (url != null)
             {
                 Intent intent = new Intent(getContext(), WebViewActivity.class);
@@ -144,11 +150,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     public void contactUs()
     {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-        if (properties != null)
+        String contactEmail = mPresenter.getProperty("contact_email");
+        if (contactEmail != null)
         {
-            String mailTo = "mailto:" + properties.getProperty("contact_email") +
-                    "?subject=" + Uri.encode(getString(R.string.app_name)) +
-                    "&body=" + Uri.encode("Hello");
+            String mailTo = "mailto:" + contactEmail + "?subject=" + Uri.encode(getString(R.string.app_name)) + "&body=" + Uri.encode("Hello");
 
             emailIntent.setData(Uri.parse(mailTo));
 
