@@ -130,9 +130,9 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
                     if (vibrator != null)
                     {
                         if (Build.VERSION.SDK_INT >= 26)
-                            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+                            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                         else
-                            vibrator.vibrate(200);
+                            vibrator.vibrate(100);
                     }
                 }
             }
@@ -156,9 +156,9 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
                     if (vibrator != null)
                     {
                         if (Build.VERSION.SDK_INT >= 26)
-                            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+                            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
                         else
-                            vibrator.vibrate(200);
+                            vibrator.vibrate(100);
                     }
                 }
             }
