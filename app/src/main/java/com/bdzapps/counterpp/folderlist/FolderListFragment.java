@@ -178,7 +178,6 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                     {
                         Folder folder = new Folder((String) data);
                         mPresenter.saveFolder(folder);
-                        mRecyclerAdapter.addData(folder);
                     }
                 });
                 return true;

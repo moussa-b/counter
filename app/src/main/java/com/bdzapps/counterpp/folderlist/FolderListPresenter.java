@@ -80,6 +80,7 @@ public class FolderListPresenter implements FolderListContract.Presenter
     public void saveFolder(Folder folder)
     {
         mCounterDataSource.saveFolder(folder);
+        loadFolders();
     }
 
     private void processFolders(List<Folder> folders)
