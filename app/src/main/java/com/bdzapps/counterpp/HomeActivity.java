@@ -86,6 +86,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         };
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(listner);
+
+        setTitle(getString(R.string.counter));
     }
 
     @Override

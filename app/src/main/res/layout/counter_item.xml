@@ -35,6 +35,18 @@
         app:layout_constraintTop_toTopOf="@id/counter_item_progress_bar"
         tools:ignore="HardcodedText"/>
 
+    <ImageView
+        android:id="@+id/infinite_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_infinity"
+        app:layout_constraintBottom_toBottomOf="@id/counter_item_progress_bar"
+        app:layout_constraintEnd_toEndOf="@id/counter_item_progress_bar"
+        app:layout_constraintStart_toStartOf="@id/counter_item_progress_bar"
+        app:layout_constraintTop_toTopOf="@id/counter_item_progress_bar"
+        android:contentDescription="@string/infinite"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/name_text_view"
         android:layout_width="wrap_content"
@@ -43,7 +55,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/counter_item_progress_bar"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/edit_counter_image_view"
         tools:ignore="HardcodedText"/>
 
     <TextView

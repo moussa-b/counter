@@ -255,7 +255,10 @@ public class CounterFragment extends Fragment implements CounterContract.View
     public void setProgression(int limit, int count)
     {
         if (limit == 0)
+        {
             mProgressBar.setProgress(100);
+            rotateProgressBar(180);
+        }
         else
         {
             float progression = 100 * (float) count / (float) limit;
