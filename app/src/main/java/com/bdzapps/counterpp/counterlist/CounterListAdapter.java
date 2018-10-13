@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -106,10 +107,22 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
         final boolean isVibratorEnabled = sharedPreferences.getBoolean(context.getString(R.string.key_activate_vibrator), false);
 
         counterViewHolder.countTextView.setText(String.valueOf(counter.getCount()));
-        counterViewHolder.nameTextView.setText(String.format("%s %s", counter.getName(), String.format("(%d)", counter.getLimit())));
-        int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
-        counterViewHolder.progressionTextView.setText(String.format("%s%%", String.valueOf(progression)));
-        counterViewHolder.counterItemProgressBar.setProgress(progression);
+        if (counter.getLimit() != 0)
+        {
+            counterViewHolder.nameTextView.setText(String.format("%s", counter.getName()));
+            int progression = (int) (100 * (float) counter.getCount() / ((float) counter.getLimit()));
+            counterViewHolder.progressionTextView.setText(String.format("%s%%", String.valueOf(progression)));
+            counterViewHolder.counterItemProgressBar.setProgress(progression);
+        }
+        else
+        {
+            counterViewHolder.nameTextView.setText(counter.getName());
+            counterViewHolder.progressionTextView.setVisibility(View.GONE);
+            counterViewHolder.infiniteImageView.setVisibility(View.VISIBLE);
+            counterViewHolder.infiniteImageView.setColorFilter(ContextCompat.getColor(context, R.color.gray));
+            counterViewHolder.counterItemProgressBar.setProgress(100);
+        }
+
         counterViewHolder.counterItemProgressBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(counter.getColor())));
         counterViewHolder.decreaseCounterImageButton.setOnClickListener(new View.OnClickListener()
         {
@@ -194,6 +207,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
         ImageButton decreaseCounterImageButton;
         ImageButton increaseCounterImageButton;
         ImageView editCounterImageView;
+        ImageView infiniteImageView;
 
         CounterViewHolder(View itemView)
         {
@@ -206,6 +220,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             decreaseCounterImageButton = itemView.findViewById(R.id.decrease_counter_image_button);
             increaseCounterImageButton = itemView.findViewById(R.id.increase_counter_image_button);
             editCounterImageView = itemView.findViewById(R.id.edit_counter_image_view);
+            infiniteImageView = itemView.findViewById(R.id.infinite_image_view);
         }
     }
 }

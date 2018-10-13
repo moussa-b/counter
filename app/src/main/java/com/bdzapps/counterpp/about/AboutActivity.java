@@ -24,7 +24,7 @@ public class AboutActivity extends AppCompatActivity
         {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setDisplayShowHomeEnabled(true);
-            mActionBar.setTitle(getString(R.string.about) + " " + getString(R.string.app_name));
+            mActionBar.setTitle(getString(R.string.about) + " " + getString(R.string.counter));
         }
 
         AboutFragment aboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);

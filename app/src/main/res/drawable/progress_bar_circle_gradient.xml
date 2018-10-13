@@ -5,5 +5,10 @@
        android:innerRadius="100dp"
        android:thickness="8dp"
        android:useLevel="true">
-    <solid android:color="@color/colorPrimary"/>
+    <gradient
+        android:angle="0"
+        android:endColor="@color/colorPrimary"
+        android:startColor="@android:color/transparent"
+        android:type="sweep"
+        android:useLevel="false"/>
 </shape>

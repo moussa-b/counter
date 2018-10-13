@@ -35,7 +35,7 @@ public class CounterActivity extends AppCompatActivity
         {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setDisplayShowHomeEnabled(true);
-            mActionBar.setTitle("Counter");
+            mActionBar.setTitle(R.string.counter);
         }
 
         mCounterView = (CounterFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);

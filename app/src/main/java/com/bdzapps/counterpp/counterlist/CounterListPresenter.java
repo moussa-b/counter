@@ -44,8 +44,11 @@ public class CounterListPresenter implements CounterListContract.Presenter
     {
         int count = mCounterDataSource.decrementCounter(counterId);
         mCounterListView.setCount(position, count);
-        int progression = (int) (100 * (float) count / ((float) limit));
-        mCounterListView.setProgression(position, progression);
+        if (limit != 0)
+        {
+            int progression = (int) (100 * (float) count / ((float) limit));
+            mCounterListView.setProgression(position, progression);
+        }
     }
 
     @Override
@@ -67,8 +70,11 @@ public class CounterListPresenter implements CounterListContract.Presenter
     {
         int count = mCounterDataSource.incrementCounter(counterId);
         mCounterListView.setCount(position, count);
-        int progression = (int) (100 * (float) count / ((float) limit));
-        mCounterListView.setProgression(position, progression);
+        if (limit != 0)
+        {
+            int progression = (int) (100 * (float) count / ((float) limit));
+            mCounterListView.setProgression(position, progression);
+        }
     }
 
     @Override

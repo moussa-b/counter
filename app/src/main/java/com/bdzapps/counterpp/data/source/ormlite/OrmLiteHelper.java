@@ -35,6 +35,7 @@ public class OrmLiteHelper extends OrmLiteSqliteOpenHelper
             CounterDataSource dataSource = OrmLiteDataSource.getInstance();
             Folder defaultFolder = new Folder("");
             Counter defaultCounter = new Counter("");
+            defaultCounter.setColor("#3F51B5");
             dataSource.saveFolder(defaultFolder);
             defaultCounter.setFolder(defaultFolder);
             dataSource.saveCounter(defaultCounter);

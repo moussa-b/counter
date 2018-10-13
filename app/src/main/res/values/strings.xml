@@ -6,7 +6,7 @@
     <string name="add_folder_dialog_title">New folder</string>
     <string name="add_folder_dialog_message">Entrer the name of the folder</string>
     <string name="all_counters">All counters</string>
-    <string name="app_name">Counter</string>
+    <string name="app_name">Counter++</string>
     <string name="application">Application</string>
     <string name="ascending">Ascending</string>
     <string name="communicate">Communicate</string>
@@ -127,4 +127,5 @@
     <string name="key_rate_app">SHARED_PREF_RATE_APP</string>
     <string name="summary_rate">Give us your feedback to help improve this app</string>
     <string name="title_rate">Rate</string>
+    <string name="infinite">Infinite</string>
 </resources>

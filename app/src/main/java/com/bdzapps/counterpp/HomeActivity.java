@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     SettingsFragment mSettingsFragment;
     BottomNavigationView mBottomNavigationView;
     boolean mHideMenu = true;
-    private SharedPreferences.OnSharedPreferenceChangeListener listner;
+    private SharedPreferences.OnSharedPreferenceChangeListener mListener; // Required to be member and not local variable
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         if (isScreenAlwaysOnEnabled)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        listner = new SharedPreferences.OnSharedPreferenceChangeListener()
+        mListener = new SharedPreferences.OnSharedPreferenceChangeListener()
         {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
@@ -85,7 +85,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             }
         };
 
-        sharedPreferences.registerOnSharedPreferenceChangeListener(listner);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
+
+        setTitle(getString(R.string.counter));
     }
 
     @Override
