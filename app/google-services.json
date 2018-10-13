@@ -15,6 +15,50 @@
       },
       "oauth_client": [
         {
+          "client_id": "427468159025-o2bgfg5qemg10n0j0th1k601nf3vgen2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bdzapps.counterpp",
+            "certificate_hash": "deea98b1f9f0a7acf2796809ca5efe7582cf7619"
+          }
+        },
+        {
+          "client_id": "427468159025-odibujbldrco16rgihb4m9l5me5msre6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAezDNymL4b-8tcoTVsjA7Djvg8ZbsvG0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427468159025-odibujbldrco16rgihb4m9l5me5msre6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427468159025:android:d84eaba4973b495f",
+        "android_client_info": {
+          "package_name": "com.bdzapps.counterpp.beta"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "427468159025-odibujbldrco16rgihb4m9l5me5msre6.apps.googleusercontent.com",
           "client_type": 3
         }
