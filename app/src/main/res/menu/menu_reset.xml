@@ -6,14 +6,4 @@
         android:icon="@drawable/ic_settings_backup_restore"
         android:title="@string/reset"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_edit"
-        android:icon="@drawable/ic_edit"
-        android:title="@string/edit"
-        app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_statistics"
-        android:icon="@drawable/ic_insert_chart_outlined"
-        android:title="@string/statistics"
-        app:showAsAction="ifRoom"/>
 </menu>

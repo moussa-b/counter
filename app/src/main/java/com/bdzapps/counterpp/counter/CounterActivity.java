@@ -6,7 +6,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.WindowManager;
 
 import com.bdzapps.counterpp.commons.Utils;
@@ -57,14 +56,6 @@ public class CounterActivity extends AppCompatActivity
         final boolean isScreenAlwaysOnEnabled = sharedPreferences.getBoolean(getString(R.string.key_screen_always_on), false);
         if (isScreenAlwaysOnEnabled)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_counter, menu);
-        return true;
     }
 
     @Override

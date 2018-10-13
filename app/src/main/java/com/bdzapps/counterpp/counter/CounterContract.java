@@ -15,6 +15,8 @@ public interface CounterContract
 
         void incrementCounter();
 
+        void resetCounter();
+
         void rotateProgressBar(int angle);
 
         void setColor(String color);
@@ -22,6 +24,8 @@ public interface CounterContract
         void setCount(int count);
 
         void setLimit(int limit);
+
+        void setMenu();
 
         void setName(String name);
 

@@ -12,9 +12,12 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +42,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
     public static final String ARGUMENT_COUNTER_ID = "COUNTER_ID";
     public static final int ROTATION_ANGLE = 10;
     public static int progressBarRotation = 90;
+    private static final int mDefaultCounterId = 1;
     private TextView mName, mCount, mLimit;
     private boolean isDrawableSet; // Required because issue when setting drawable twice
 
@@ -56,6 +60,13 @@ public class CounterFragment extends Fragment implements CounterContract.View
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.counter_fragment, container, false);
@@ -63,12 +74,10 @@ public class CounterFragment extends Fragment implements CounterContract.View
         mName = root.findViewById(R.id.counter_name_text_view);
         mCount = root.findViewById(R.id.counter_count_text_view);
         mLimit = root.findViewById(R.id.counter_limit_text_view);
-        Button increaseButton = root.findViewById(R.id.counter_increase_button);
         Button decreaseButton = root.findViewById(R.id.counter_decrease_button);
-        Button resetButton = root.findViewById(R.id.counter_reset_button);
         mProgressBar = root.findViewById(R.id.counter_progress_bar);
 
-        increaseButton.setOnClickListener(new View.OnClickListener()
+        mProgressBar.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -86,18 +95,6 @@ public class CounterFragment extends Fragment implements CounterContract.View
             }
         });
 
-        resetButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mPresenter.resetCounter();
-                setCount(0);
-                if (mPresenter.getLimit() != 0)
-                    setProgression(mPresenter.getLimit(), 0);
-            }
-        });
-
         setHasOptionsMenu(true);
 
         return root;
@@ -111,12 +108,28 @@ public class CounterFragment extends Fragment implements CounterContract.View
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        if (mPresenter != null)
+        {
+            if (mPresenter.getCounterId() > mDefaultCounterId)
+                inflater.inflate(R.menu.menu_counter, menu);
+            else
+                inflater.inflate(R.menu.menu_reset, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
         {
             case R.id.action_edit:
                 showEditCounter();
+                break;
+            case R.id.action_reset:
+                resetCounter();
                 break;
             case R.id.action_statistics:
                 showCounterStatistics();
@@ -160,6 +173,13 @@ public class CounterFragment extends Fragment implements CounterContract.View
             mLimit.setText(String.format("%s : %s", getString(R.string.objective), String.valueOf(limit)));
         else
             mLimit.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setMenu()
+    {
+        if (getActivity() != null)
+            getActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -240,6 +260,15 @@ public class CounterFragment extends Fragment implements CounterContract.View
                 }
             }
         }
+    }
+
+    @Override
+    public void resetCounter()
+    {
+        mPresenter.resetCounter();
+        setCount(0);
+        if (mPresenter.getLimit() != 0)
+            setProgression(mPresenter.getLimit(), 0);
     }
 
     @Override
