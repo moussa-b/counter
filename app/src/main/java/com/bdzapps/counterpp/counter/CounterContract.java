@@ -25,6 +25,8 @@ public interface CounterContract
 
         void setName(String name);
 
+        void setProgressBarDrawable(int limit);
+
         void setProgression(int limit, int count);
 
         void showEditCounter();

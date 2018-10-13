@@ -40,6 +40,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
     public static final int ROTATION_ANGLE = 10;
     public static int progressBarRotation = 90;
     private TextView mName, mCount, mLimit;
+    private boolean isDrawableSet; // Required because issue when setting drawable twice
 
     private ProgressBar mProgressBar;
 
@@ -140,6 +141,16 @@ public class CounterFragment extends Fragment implements CounterContract.View
             mName.setText(name);
         else
             mName.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setProgressBarDrawable(int limit)
+    {
+        if (limit == 0 && !isDrawableSet)
+        {
+            mProgressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_circle_gradient));
+            isDrawableSet = true;
+        }
     }
 
     @Override
@@ -257,7 +268,7 @@ public class CounterFragment extends Fragment implements CounterContract.View
         if (limit == 0)
         {
             mProgressBar.setProgress(100);
-            rotateProgressBar(180);
+            rotateProgressBar(10);
         }
         else
         {
