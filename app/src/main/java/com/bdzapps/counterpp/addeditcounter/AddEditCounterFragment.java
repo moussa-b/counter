@@ -207,10 +207,9 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
             mChangeColor.setBackgroundColor(Color.parseColor(color));
         else
         {
-            int randomColor = Utils.getRandomColor(getContext());
-            String hexRandomColor = "#" + Integer.toHexString(randomColor & 0x00ffffff); // 0x00ffffff required to remove transparency
-            mChangeColor.setBackgroundColor(randomColor);
-            mPresenter.getCounter().setColor(hexRandomColor);
+            String randomColor = Utils.getRandomColor(getContext());
+            mChangeColor.setBackgroundColor(Color.parseColor(randomColor));
+            mPresenter.getCounter().setColor(randomColor);
         }
     }
 
@@ -274,10 +273,9 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
-    public void onSelectColor(int selectedColor)
+    public void onSelectColor(String selectedColor)
     {
-        mChangeColor.setBackgroundColor(selectedColor);
-        String hexColor = "#" + Integer.toHexString(selectedColor & 0x00ffffff); // 0x00ffffff required to remove transparency
-        mPresenter.getCounter().setColor(hexColor);
+        mChangeColor.setBackgroundColor(Color.parseColor(selectedColor));
+        mPresenter.getCounter().setColor(selectedColor);
     }
 }

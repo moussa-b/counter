@@ -1,5 +1,6 @@
 package com.bdzapps.counterpp.colorpicker;
 
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,10 @@ import com.mbo.counter.R;
 
 public class ColorPickerAdapter extends BaseAdapter
 {
-    private final int[] mColors;
+    private final String[] mColors;
     private int mSelectedColor = -1;
 
-    public ColorPickerAdapter(int[] mColors)
+    public ColorPickerAdapter(String[] mColors)
     {
         this.mColors = mColors;
     }
@@ -55,7 +56,7 @@ public class ColorPickerAdapter extends BaseAdapter
 
         colorPickerImageView.setLayoutParams(new ConstraintLayout.LayoutParams(size, size));
         colorPickerImageView.setPadding(8, 8, 8, 8);
-        colorPickerImageView.setBackgroundColor(mColors[position]);
+        colorPickerImageView.setBackgroundColor(Color.parseColor(mColors[position]));
         selectedColorImageView.setVisibility(position == mSelectedColor ? View.VISIBLE : View.GONE);
 
         return rowView;

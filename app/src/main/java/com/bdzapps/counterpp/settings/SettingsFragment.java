@@ -141,7 +141,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
     }
 
     @Override
-    public void onSelectColor(int selectedColor)
+    public void onSelectColor(String selectedColor)
     {
         Log.e("MBO", String.valueOf(selectedColor));
     }

@@ -26,7 +26,7 @@ public class ColorPickerFragment extends DialogFragment
     private static final String ARGUMENT_MESSAGE = "ARGUMENT_MESSAGE";
     private int mSelectedPosition = -1;
     private ColorPickerAdapter mColorPickerAdapter;
-    private int[] mAndroidColors;
+    private String[] mAndroidColors;
 
     public ColorPickerFragment()
     {
@@ -68,7 +68,7 @@ public class ColorPickerFragment extends DialogFragment
                     activity.getResources().getString(R.string.color_picker_title);
             String message = getArguments() != null ? getArguments().getString(ARGUMENT_MESSAGE) :
                     activity.getResources().getString(R.string.color_picker_message);
-            mAndroidColors = getResources().getIntArray(R.array.android_colors);
+            mAndroidColors = getResources().getStringArray(R.array.android_colors);
             mColorPickerAdapter = new ColorPickerAdapter(mAndroidColors);
             final Fragment parentFragment = getTargetFragment();
 

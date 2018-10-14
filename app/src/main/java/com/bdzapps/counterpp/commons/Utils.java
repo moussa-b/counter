@@ -267,15 +267,15 @@ public class Utils
         return calendar.getTimeInMillis();
     }
 
-    public static int getRandomColor(Context context)
+    public static String getRandomColor(Context context)
     {
         if (context != null)
         {
-            int[] androidColors = context.getResources().getIntArray(R.array.android_colors);
+            String[] androidColors = context.getResources().getStringArray(R.array.android_colors);
             return androidColors[new Random().nextInt(androidColors.length)];
         }
         else
-            return 0;
+            return "#000000";
     }
 
     public static ProgressDialog createProgressDialog(Context context, String message)
