@@ -22,6 +22,7 @@ public class ColorPickerFragment extends DialogFragment
 {
     public static final int REQUEST_COLOR_PICKER = 100;
     public static final String TAG_COLOR_PICKER = "fragment_color_picker";
+    public static final String ARGUMENT_COLOR = "ARGUMENT_COLOR";
     private static final String ARGUMENT_TITLE = "ARGUMENT_TITLE";
     private static final String ARGUMENT_MESSAGE = "ARGUMENT_MESSAGE";
     private int mSelectedPosition = -1;
@@ -37,25 +38,6 @@ public class ColorPickerFragment extends DialogFragment
         return new ColorPickerFragment();
     }
 
-    public static ColorPickerFragment newInstance(String title)
-    {
-        ColorPickerFragment frag = new ColorPickerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARGUMENT_TITLE, title);
-        frag.setArguments(args);
-        return frag;
-    }
-
-    public static ColorPickerFragment newInstance(String title, String message)
-    {
-        ColorPickerFragment frag = new ColorPickerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARGUMENT_TITLE, title);
-        args.putString(ARGUMENT_MESSAGE, message);
-        frag.setArguments(args);
-        return frag;
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -68,8 +50,10 @@ public class ColorPickerFragment extends DialogFragment
                     activity.getResources().getString(R.string.color_picker_title);
             String message = getArguments() != null ? getArguments().getString(ARGUMENT_MESSAGE) :
                     activity.getResources().getString(R.string.color_picker_message);
+            String initialColor = getArguments() != null ? getArguments().getString(ARGUMENT_COLOR) : null;
+
             mAndroidColors = getResources().getStringArray(R.array.android_colors);
-            mColorPickerAdapter = new ColorPickerAdapter(mAndroidColors);
+            mColorPickerAdapter = new ColorPickerAdapter(mAndroidColors, initialColor);
             final Fragment parentFragment = getTargetFragment();
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);

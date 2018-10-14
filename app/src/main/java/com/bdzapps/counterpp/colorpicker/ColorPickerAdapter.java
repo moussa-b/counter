@@ -21,6 +21,19 @@ public class ColorPickerAdapter extends BaseAdapter
         this.mColors = mColors;
     }
 
+    public ColorPickerAdapter(String[] mColors, String initialColor)
+    {
+        this.mColors = mColors;
+        for (int i = 0; i < mColors.length; i++)
+        {
+            if (mColors[i].equals(initialColor))
+            {
+                mSelectedColor = i;
+                break;
+            }
+        }
+    }
+
     @Override
     public int getCount()
     {

@@ -254,8 +254,12 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     @Override
     public void showColorPickerUi()
     {
+        Bundle bundle = new Bundle();
+        bundle.putString(ColorPickerFragment.ARGUMENT_COLOR, mPresenter.getCounter().getColor());
+
         FragmentManager fm = getFragmentManager();
         ColorPickerFragment colorPickerFragment = ColorPickerFragment.newInstance();
+        colorPickerFragment.setArguments(bundle); // Set initial color
         colorPickerFragment.setTargetFragment(this, ColorPickerFragment.REQUEST_COLOR_PICKER);
         if (fm != null)
             colorPickerFragment.show(fm, ColorPickerFragment.TAG_COLOR_PICKER);
