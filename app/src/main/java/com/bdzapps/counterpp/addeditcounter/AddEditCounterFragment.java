@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bdzapps.counterpp.colorpicker.ColorPickerFragment;
@@ -46,7 +47,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
 
     private AddEditCounterContract.Presenter mPresenter;
 
-    private ArrayAdapter<String> mAutoCompleteAdapter;
+    private ArrayAdapter<String> mSpinnerAdapter;
 
     private List<String> mFolderNames = new ArrayList<>();
     private List<Folder> mFolders = new ArrayList<>();
@@ -81,7 +82,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.add_edit_counter_fragment, container, false);
         mName = root.findViewById(R.id.name_text_input);
@@ -102,8 +103,23 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
         });
         if (getActivity() != null)
         {
-            mAutoCompleteAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, mFolderNames);
-            mGroup.setAdapter(mAutoCompleteAdapter);
+            mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, mFolderNames){
+                @Override
+                public boolean isEnabled(int position)
+                {
+                    return position != 0;
+                }
+
+                @Override
+                public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent)
+                {
+                    View view = super.getDropDownView(position, convertView, parent);
+                    TextView tv = (TextView) view;
+                    tv.setTextColor(container.getContext().getResources().getColor(position == 0 ? R.color.silver : R.color.black));
+                    return view;
+                }
+            };
+            mGroup.setAdapter(mSpinnerAdapter);
             mGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             {
                 @Override
@@ -123,7 +139,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
                                 mFolders.add(folder);
                                 mPresenter.getCounter().setFolder(folder);
 
-                                mAutoCompleteAdapter.notifyDataSetChanged();
+                                mSpinnerAdapter.notifyDataSetChanged();
                                 mGroup.setSelection(mFolderNames.size() - 1);
                             }
                         });
@@ -141,6 +157,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
 
                 }
             });
+            mSpinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         }
 
         return root;
@@ -171,7 +188,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
                 mFolderNames.add(folder.getName());
             }
 
-            mAutoCompleteAdapter.notifyDataSetChanged();
+            mSpinnerAdapter.notifyDataSetChanged();
         }
     }
 
