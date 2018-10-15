@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
@@ -45,8 +46,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         Utils.removeShiftMode(mBottomNavigationView);
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        mCounterFragment = (CounterFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (mCounterFragment == null)
+        Fragment contentFrame = getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+
+        if (contentFrame instanceof CounterFragment)
+            mCounterFragment = (CounterFragment) contentFrame;
+        else
         {
             // Create the fragment
             mCounterFragment = CounterFragment.newInstance();
