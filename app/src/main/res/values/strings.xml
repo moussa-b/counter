@@ -132,4 +132,8 @@
     <string name="skip">Skip</string>
     <string name="start">Start</string>
     <string name="tutorial_image">Tutorial\'s image</string>
+    <string name="tutorial_description_slide_1">Use simple infinite counter from home screen</string>
+    <string name="tutorial_description_slide_2">Create your own counters from counter list screen</string>
+    <string name="tutorial_description_slide_3">Create folders to organize your counters from folder list screen</string>
+    <string name="tutorial_description_slide_4">Keep track of your activities with advanced statistics</string>
 </resources>
