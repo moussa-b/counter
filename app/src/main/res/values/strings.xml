@@ -128,4 +128,8 @@
     <string name="summary_rate">Give us your feedback to help improve this app</string>
     <string name="title_rate">Rate</string>
     <string name="infinite">Infinite</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="start">Start</string>
+    <string name="tutorial_image">Tutorial\'s image</string>
 </resources>

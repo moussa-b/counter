@@ -49,5 +49,8 @@
             android:name="com.bdzapps.counterpp.webview.WebViewActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
+        <activity android:name="com.bdzapps.counterpp.tutorial.TutorialActivity"
+                  android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
     </application>
 </manifest>

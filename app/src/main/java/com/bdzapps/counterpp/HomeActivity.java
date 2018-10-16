@@ -1,5 +1,6 @@
 package com.bdzapps.counterpp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.bdzapps.counterpp.commons.SharedPrefManager;
 import com.bdzapps.counterpp.commons.Utils;
 import com.bdzapps.counterpp.counter.CounterFragment;
 import com.bdzapps.counterpp.counter.CounterPresenter;
@@ -23,6 +25,7 @@ import com.bdzapps.counterpp.folderlist.FolderListFragment;
 import com.bdzapps.counterpp.folderlist.FolderListPresenter;
 import com.bdzapps.counterpp.settings.SettingsFragment;
 import com.bdzapps.counterpp.settings.SettingsPresenter;
+import com.bdzapps.counterpp.tutorial.TutorialActivity;
 import com.mbo.counter.R;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
@@ -41,6 +44,12 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        SharedPrefManager.setFirstTimeLaunch(this, true);
+        boolean showTutorial = SharedPrefManager.isFirstTimeLaunch(this);
+        if (showTutorial)
+            startActivity(new Intent(this, TutorialActivity.class));
+
         setContentView(R.layout.home_activity);
         mBottomNavigationView = findViewById(R.id.navigation);
         Utils.removeShiftMode(mBottomNavigationView);
