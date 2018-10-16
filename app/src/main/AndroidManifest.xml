@@ -25,7 +25,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.bdzapps.counterpp.addeditcounter.AddEditCounterActivity"/>
+        <activity
+            android:name="com.bdzapps.counterpp.addeditcounter.AddEditCounterActivity"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name="com.bdzapps.counterpp.counter.CounterActivity"/>
 
