@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="@string/tutorial_description_slide_3"
+        android:text="@string/tutorial_slide_3_description"
         android:textSize="18sp"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintLeft_toLeftOf="parent"
