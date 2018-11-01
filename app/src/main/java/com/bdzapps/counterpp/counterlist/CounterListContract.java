@@ -42,7 +42,7 @@ public interface CounterListContract
 
         void loadCounters();
 
-        void resetCounter(final int position, final int counterId);
+        void resetCounter(final int position, final int counterId, final int limit);
 
         void saveCounter(Counter counter);
     }

@@ -41,8 +41,8 @@ public class CounterFragment extends Fragment implements CounterContract.View
 {
     public static final String ARGUMENT_COUNTER_ID = "COUNTER_ID";
     public static final int ROTATION_ANGLE = 10;
-    public static int progressBarRotation = 90;
     private static final int mDefaultCounterId = 1;
+    public static int progressBarRotation = 90;
     private TextView mName, mCount, mLimit;
     private boolean isDrawableSet; // Required because issue when setting drawable twice
 

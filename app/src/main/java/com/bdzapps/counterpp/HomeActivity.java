@@ -45,7 +45,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     {
         super.onCreate(savedInstanceState);
 
-        SharedPrefManager.setFirstTimeLaunch(this, true);
         boolean showTutorial = SharedPrefManager.isFirstTimeLaunch(this);
         if (showTutorial)
             startActivity(new Intent(this, TutorialActivity.class));

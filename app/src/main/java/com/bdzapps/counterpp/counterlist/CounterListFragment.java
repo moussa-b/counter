@@ -70,7 +70,7 @@ public class CounterListFragment extends Fragment implements CounterListContract
                                 showCounterUi(clickedCounter.getId());
                                 return true;
                             case R.id.action_reset:
-                                mPresenter.resetCounter(position, clickedCounter.getId());
+                                mPresenter.resetCounter(position, clickedCounter.getId(), clickedCounter.getLimit());
                                 return true;
                             case R.id.action_edit:
                                 showEditCounterUi(clickedCounter.getId());

@@ -30,13 +30,11 @@ import java.util.Properties;
 
 public class SettingsPresenter implements SettingsContract.Presenter
 {
-    private Properties properties;
-
     @NonNull
     private final CounterDataSource mCounterDataSource;
-
     @NonNull
     private final SettingsContract.View mSettingsView;
+    private Properties properties;
 
     public SettingsPresenter(@NonNull OrmLiteDataSource counterDataSource, @NonNull SettingsContract.View settingsView)
     {

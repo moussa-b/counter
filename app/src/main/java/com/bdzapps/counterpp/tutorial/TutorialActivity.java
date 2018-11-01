@@ -22,6 +22,7 @@ import com.mbo.counter.R;
 
 public class TutorialActivity extends AppCompatActivity
 {
+    public static final String ARGUMENT_IS_FROM_SETTINGS = "ARGUMENT_IS_FROM_SETTINGS";
     private ViewPager mViewPager;
     private LinearLayout mDotsLayout;
     private int[] layouts;
@@ -65,8 +66,10 @@ public class TutorialActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
+        boolean isFromSetting = getIntent().getBooleanExtra(ARGUMENT_IS_FROM_SETTINGS, false);
+
         // Checking for first time launch - before calling setContentView()
-        if (!SharedPrefManager.isFirstTimeLaunch(this))
+        if (!SharedPrefManager.isFirstTimeLaunch(this) && !isFromSetting)
             closeTutorial();
 
         // Making notification bar transparent

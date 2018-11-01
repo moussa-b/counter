@@ -17,10 +17,12 @@ import android.widget.Toast;
 import com.bdzapps.counterpp.colorpicker.ColorPickerFragment;
 import com.bdzapps.counterpp.colorpicker.ColorPickerListener;
 import com.bdzapps.counterpp.commons.Utils;
+import com.bdzapps.counterpp.tutorial.TutorialActivity;
 import com.bdzapps.counterpp.webview.WebViewActivity;
 import com.mbo.counter.R;
 
 import static android.app.Activity.RESULT_OK;
+import static com.bdzapps.counterpp.tutorial.TutorialActivity.ARGUMENT_IS_FROM_SETTINGS;
 import static com.bdzapps.counterpp.webview.WebViewFragment.ARGUMENT_LOAD_URL;
 
 /**
@@ -88,6 +90,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
                 rateApplication();
             else if (key.equals(resources.getString(R.string.key_privacy_policy)))
                 showPrivacyPolicy();
+            else if (key.equals(resources.getString(R.string.key_see_tutorial)))
+                showTutorial();
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -138,6 +142,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Settin
                 startActivity(intent);
             }
         }
+    }
+
+    @Override
+    public void showTutorial()
+    {
+        Intent intent = new Intent(getContext(), TutorialActivity.class);
+        intent.putExtra(ARGUMENT_IS_FROM_SETTINGS, true);
+        startActivity(intent);
     }
 
     @Override

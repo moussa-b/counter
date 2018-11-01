@@ -118,11 +118,12 @@ public class CounterListPresenter implements CounterListContract.Presenter
     }
 
     @Override
-    public void resetCounter(final int position, final int counterId)
+    public void resetCounter(final int position, final int counterId, final int limit)
     {
         mCounterDataSource.resetCounter(counterId);
         mCounterListView.setCount(position, 0);
-        mCounterListView.setProgression(position, 0);
+        if (limit != 0)
+            mCounterListView.setProgression(position, 0);
     }
 
     @Override

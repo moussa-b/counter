@@ -103,7 +103,8 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
         });
         if (getActivity() != null)
         {
-            mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, mFolderNames){
+            mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, mFolderNames)
+            {
                 @Override
                 public boolean isEnabled(int position)
                 {
