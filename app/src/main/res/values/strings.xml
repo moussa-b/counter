@@ -106,8 +106,8 @@
     <string name="summary_contact_us">Any suggestion or bug? Please, let us know!</string>
     <string name="summary_count_volume_buttons">Count when the device\'s volume button is pressed</string>
     <string name="summary_delete_all_counters">Delete all counters, folders and statistics</string>
-    <string name="summary_export_data">Export your data to a file. Requires storage permission on Android 6+</string>
-    <string name="summary_import_data">Reset the app with data from exported file. Requires storage permission on Android 6+</string>
+    <string name="summary_export_data">Export your data to a file. Requires storage permission on Android 6+.</string>
+    <string name="summary_import_data">Reset the app with data from exported file. Requires storage permission on Android 6+.</string>
     <string name="summary_rate">Give us your feedback to help improve this app</string>
     <string name="summary_screen_always_on">Prevent device from sleeping while running in the foreground</string>
     <string name="summary_share">Share this app with your friends!</string>

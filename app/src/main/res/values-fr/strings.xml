@@ -39,7 +39,7 @@
     <string name="error">Erreur</string>
     <string name="evaluate">Évaluer</string>
     <string name="export_data_error_message">Erreur lors de l\'exportation des données</string>
-    <string name="export_data_success_message">Les données ont été exportées dans un fichier %s</string>
+    <string name="export_data_success_message">Les données ont été exportées dans le fichier %s</string>
     <string name="folder">Dossier</string>
     <string name="folder_list">Liste des dossiers</string>
     <string name="folders">Dossiers</string>
@@ -87,7 +87,7 @@
     <string name="rename">Renommer</string>
     <string name="reset">Réinitialisation</string>
     <string name="reset_all_counters">Réinitialiser les compteurs</string>
-    <string name="reset_all_counters_warning">This action will reset all counters in this folder. Are you sure?</string>
+    <string name="reset_all_counters_warning">Cette action réinitialisera tous les compteurs de ce dossier. Êtes-vous sûr?</string>
     <string name="reset_all_data_success_message">Cette action réinitialisera tous les compteurs de ce dossier. Êtes-vous sûr?</string>
     <string name="reset_data_warning">Cette action supprimera toutes les données. Êtes-vous sûr?</string>
     <string name="reset_statistics">Réinitialiser les statistiques</string>
@@ -106,8 +106,8 @@
     <string name="summary_contact_us">Une suggestion ou un bug? Informez-nous en!</string>
     <string name="summary_count_volume_buttons">Décompte lorsqu’on appuie sur le bouton de volume</string>
     <string name="summary_delete_all_counters">Supprimer tous les compteurs, dossiers et statistiques</string>
-    <string name="summary_export_data">Exporter vos données dans un fichier. Nécessite une autorisation de stockage sur Android 6+</string>
-    <string name="summary_import_data">Réinitialiser l\'application avec les données d\'un fichier exporté. Nécessite une autorisation de stockage sur Android 6+</string>
+    <string name="summary_export_data">Exporter vos données dans un fichier. Nécessite une autorisation de stockage sur Android 6+.</string>
+    <string name="summary_import_data">Réinitialiser l\'application avec les données d\'un fichier exporté. Nécessite une autorisation de stockage sur Android 6+.</string>
     <string name="summary_rate">Envoyez-nous vos commentaires pour nous aider à améliorer cette application</string>
     <string name="summary_screen_always_on">Empêcher la mise ne veille de l\'application pendant son utilisation</string>
     <string name="summary_share">Partagez cette application avec vos amis!</string>
