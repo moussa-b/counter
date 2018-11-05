@@ -98,8 +98,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         };
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
-
-        setTitle(getString(R.string.counter));
     }
 
     @Override
@@ -152,7 +150,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         switch (itemId)
         {
             case R.id.navigation_home:
-                setTitle(getString(R.string.counter));
+                setTitle(getString(R.string.app_name));
                 mHideMenu = true;
                 if (mCounterFragment.isAdded())
                     transaction.show(mCounterFragment);
