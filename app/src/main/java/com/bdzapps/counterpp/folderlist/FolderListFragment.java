@@ -78,7 +78,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                                             {
                                                 mPresenter.resetCountersInFolder(clickedFolder.getId());
                                             }
-                                        }, null, Utils.NO_ICON);
+                                        }, null, R.drawable.ic_info_24dp);
                                 return true;
                             case R.id.action_delete_all:
                                 Utils.showWarningDialog(getContext(), true,
@@ -90,7 +90,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                                             {
                                                 mPresenter.deleteCountersInGroup(clickedFolder.getId());
                                             }
-                                        }, null, Utils.NO_ICON);
+                                        }, null, R.drawable.ic_info_24dp);
                                 return true;
                             case R.id.action_duplicate:
                                 mPresenter.duplicateFolder(clickedFolder.getId());
@@ -105,7 +105,7 @@ public class FolderListFragment extends Fragment implements FolderListContract.V
                                             {
                                                 mPresenter.deleteFolder(clickedFolder.getId());
                                             }
-                                        }, null, Utils.NO_ICON);
+                                        }, null, R.drawable.ic_info_24dp);
                                 return true;
                             case R.id.action_statistics:
                                 showFolderStatisticsUi(clickedFolder.getId());

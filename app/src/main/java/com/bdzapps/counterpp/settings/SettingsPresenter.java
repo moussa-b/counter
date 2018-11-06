@@ -63,7 +63,7 @@ public class SettingsPresenter implements SettingsContract.Presenter
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED)
             {
-                Utils.showWarningDialog(context, false, R.string.information, R.string.storage_permission_warning, null, null, R.drawable.ic_menu_info);
+                Utils.showWarningDialog(context, false, R.string.information, R.string.storage_permission_warning, null, null, R.drawable.ic_info_24dp);
             }
             else if (FileUtils.isExternalStorageWritable())
             {
@@ -100,7 +100,7 @@ public class SettingsPresenter implements SettingsContract.Presenter
                                         if (FileUtils.writeToFile(gson.toJson(export), exportFile))
                                             export_data_message = String.format(context.getResources().getString(R.string.export_data_success_message), exportFile.getAbsolutePath());
 
-                                        Utils.showWarningDialog(context, false, context.getResources().getString(R.string.information), export_data_message, null, null, R.drawable.ic_menu_info);
+                                        Utils.showWarningDialog(context, false, context.getResources().getString(R.string.information), export_data_message, null, null, R.drawable.ic_info_24dp);
                                     }
 
                                     @Override
@@ -172,17 +172,17 @@ public class SettingsPresenter implements SettingsContract.Presenter
                         @Override
                         public void onSuccess()
                         {
-                            Utils.showWarningDialog(context, false, R.string.information, R.string.reset_all_data_success_message, null, null, R.drawable.ic_menu_info);
+                            Utils.showWarningDialog(context, false, R.string.information, R.string.reset_all_data_success_message, null, null, R.drawable.ic_info_24dp);
                         }
 
                         @Override
                         public void onError(String message)
                         {
-                            Utils.showWarningDialog(context, false, context.getResources().getString(R.string.error), message, null, null, R.drawable.ic_menu_info);
+                            Utils.showWarningDialog(context, false, context.getResources().getString(R.string.error), message, null, null, R.drawable.ic_info_24dp);
                         }
                     });
                 }
-            }, null, R.drawable.ic_menu_info);
+            }, null, R.drawable.ic_info_24dp);
         }
     }
 }
