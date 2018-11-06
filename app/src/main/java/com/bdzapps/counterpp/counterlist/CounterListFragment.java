@@ -40,6 +40,7 @@ public class CounterListFragment extends Fragment implements CounterListContract
     private CounterListAdapter mRecyclerAdapter;
     private TextView mNoCounterTextView;
     private CounterListContract.Presenter mPresenter;
+    private int mFolderId;
     private CounterItemListener mCounterListener = new CounterItemListener()
     {
         @Override
@@ -146,6 +147,10 @@ public class CounterListFragment extends Fragment implements CounterListContract
             }
         });
 
+        Bundle folderIdBundle = getArguments();
+        if (folderIdBundle != null)
+            mFolderId = getArguments().getInt(CounterListFragment.ARGUMENT_FOLDER_ID, 0);
+
         return root;
     }
 
@@ -205,6 +210,8 @@ public class CounterListFragment extends Fragment implements CounterListContract
     public void showAddCounter()
     {
         Intent intent = new Intent(getContext(), AddEditCounterActivity.class);
+        if (mFolderId != 0)
+            intent.putExtra(ARGUMENT_FOLDER_ID, mFolderId);
         startActivityForResult(intent, AddEditCounterActivity.REQUEST_ADD_COUNTER);
     }
 

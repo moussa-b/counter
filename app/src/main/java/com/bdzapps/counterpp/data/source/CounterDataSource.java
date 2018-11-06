@@ -44,7 +44,7 @@ public interface CounterDataSource
 
     void getFoldersForExport(@NonNull LoadFoldersCallback callback);
 
-    void getFolder(int counterId, @NonNull GetFolderCallback callback);
+    void getFolder(int folderId, @NonNull GetFolderCallback callback);
 
     int incrementCounter(int counterId);
 

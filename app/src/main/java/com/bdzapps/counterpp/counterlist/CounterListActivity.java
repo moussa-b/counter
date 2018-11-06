@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
+import android.view.Menu;
 import android.view.WindowManager;
 
 import com.bdzapps.counterpp.commons.Utils;
@@ -46,6 +47,10 @@ public class CounterListActivity extends AppCompatActivity
                     mActionBar.setDisplayShowHomeEnabled(true);
                     mActionBar.setTitle(folderName);
                 }
+
+                Bundle folderIdBundle = new Bundle();
+                folderIdBundle.putInt(CounterListFragment.ARGUMENT_FOLDER_ID, folderId);
+                counterListFragment.setArguments(folderIdBundle);
             }
 
             Utils.addFragmentToActivity(getSupportFragmentManager(), counterListFragment, R.id.contentFrame);
@@ -57,6 +62,14 @@ public class CounterListActivity extends AppCompatActivity
             if (isScreenAlwaysOnEnabled)
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_add, menu);
+        return true;
     }
 
     @Override

@@ -18,12 +18,15 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
 
     private int mCounterId;
 
+    private int mFolderId;
+
     private Counter mCounter;
 
-    public AddEditCounterPresenter(int counterId, @NonNull CounterDataSource counterDataSource,
+    public AddEditCounterPresenter(int counterId, int folderId, @NonNull CounterDataSource counterDataSource,
                                    @NonNull AddEditCounterContract.View addCounterView)
     {
         this.mCounterId = counterId;
+        this.mFolderId = folderId;
         this.mCounterDataSource = counterDataSource;
         this.mAddCounterView = addCounterView;
 
@@ -105,6 +108,24 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
             mCounter = new Counter();
             mAddCounterView.setStep(mCounter.getStep());
             mAddCounterView.setColor(null); // will add a random color to counter
+            if (mFolderId != 0)
+            {
+                mCounterDataSource.getFolder(mFolderId, new CounterDataSource.GetFolderCallback()
+                {
+                    @Override
+                    public void onFolderLoaded(Folder folder)
+                    {
+                        mCounter.setFolder(folder);
+                        mAddCounterView.setGroup(mCounter.getFolder());
+                    }
+
+                    @Override
+                    public void onDataNotAvailable()
+                    {
+
+                    }
+                });
+            }
         }
     }
 }
