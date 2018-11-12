@@ -93,7 +93,6 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
                     mAddCounterView.setColor(mCounter.getColor());
                     mAddCounterView.setGroup(mCounter.getFolder());
                     mAddCounterView.setLimit(mCounter.getLimit());
-                    mAddCounterView.setStep(mCounter.getStep());
                     mAddCounterView.setNote(mCounter.getNote());
                 }
 
@@ -106,7 +105,6 @@ public class AddEditCounterPresenter implements AddEditCounterContract.Presenter
         else
         {
             mCounter = new Counter();
-            mAddCounterView.setStep(mCounter.getStep());
             mAddCounterView.setColor(null); // will add a random color to counter
             if (mFolderId != 0)
             {

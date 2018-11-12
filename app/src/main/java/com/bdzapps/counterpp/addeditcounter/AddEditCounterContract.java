@@ -28,8 +28,6 @@ public interface AddEditCounterContract
 
         void setName(String name);
 
-        void setStep(int step);
-
         void showColorPickerUi();
 
         void showCountersList();

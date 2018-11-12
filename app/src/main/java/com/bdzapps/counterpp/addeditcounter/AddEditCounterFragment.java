@@ -39,7 +39,7 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
 {
     public static final String ARGUMENT_EDIT_COUNTER_ID = "EDIT_COUNTER_ID";
 
-    private TextInputEditText mName, mLimit, mNote, mStep;
+    private TextInputEditText mName, mLimit, mNote;
 
     private Spinner mGroup;
 
@@ -88,7 +88,6 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
         mName = root.findViewById(R.id.name_text_input);
         mLimit = root.findViewById(R.id.limit_text_input);
         mNote = root.findViewById(R.id.note_text_input);
-        mStep = root.findViewById(R.id.step_text_input);
         mGroup = root.findViewById(R.id.group_spinner);
         mChangeColor = root.findViewById(R.id.change_color_button);
         mFolderNames.add(getString(R.string.select_folder));
@@ -206,8 +205,6 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
             {
                 int limit = Integer.parseInt(mLimit.getText().toString());
                 counter.setLimit(limit);
-                int step = Integer.parseInt(mStep.getText().toString());
-                counter.setStep(step);
             }
             catch (NumberFormatException e)
             {
@@ -261,12 +258,6 @@ public class AddEditCounterFragment extends Fragment implements AddEditCounterCo
     public void setName(String name)
     {
         mName.setText(name);
-    }
-
-    @Override
-    public void setStep(int step)
-    {
-        mStep.setText(String.valueOf(step));
     }
 
     @Override

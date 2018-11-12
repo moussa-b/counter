@@ -37,28 +37,13 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/step_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/limit_layout">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/step_text_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/step"
-            android:inputType="number"/>
-
-    </android.support.design.widget.TextInputLayout>
-
     <Spinner
         android:id="@+id/group_spinner"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/step_layout"/>
+        app:layout_constraintTop_toBottomOf="@id/limit_layout"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/note_layout"
