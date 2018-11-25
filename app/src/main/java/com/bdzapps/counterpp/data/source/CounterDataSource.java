@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.bdzapps.counterpp.data.model.Counter;
 import com.bdzapps.counterpp.data.model.Folder;
 import com.bdzapps.counterpp.data.model.Statistics;
+import com.bdzapps.counterpp.data.model.StatisticsType;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public interface CounterDataSource
     void duplicateCounter(int counterId);
 
     void duplicateFolder(int folderId);
+
+    void generateRandomStatistics(int counterId, StatisticsType statisticsType, int nbDays, int nbStatistics);
 
     void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback);
 

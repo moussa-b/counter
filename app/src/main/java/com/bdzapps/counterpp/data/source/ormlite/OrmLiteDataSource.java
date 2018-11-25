@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import com.bdzapps.counterpp.data.model.Counter;
 import com.bdzapps.counterpp.data.model.Folder;
 import com.bdzapps.counterpp.data.model.Statistics;
+import com.bdzapps.counterpp.data.model.StatisticsType;
 import com.bdzapps.counterpp.data.source.CounterDataSource;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -216,6 +218,25 @@ public class OrmLiteDataSource implements CounterDataSource
         catch (SQLException e)
         {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void generateRandomStatistics(int counterId, StatisticsType statisticsType, int nbDays, int nbStatistics)
+    {
+        for (int i = 0; i < nbStatistics; i++) {
+            int nbDay = (int)(Math.random() * nbDays);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date()); // Today
+            cal.add(Calendar.DATE, -nbDay);
+            try
+            {
+                mDaoStatistics.create(new Statistics(cal.getTimeInMillis(), counterId, 0, statisticsType));
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
