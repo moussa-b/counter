@@ -79,6 +79,12 @@
     <string name="notes">Notes</string>
     <string name="objective">Objectif</string>
     <string name="ok">OK</string>
+    <string name="period">Période</string>
+    <string name="period_one_week">Une semaine</string>
+    <string name="period_two_weeks">Deux semaines</string>
+    <string name="period_one_month">Un mois</string>
+    <string name="period_three_month">Trois mois</string>
+    <string name="period_six_month">Six mois</string>
     <string name="pref_header_about">@string/about</string>
     <string name="pref_header_advanced">Avancés</string>
     <string name="pref_header_controls">Contôles</string>
