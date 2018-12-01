@@ -20,7 +20,15 @@ public class AndroidChartDateAxisFormatter implements IAxisValueFormatter
     @Override
     public String getFormattedValue(float value, AxisBase axis)
     {
-        long timeStamp = mTimeStampGroups.get((int) value);
-        return Utils.formatDateForGraphs(timeStamp, mLocale);
+        if ((int) value < mTimeStampGroups.size()) // Required because of a bug in MPChart lib
+        {
+            long timeStamp = mTimeStampGroups.get((int) value);
+            return Utils.formatDateForGraphs(timeStamp, mLocale);
+        }
+        else
+        {
+            return "";
+        }
+
     }
 }

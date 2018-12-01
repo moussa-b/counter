@@ -60,4 +60,9 @@
         <item>#ff0000</item>
         <item>#3e2723</item>
     </string-array>
+
+    <string-array name="period_statistics">
+        <item>@string/period_one_week</item>
+        <item>@string/period_one_month</item>
+    </string-array>
 </resources>

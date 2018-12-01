@@ -23,5 +23,7 @@ public interface CounterStatisticsContract
     interface Presenter extends BasePresenter
     {
         void loadStatistics();
+
+        void updateStatistics(long period);
     }
 }

@@ -23,16 +23,20 @@ import java.util.Map;
 
 public class CounterStatisticsPresenter implements CounterStatisticsContract.Presenter
 {
-    public static final long ONE_DAY_MILLIS = 24 * 60 * 60 * 1000L;
-    public static final long ONE_WEEK_MILLIS = 7 * ONE_DAY_MILLIS;
-    public static final long TWO_WEEK_MILLIS = 2 * 7 * ONE_DAY_MILLIS;
-    public static final long ONE_MONTH_MILLIS = 30 * ONE_DAY_MILLIS;
+    private static final long ONE_DAY_MILLIS = 24 * 60 * 60 * 1000L;
+    static final long ONE_WEEK_MILLIS = 7 * ONE_DAY_MILLIS;
+    static final long TWO_WEEK_MILLIS = 2 * 7 * ONE_DAY_MILLIS;
+    static final long ONE_MONTH_MILLIS = 30 * ONE_DAY_MILLIS;
+    static final long THREE_MONTH_MILLIS = 3 * 30 * ONE_DAY_MILLIS;
+    static final long SIX_MONTH_MILLIS = 6 * 30 * ONE_DAY_MILLIS;
     @NonNull
     private final CounterStatisticsContract.View mStatisticsView;
     @NonNull
     private final CounterDataSource mCounterDataSource;
+    private long mCurrentPeriod;
     private long mStartTimeStamp;
     private long mEndTimeStamp;
+    private long mInterval;
     private int mCounterId;
 
     public CounterStatisticsPresenter(int counterId, @NonNull CounterDataSource counterDataSource, @NonNull CounterStatisticsContract.View statisticsView)
@@ -47,20 +51,15 @@ public class CounterStatisticsPresenter implements CounterStatisticsContract.Pre
     @Override
     public void start()
     {
-        loadStatistics();
+        // mCounterDataSource.generateRandomStatistics(mCounterId, StatisticsType.RESET, 31, 20);
+        // mCounterDataSource.generateRandomStatistics(mCounterId, StatisticsType.INCREMENT, 31, 180);
+        // mCounterDataSource.generateRandomStatistics(mCounterId, StatisticsType.DECREMENT, 31, 60);
+        updateStatistics(ONE_WEEK_MILLIS);
     }
 
     @Override
     public void loadStatistics()
     {
-        // By default startTimeStamp = now - 7 week
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date()); // Today
-        cal.add(Calendar.DATE, 1); //End of current day is considered as beginning of next day
-        mEndTimeStamp = Utils.atStartOfDay(cal);
-        cal.add(Calendar.DATE, -7);
-        mStartTimeStamp = Utils.atStartOfDay(cal);
-
         mCounterDataSource.getStatisticsInInterval(mCounterId, mStartTimeStamp, mEndTimeStamp, new CounterDataSource.LoadStatisticsCallback()
         {
             @Override
@@ -77,6 +76,63 @@ public class CounterStatisticsPresenter implements CounterStatisticsContract.Pre
         });
     }
 
+    @Override
+    public void updateStatistics(long period)
+    {
+        if (mCurrentPeriod != period) // Avoid making several times the same plot
+        {
+            mCurrentPeriod = period;
+            Calendar cal = Calendar.getInstance();
+            if (period == ONE_WEEK_MILLIS)
+            {
+                cal.setTime(new Date()); // Today
+                cal.add(Calendar.DATE, 1); //End of current day is considered as beginning of next day
+                mEndTimeStamp = Utils.atStartOfDay(cal);
+                cal.add(Calendar.DATE, -7);
+                mStartTimeStamp = Utils.atStartOfDay(cal);
+                mInterval = ONE_DAY_MILLIS;
+            }
+            else if (period == TWO_WEEK_MILLIS)
+            {
+                cal.setTime(new Date()); // Today
+                cal.add(Calendar.DATE, 1); //End of current day is considered as beginning of next day
+                mEndTimeStamp = Utils.atStartOfDay(cal);
+                cal.add(Calendar.DATE, -14);
+                mStartTimeStamp = Utils.atStartOfDay(cal);
+                mInterval = ONE_DAY_MILLIS;
+            }
+            else if (period == ONE_MONTH_MILLIS)
+            {
+                cal.setTime(new Date()); // Today
+                cal.add(Calendar.DATE, 1); //End of current day is considered as beginning of next day
+                mEndTimeStamp = Utils.atStartOfDay(cal);
+                cal.add(Calendar.DATE, -30);
+                mStartTimeStamp = Utils.atStartOfDay(cal);
+                mInterval = ONE_WEEK_MILLIS;
+            }
+            else if (period == THREE_MONTH_MILLIS)
+            {
+                cal.setTime(new Date()); // Today
+                cal.add(Calendar.DATE, 1); //End of current day is considered as beginning of next day
+                mEndTimeStamp = Utils.atStartOfDay(cal);
+                cal.add(Calendar.DATE, -90);
+                mStartTimeStamp = Utils.atStartOfDay(cal);
+                mInterval = TWO_WEEK_MILLIS;
+            }
+            else if (period == SIX_MONTH_MILLIS)
+            {
+                cal.setTime(new Date()); // Today
+                cal.add(Calendar.DATE, 1); //End of current day is considered as beginning of next day
+                mEndTimeStamp = Utils.atStartOfDay(cal);
+                cal.add(Calendar.DATE, -180);
+                mStartTimeStamp = Utils.atStartOfDay(cal);
+                mInterval = ONE_MONTH_MILLIS;
+            }
+
+            loadStatistics();
+        }
+    }
+
     private void processStatistics(List<Statistics> statistics)
     {
         Map<Long, Integer> decrementStatistics = new HashMap<>();
@@ -84,7 +140,7 @@ public class CounterStatisticsPresenter implements CounterStatisticsContract.Pre
         Map<Long, Integer> resetStatistics = new HashMap<>();
 
         // group statistics by day
-        List<Long> timeStampGroups = getTimeStampGroups(mStartTimeStamp, mEndTimeStamp, ONE_DAY_MILLIS);
+        List<Long> timeStampGroups = getTimeStampGroups(mStartTimeStamp, mEndTimeStamp, mInterval);
         for (int i = 0; i < timeStampGroups.size(); i++)
         {
             decrementStatistics.put(timeStampGroups.get(i), 0);
