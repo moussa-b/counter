@@ -254,7 +254,7 @@ public class OrmLiteDataSource implements CounterDataSource
                     .limit(1L)
                     .query();
 
-            if (statistics != null)
+            if (statistics != null && statistics.size() > 0)
             {
                 callback.onStatisticLoaded(statistics.get(0));
             }

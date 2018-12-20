@@ -109,7 +109,7 @@ public class CounterListPresenter implements CounterListContract.Presenter
                 @Override
                 public void onDataNotAvailable()
                 {
-
+                    processEmptyLastStatistics();
                 }
             });
         }
@@ -142,7 +142,7 @@ public class CounterListPresenter implements CounterListContract.Presenter
                         @Override
                         public void onDataNotAvailable()
                         {
-
+                            processEmptyLastStatistics();
                         }
                     }
             );
