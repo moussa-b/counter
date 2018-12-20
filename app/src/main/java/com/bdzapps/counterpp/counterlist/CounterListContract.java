@@ -3,6 +3,7 @@ package com.bdzapps.counterpp.counterlist;
 import com.bdzapps.counterpp.BasePresenter;
 import com.bdzapps.counterpp.BaseView;
 import com.bdzapps.counterpp.data.model.Counter;
+import com.bdzapps.counterpp.data.model.Statistics;
 
 import java.util.List;
 
@@ -27,7 +28,11 @@ public interface CounterListContract
 
         void showEditCounterUi(int counterId);
 
+        void showLastStatistics(Counter counter, Statistics statistics);
+
         void showNoCounters();
+
+        void showNoLastStatistics();
     }
 
     interface Presenter extends BasePresenter

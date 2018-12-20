@@ -66,6 +66,7 @@
     <string name="key_see_tutorial" translatable="false">SHARED_PREF_SEE_TUTORIAL</string>
     <string name="key_share_app" translatable="false">SHARED_PREF_SHARE_APP</string>
     <string name="key_theme_and_color" translatable="false">SHARED_PREF_THEME_AND_COLOR</string>
+    <string name="last_modified">Dernier compteur modifié : %s - %s</string>
     <string name="limit">Limite</string>
     <string name="name">Nom</string>
     <string name="name_required_warning">Le nom est obligatoire</string>

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.bdzapps.counterpp.data.model.Counter;
 import com.bdzapps.counterpp.data.model.Folder;
+import com.bdzapps.counterpp.data.model.Statistics;
 import com.bdzapps.counterpp.data.source.CounterDataSource;
 import com.bdzapps.counterpp.data.source.ormlite.OrmLiteDataSource;
 
@@ -96,6 +97,21 @@ public class CounterListPresenter implements CounterListContract.Presenter
 
                 }
             });
+
+            mCounterDataSource.getLastStatistics(new CounterDataSource.LoadStatisticCallback()
+            {
+                @Override
+                public void onStatisticLoaded(Statistics statistics)
+                {
+                    processLastStatistics(statistics);
+                }
+
+                @Override
+                public void onDataNotAvailable()
+                {
+
+                }
+            });
         }
         else
         {
@@ -113,6 +129,23 @@ public class CounterListPresenter implements CounterListContract.Presenter
 
                 }
             });
+
+            mCounterDataSource.getLastStatisticsInFolder(mFolderId,
+                    new CounterDataSource.LoadStatisticCallback()
+                    {
+                        @Override
+                        public void onStatisticLoaded(Statistics statistics)
+                        {
+                            processLastStatistics(statistics);
+                        }
+
+                        @Override
+                        public void onDataNotAvailable()
+                        {
+
+                        }
+                    }
+            );
         }
 
     }
@@ -149,5 +182,36 @@ public class CounterListPresenter implements CounterListContract.Presenter
     private void processEmptyCounters()
     {
         mCounterListView.showNoCounters();
+    }
+
+    private void processLastStatistics(final Statistics statistics)
+    {
+        if (statistics != null)
+        {
+            mCounterDataSource.getCounter(statistics.getCounterId(), new CounterDataSource.GetCounterCallback()
+            {
+                @Override
+                public void onCounterLoaded(Counter counter)
+                {
+                    mCounterListView.showLastStatistics(counter, statistics);
+                }
+
+                @Override
+                public void onDataNotAvailable()
+                {
+
+                }
+            });
+        }
+        else
+        {
+            processEmptyLastStatistics();
+        }
+
+    }
+
+    private void processEmptyLastStatistics()
+    {
+        mCounterListView.showNoLastStatistics();
     }
 }

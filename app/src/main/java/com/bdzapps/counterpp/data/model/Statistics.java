@@ -47,6 +47,15 @@ public class Statistics
         this.type = type;
     }
 
+    public Statistics(String counterId, String dateTimeStamp, String id, String type, String value)
+    {
+        this.counterId = Integer.valueOf(counterId);
+        this.dateTimeStamp = Long.valueOf(dateTimeStamp);
+        this.id = Integer.valueOf(id);
+        this.type = StatisticsType.valueOf(type);
+        this.value = Integer.valueOf(value);
+    }
+
     public int getId()
     {
         return id;

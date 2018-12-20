@@ -7,8 +7,8 @@ android {
         applicationId "com.bdzapps.counterpp"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 4
-        versionName "1.0.2"
+        versionCode 5
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     applicationVariants.all { variant ->

@@ -129,7 +129,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             @Override
             public void onClick(View v)
             {
-                mCounterListener.onCounterDecrement(position, counter.getId(), counter.getLimit());
+                mCounterListener.onCounterDecrement(position, counter);
 
                 if (isSoundEnabled)
                 {
@@ -155,7 +155,7 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             @Override
             public void onClick(View v)
             {
-                mCounterListener.onCounterIncrement(position, counter.getId(), counter.getLimit());
+                mCounterListener.onCounterIncrement(position, counter);
 
                 if (isSoundEnabled)
                 {
@@ -182,6 +182,15 @@ public class CounterListAdapter extends RecyclerView.Adapter<CounterListAdapter.
             public void onClick(View v)
             {
                 mCounterListener.onCounterShowMenu(v, counter, position);
+            }
+        });
+
+        counterViewHolder.counterItemProgressBar.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mCounterListener.onCounterShowFullScreen(counter.getId());
             }
         });
     }

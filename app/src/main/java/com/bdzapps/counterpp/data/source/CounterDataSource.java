@@ -31,6 +31,10 @@ public interface CounterDataSource
 
     void generateRandomStatistics(int counterId, StatisticsType statisticsType, int nbDays, int nbStatistics);
 
+    void getLastStatistics(@NonNull LoadStatisticCallback callback);
+
+    void getLastStatisticsInFolder(int folderId, @NonNull LoadStatisticCallback callback);
+
     void getStatistics(int counterId, @NonNull LoadStatisticsCallback callback);
 
     void getStatisticsForExport(@NonNull LoadStatisticsCallback callback);
@@ -84,6 +88,13 @@ public interface CounterDataSource
     interface LoadStatisticsCallback
     {
         void onStatisticsLoaded(List<Statistics> statistics);
+
+        void onDataNotAvailable();
+    }
+
+    interface LoadStatisticCallback
+    {
+        void onStatisticLoaded(Statistics statistics);
 
         void onDataNotAvailable();
     }

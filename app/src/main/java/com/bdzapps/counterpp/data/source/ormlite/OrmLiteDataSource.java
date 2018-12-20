@@ -8,9 +8,12 @@ import com.bdzapps.counterpp.data.model.Statistics;
 import com.bdzapps.counterpp.data.model.StatisticsType;
 import com.bdzapps.counterpp.data.source.CounterDataSource;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.table.TableUtils;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -237,6 +240,68 @@ public class OrmLiteDataSource implements CounterDataSource
             {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void getLastStatistics(@NonNull LoadStatisticCallback callback)
+    {
+        try
+        {
+            final List<Statistics> statistics = mDaoStatistics
+                    .queryBuilder()
+                    .orderBy("dateTimeStamp", false)
+                    .limit(1L)
+                    .query();
+
+            if (statistics != null)
+            {
+                callback.onStatisticLoaded(statistics.get(0));
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getLastStatisticsInFolder(int folderId, @NonNull LoadStatisticCallback callback)
+    {
+        try
+        {
+            List<Statistics> statistics = new ArrayList<>();
+            GenericRawResults<String[]> rawResults =
+                    mDaoCounter.queryRaw(
+                            "select c.id as counterId, s.dateTimeStamp, s.id, s.type, s.value from counter as c" +
+                                    " inner join statistics as s" +
+                                    " on s.counterId = c.id" +
+                                    " where folder_id = " + folderId +
+                                    " order by s.dateTimeStamp desc " +
+                                    "limit 1");
+
+            for (String[] resultArray : rawResults)
+            {
+                statistics.add(new Statistics(resultArray[0], resultArray[1], resultArray[2], resultArray[3], resultArray[4]));
+            }
+            rawResults.close();
+
+            if (statistics.size() > 0)
+            {
+                callback.onStatisticLoaded(statistics.get(0));
+            }
+            else
+            {
+                callback.onDataNotAvailable();
+            }
+        }
+        catch (SQLException | IOException e)
+        {
+            e.printStackTrace();
         }
     }
 

@@ -1,10 +1,12 @@
 package com.bdzapps.counterpp.counterlist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.os.ConfigurationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -19,13 +21,17 @@ import android.widget.TextView;
 
 import com.bdzapps.counterpp.addeditcounter.AddEditCounterActivity;
 import com.bdzapps.counterpp.commons.ItemOffsetDecoration;
+import com.bdzapps.counterpp.commons.Utils;
 import com.bdzapps.counterpp.counter.CounterActivity;
 import com.bdzapps.counterpp.counterstatistics.CounterStatisticsActivity;
 import com.bdzapps.counterpp.data.model.Counter;
+import com.bdzapps.counterpp.data.model.Statistics;
 import com.mbo.counter.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.bdzapps.counterpp.addeditcounter.AddEditCounterFragment.ARGUMENT_EDIT_COUNTER_ID;
 import static com.bdzapps.counterpp.counter.CounterFragment.ARGUMENT_COUNTER_ID;
@@ -39,20 +45,29 @@ public class CounterListFragment extends Fragment implements CounterListContract
     private RecyclerView mCounterRecyclerView;
     private CounterListAdapter mRecyclerAdapter;
     private TextView mNoCounterTextView;
+    private TextView mLastModifiedTextView;
     private CounterListContract.Presenter mPresenter;
     private int mFolderId;
     private CounterItemListener mCounterListener = new CounterItemListener()
     {
         @Override
-        public void onCounterDecrement(int position, int counterId, int limit)
+        public void onCounterDecrement(int position, Counter counter)
         {
-            mPresenter.decrementCounter(position, counterId, limit);
+            mPresenter.decrementCounter(position, counter.getId(), counter.getLimit());
+            showLastStatistics(counter, new Statistics((new Date()).getTime(), counter.getId()));
         }
 
         @Override
-        public void onCounterIncrement(int position, int counterId, int limit)
+        public void onCounterIncrement(int position, Counter counter)
         {
-            mPresenter.incrementCounter(position, counterId, limit);
+            mPresenter.incrementCounter(position, counter.getId(), counter.getLimit());
+            showLastStatistics(counter, new Statistics((new Date()).getTime(), counter.getId()));
+        }
+
+        @Override
+        public void onCounterShowFullScreen(int counterId)
+        {
+            showCounterUi(counterId);
         }
 
         @Override
@@ -147,6 +162,9 @@ public class CounterListFragment extends Fragment implements CounterListContract
             }
         });
 
+        // Set up last modified text view
+        mLastModifiedTextView = root.findViewById(R.id.last_modified_text_view);
+
         Bundle folderIdBundle = getArguments();
         if (folderIdBundle != null)
             mFolderId = getArguments().getInt(CounterListFragment.ARGUMENT_FOLDER_ID, 0);
@@ -238,6 +256,23 @@ public class CounterListFragment extends Fragment implements CounterListContract
     }
 
     @Override
+    public void showLastStatistics(Counter counter, Statistics statistics)
+    {
+        Context context = getContext();
+        if (context != null)
+        {
+            mLastModifiedTextView.setVisibility(View.VISIBLE);
+            Locale locale = ConfigurationCompat.getLocales(context.getResources().getConfiguration()).get(0);
+            String date = Utils.formatDateForDisplay(statistics.getDateTimeStamp(), locale);
+            mLastModifiedTextView.setText(String.format(context.getResources().getString(R.string.last_modified), counter.getName(), date));
+        }
+        else
+        {
+            mLastModifiedTextView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void showCounterUi(int counterId)
     {
         Intent intent = new Intent(getContext(), CounterActivity.class);
@@ -258,5 +293,11 @@ public class CounterListFragment extends Fragment implements CounterListContract
     {
         mCounterRecyclerView.setVisibility(View.GONE);
         mNoCounterTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showNoLastStatistics()
+    {
+        mLastModifiedTextView.setVisibility(View.GONE);
     }
 }
