@@ -18,7 +18,7 @@ This is a project developed by leisure and it is my first application on the sto
 
 This app use MVP architecture.
 
-## Open Source Projects Used
+### Open Source Projects Used
 
 * [Android Support Library](https://developer.android.com/topic/libraries/support-library/features.html)
 * [GSON](https://github.com/google/gson)
