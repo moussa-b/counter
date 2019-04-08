@@ -1,6 +1,6 @@
 # Counter++
 
-[<img align="right" alt="Get it on Google Play" height="128" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png">](https://play.google.com/store/apps/details?id=https://play.google.com/store/apps/details?id=com.bdzapps.counterpp)
+[<img align="right" alt="Get it on Google Play" height="128" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png">](https://play.google.com/store/apps/details?id=com.bdzapps.counterpp)
 
 This application was created to meet the need of a loved one to have an assistant for memorization. Indeed, one of the best ways to memorize is through repetition.
 Here are the features offered by this application:
